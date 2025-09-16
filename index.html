@@ -1,0 +1,1286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Content Optimizer - Free SEO Analysis Tool</title>
+    <meta name="description" content="Free AI-powered content optimization tool with multilingual support, gamified scoring, and real-time SEO analysis. Beat your competitors with 30+ language support!">
+    <meta name="keywords" content="SEO tool, content optimization, AI SEO, multilingual SEO, free SEO analyzer, keyword density checker">
+    <meta name="author" content="AI Content Optimizer">
+
+    <!-- Open Graph Meta Tags -->
+    <meta property="og:title" content="AI Content Optimizer - Free SEO Tool">
+    <meta property="og:description" content="Optimize your content in 30+ languages with gamified AI-powered SEO analysis">
+    <meta property="og:type" content="website">
+    <meta property="og:image" content="https://via.placeholder.com/1200x630/4f46e5/white?text=AI+Content+Optimizer">
+
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome Icons -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --primary-color: #4f46e5;
+            --secondary-color: #06b6d4;
+            --success-color: #10b981;
+            --warning-color: #f59e0b;
+            --danger-color: #ef4444;
+            --dark-color: #1f2937;
+            --light-color: #f8fafc;
+            --text-color: #374151;
+            --border-color: #e5e7eb;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--light-color);
+        }
+
+        /* Header Styles */
+        .navbar {
+            background: var(--dark-color) !important;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            padding: 1rem 0;
+        }
+
+        .navbar-brand {
+            font-weight: 700;
+            font-size: 1.5rem;
+            color: white !important;
+        }
+
+        /* Hero Section */
+        .hero-section {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 80px 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 100" fill="white" opacity="0.1"><polygon points="1000,100 1000,0 0,100"/></svg>') no-repeat;
+            background-size: cover;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero-title {
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            line-height: 1.2;
+        }
+
+        .hero-subtitle {
+            font-size: 1.25rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+        }
+
+        /* Tool Card */
+        .tool-card {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            padding: 2.5rem;
+            margin: 2rem 0;
+            border: 1px solid var(--border-color);
+            transition: all 0.3s ease;
+        }
+
+        .tool-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 30px 60px rgba(0,0,0,0.15);
+        }
+
+        /* Score Circle */
+        .score-circle {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            font-weight: 700;
+            margin: 20px auto;
+            position: relative;
+            border: 4px solid #e5e7eb;
+        }
+
+        .score-excellent { 
+            background: var(--success-color); 
+            color: white;
+            border-color: var(--success-color);
+        }
+        .score-good { 
+            background: var(--warning-color); 
+            color: white;
+            border-color: var(--warning-color);
+        }
+        .score-poor { 
+            background: var(--danger-color); 
+            color: white;
+            border-color: var(--danger-color);
+        }
+        .score-default {
+            background: #f3f4f6;
+            color: var(--text-color);
+        }
+
+        /* Feature Icons */
+        .feature-icon {
+            font-size: 3rem;
+            color: var(--primary-color);
+            margin-bottom: 1.5rem;
+            display: block;
+        }
+
+        /* Achievement Badges */
+        .achievement-badge {
+            display: inline-block;
+            background: var(--success-color);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 25px;
+            margin: 5px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            box-shadow: 0 2px 8px rgba(16, 185, 129, 0.3);
+            transition: transform 0.2s ease;
+        }
+
+        .achievement-badge:hover {
+            transform: scale(1.05);
+        }
+
+        /* Progress Bar */
+        .progress-custom {
+            height: 25px;
+            border-radius: 15px;
+            background-color: #e5e7eb;
+            overflow: hidden;
+            box-shadow: inset 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        .progress-bar-custom {
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+            transition: width 0.6s ease;
+            border-radius: 15px;
+        }
+
+        /* Loading Spinner */
+        .spinner-container {
+            display: none;
+            text-align: center;
+            padding: 60px;
+        }
+
+        .custom-spinner {
+            width: 60px;
+            height: 60px;
+            border: 4px solid #e5e7eb;
+            border-top: 4px solid var(--primary-color);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Results Section */
+        .results-container {
+            display: none;
+            margin-top: 2rem;
+        }
+
+        .score-card {
+            text-align: center;
+            padding: 2rem;
+            border: 2px solid var(--border-color);
+            border-radius: 15px;
+            margin-bottom: 1rem;
+            transition: all 0.3s ease;
+            background: white;
+        }
+
+        .score-card:hover {
+            border-color: var(--primary-color);
+            transform: translateY(-2px);
+        }
+
+        .score-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .score-label {
+            color: #6b7280;
+            font-weight: 500;
+        }
+
+        /* Form Controls */
+        .form-control, .form-select {
+            border: 2px solid var(--border-color);
+            border-radius: 10px;
+            padding: 12px 16px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-control:focus, .form-select:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+        }
+
+        /* Buttons */
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            border: none;
+            border-radius: 10px;
+            padding: 15px 30px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(79, 70, 229, 0.3);
+        }
+
+        /* Features Section */
+        .features-section {
+            padding: 80px 0;
+            background: white;
+        }
+
+        .feature-card {
+            text-align: center;
+            padding: 2rem;
+            border-radius: 15px;
+            transition: transform 0.3s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+        }
+
+        /* List Styling */
+        .recommendation-item {
+            padding: 15px;
+            border-left: 4px solid var(--primary-color);
+            margin-bottom: 10px;
+            background: #f8fafc;
+            border-radius: 0 8px 8px 0;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .hero-title {
+                font-size: 2.5rem;
+            }
+
+            .hero-subtitle {
+                font-size: 1.1rem;
+            }
+
+            .tool-card {
+                padding: 1.5rem;
+                margin: 1rem 0;
+            }
+
+            .score-circle {
+                width: 100px;
+                height: 100px;
+                font-size: 1.5rem;
+            }
+        }
+
+        /* Animation Classes */
+        .fade-in {
+            animation: fadeIn 0.6s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        /* Footer */
+        .footer {
+            background: var(--dark-color);
+            color: white;
+            padding: 40px 0;
+            margin-top: 60px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation Header -->
+    <nav class="navbar navbar-expand-lg navbar-dark sticky-top">
+        <div class="container">
+            <a class="navbar-brand" href="#">
+                <i class="fas fa-brain me-2"></i>AI Content Optimizer
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#analyzer"><i class="fas fa-search me-1"></i>Analyzer</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#features"><i class="fas fa-star me-1"></i>Features</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#pricing"><i class="fas fa-tag me-1"></i>Pricing</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <div class="container">
+            <div class="hero-content text-center">
+                <h1 class="hero-title">AI-Powered Content Optimization</h1>
+                <p class="hero-subtitle">Optimize your content for 30+ languages with gamified SEO scoring and real-time monitoring</p>
+                <div class="row justify-content-center">
+                    <div class="col-lg-8">
+                        <div class="achievement-badge pulse">
+                            <i class="fas fa-globe me-1"></i>30+ Languages
+                        </div>
+                        <div class="achievement-badge pulse">
+                            <i class="fas fa-trophy me-1"></i>Gamified Scoring
+                        </div>
+                        <div class="achievement-badge pulse">
+                            <i class="fas fa-clock me-1"></i>Real-time Analysis
+                        </div>
+                        <div class="achievement-badge pulse">
+                            <i class="fas fa-microphone me-1"></i>Voice Search Ready
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Tool Section -->
+    <section id="analyzer" class="py-5">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-12">
+                    <div class="tool-card fade-in">
+                        <div class="text-center mb-4">
+                            <h2><i class="fas fa-magic me-2 text-primary"></i>Free AI Content Analyzer</h2>
+                            <p class="text-muted">Analyze your content instantly with our advanced AI algorithms</p>
+                        </div>
+
+                        <div class="row">
+                            <!-- Input Section -->
+                            <div class="col-lg-8">
+                                <div class="mb-4">
+                                    <label for="contentInput" class="form-label fw-bold">
+                                        <i class="fas fa-edit me-2"></i>Paste Your Content Here:
+                                    </label>
+                                    <textarea 
+                                        class="form-control" 
+                                        id="contentInput" 
+                                        rows="8" 
+                                        placeholder="Enter your blog post, article, or any content you want to optimize for SEO. The more content you provide, the better analysis you'll get!"
+                                    ></textarea>
+                                    <div class="form-text">
+                                        <i class="fas fa-info-circle me-1"></i>
+                                        <span id="wordCount">0</span> words | Recommended: 300+ words for best analysis
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label for="keywordInput" class="form-label fw-bold">
+                                                <i class="fas fa-key me-2"></i>Target Keywords:
+                                            </label>
+                                            <input 
+                                                type="text" 
+                                                class="form-control" 
+                                                id="keywordInput" 
+                                                placeholder="SEO, content optimization, AI tools"
+                                            >
+                                            <div class="form-text">Separate keywords with commas</div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label for="languageSelect" class="form-label fw-bold">
+                                                <i class="fas fa-globe me-2"></i>Content Language:
+                                            </label>
+                                            <select class="form-select" id="languageSelect">
+                                                <option value="en">🇺🇸 English</option>
+                                                <option value="es">🇪🇸 Spanish</option>
+                                                <option value="fr">🇫🇷 French</option>
+                                                <option value="de">🇩🇪 German</option>
+                                                <option value="it">🇮🇹 Italian</option>
+                                                <option value="pt">🇵🇹 Portuguese</option>
+                                                <option value="hi">🇮🇳 Hindi</option>
+                                                <option value="zh">🇨🇳 Chinese</option>
+                                                <option value="ja">🇯🇵 Japanese</option>
+                                                <option value="ko">🇰🇷 Korean</option>
+                                                <option value="ar">🇸🇦 Arabic</option>
+                                                <option value="ru">🇷🇺 Russian</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <button type="button" class="btn btn-primary btn-lg w-100" onclick="analyzeContent()">
+                                    <i class="fas fa-rocket me-2"></i>Analyze with AI Magic ✨
+                                </button>
+                            </div>
+
+                            <!-- User Level Section -->
+                            <div class="col-lg-4">
+                                <div class="text-center">
+                                    <h5 class="mb-3"><i class="fas fa-user-graduate me-2"></i>Your SEO Level</h5>
+                                    <div class="score-circle score-default" id="seoScore">
+                                        <span id="levelNumber">1</span>
+                                    </div>
+                                    <h6 id="userLevel" class="fw-bold text-primary">SEO Beginner</h6>
+                                    <p class="text-muted small mb-3">
+                                        <span id="userXP">0</span> XP | Next: <span id="nextLevelXP">100</span> XP
+                                    </p>
+
+                                    <div class="progress progress-custom mb-3">
+                                        <div class="progress-bar progress-bar-custom" id="levelProgress" style="width: 0%"></div>
+                                    </div>
+
+                                    <div id="recentAchievements">
+                                        <small class="text-muted">Complete your first analysis to unlock achievements!</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Loading Spinner -->
+                        <div class="spinner-container" id="loadingSpinner">
+                            <div class="custom-spinner"></div>
+                            <h5 class="mt-3 text-primary">🤖 AI is analyzing your content...</h5>
+                            <p class="text-muted">This usually takes 3-5 seconds</p>
+                        </div>
+
+                        <!-- Results Section -->
+                        <div class="results-container" id="resultsSection">
+                            <hr class="my-4">
+                            <h3 class="mb-4">
+                                <i class="fas fa-chart-bar me-2 text-primary"></i>AI Analysis Results
+                            </h3>
+
+                            <!-- Score Cards -->
+                            <div class="row mb-4">
+                                <div class="col-md-3">
+                                    <div class="score-card">
+                                        <div class="score-number text-primary" id="overallScore">0%</div>
+                                        <div class="score-label">Overall SEO Score</div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="score-card">
+                                        <div class="score-number text-success" id="readabilityScore">0%</div>
+                                        <div class="score-label">Readability Score</div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="score-card">
+                                        <div class="score-number text-warning" id="keywordDensity">0%</div>
+                                        <div class="score-label">Keyword Density</div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="score-card">
+                                        <div class="score-number text-info" id="contentLength">0</div>
+                                        <div class="score-label">Word Count</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-lg-8">
+                                    <h5><i class="fas fa-lightbulb me-2 text-warning"></i>AI Recommendations</h5>
+                                    <div id="recommendationsList">
+                                        <!-- Recommendations will be populated here -->
+                                    </div>
+                                </div>
+                                <div class="col-lg-4">
+                                    <h5><i class="fas fa-trophy me-2 text-warning"></i>Achievements Unlocked</h5>
+                                    <div id="achievementsList">
+                                        <!-- Achievements will be populated here -->
+                                    </div>
+
+                                    <div class="mt-4 p-3 bg-light rounded">
+                                        <h6><i class="fas fa-plus-circle me-2"></i>XP Earned</h6>
+                                        <p class="mb-0">+<span id="xpEarned">0</span> XP from this analysis!</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="features-section">
+        <div class="container">
+            <div class="text-center mb-5">
+                <h2 class="display-5 fw-bold">Why Choose Our AI Optimizer?</h2>
+                <p class="lead text-muted">Advanced features that beat expensive competitors</p>
+            </div>
+
+            <div class="row g-4">
+                <div class="col-lg-4">
+                    <div class="feature-card">
+                        <i class="fas fa-globe feature-icon"></i>
+                        <h4>30+ Languages Support</h4>
+                        <p class="text-muted">Optimize content in multiple languages with AI translation and localization. No other tool offers this many languages!</p>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="feature-card">
+                        <i class="fas fa-gamepad feature-icon"></i>
+                        <h4>Gamified Experience</h4>
+                        <p class="text-muted">Level up your SEO skills with achievements, XP points, and progress tracking. Make learning SEO addictive!</p>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="feature-card">
+                        <i class="fas fa-clock feature-icon"></i>
+                        <h4>Real-time Monitoring</h4>
+                        <p class="text-muted">Track your content performance and get instant optimization suggestions as you type.</p>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="feature-card">
+                        <i class="fas fa-microphone feature-icon"></i>
+                        <h4>Voice Search Ready</h4>
+                        <p class="text-muted">Optimize for voice search with conversational keyword analysis and question-based content suggestions.</p>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="feature-card">
+                        <i class="fas fa-robot feature-icon"></i>
+                        <h4>AI-Powered Insights</h4>
+                        <p class="text-muted">Get intelligent recommendations powered by advanced AI models and real-time SEO data.</p>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="feature-card">
+                        <i class="fas fa-dollar-sign feature-icon"></i>
+                        <h4>Free Forever</h4>
+                        <p class="text-muted">Start with our generous free tier - no credit card required. Upgrade only when you need advanced features.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing Section -->
+    <section id="pricing" class="py-5 bg-light">
+        <div class="container">
+            <div class="text-center mb-5">
+                <h2 class="display-5 fw-bold">Simple, Transparent Pricing</h2>
+                <p class="lead text-muted">Choose the plan that fits your needs</p>
+            </div>
+
+            <div class="row justify-content-center g-4">
+                <div class="col-lg-4">
+                    <div class="card border-0 shadow h-100">
+                        <div class="card-body p-4 text-center">
+                            <h4 class="card-title">Free</h4>
+                            <h2 class="text-primary mb-3">$0<small class="text-muted fs-6">/month</small></h2>
+                            <ul class="list-unstyled">
+                                <li class="mb-2"><i class="fas fa-check text-success me-2"></i>5 analyses per month</li>
+                                <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Basic SEO scoring</li>
+                                <li class="mb-2"><i class="fas fa-check text-success me-2"></i>10 languages</li>
+                                <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Gamification features</li>
+                            </ul>
+                            <button class="btn btn-outline-primary w-100">Get Started Free</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-4">
+                    <div class="card border-0 shadow h-100 border-primary">
+                        <div class="card-header bg-primary text-white text-center py-3">
+                            <h4 class="mb-0">Most Popular</h4>
+                        </div>
+                        <div class="card-body p-4 text-center">
+                            <h4 class="card-title">Pro</h4>
+                            <h2 class="text-primary mb-3">$29<small class="text-muted fs-6">/month</small></h2>
+                            <ul class="list-unstyled">
+                                <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Unlimited analyses</li>
+                                <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Advanced AI insights</li>
+                                <li class="mb-2"><i class="fas fa-check text-success me-2"></i>30+ languages</li>
+                                <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Real-time monitoring</li>
+                                <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Priority support</li>
+                            </ul>
+                            <button class="btn btn-primary w-100">Start Pro Trial</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-4">
+                    <div class="card border-0 shadow h-100">
+                        <div class="card-body p-4 text-center">
+                            <h4 class="card-title">Agency</h4>
+                            <h2 class="text-primary mb-3">$99<small class="text-muted fs-6">/month</small></h2>
+                            <ul class="list-unstyled">
+                                <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Everything in Pro</li>
+                                <li class="mb-2"><i class="fas fa-check text-success me-2"></i>White-label solution</li>
+                                <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Bulk analysis</li>
+                                <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Client dashboards</li>
+                                <li class="mb-2"><i class="fas fa-check text-success me-2"></i>API access</li>
+                            </ul>
+                            <button class="btn btn-outline-primary w-100">Contact Sales</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6">
+                    <h5><i class="fas fa-brain me-2"></i>AI Content Optimizer</h5>
+                    <p class="text-muted">Making SEO optimization accessible to everyone with the power of AI and gamification.</p>
+                </div>
+                <div class="col-lg-6">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h6>Product</h6>
+                            <ul class="list-unstyled">
+                                <li><a href="#features" class="text-muted text-decoration-none">Features</a></li>
+                                <li><a href="#pricing" class="text-muted text-decoration-none">Pricing</a></li>
+                                <li><a href="#" class="text-muted text-decoration-none">API</a></li>
+                            </ul>
+                        </div>
+                        <div class="col-md-6">
+                            <h6>Support</h6>
+                            <ul class="list-unstyled">
+                                <li><a href="#" class="text-muted text-decoration-none">Help Center</a></li>
+                                <li><a href="#" class="text-muted text-decoration-none">Contact Us</a></li>
+                                <li><a href="#" class="text-muted text-decoration-none">Privacy Policy</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <hr class="my-4">
+            <div class="text-center">
+                <p class="text-muted mb-0">&copy; 2025 AI Content Optimizer. Built with ❤️ for content creators worldwide.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Main Application JavaScript -->
+    <script>
+        // Global variables for user progress and gamification
+        let userLevel = 1;
+        let userXP = 0;
+        let totalAnalyses = 0;
+
+        const xpThresholds = [0, 100, 250, 500, 1000, 2000, 3500, 5000, 7500, 10000];
+        const levelNames = [
+            'SEO Beginner', 'Content Explorer', 'SEO Enthusiast', 'Content Strategist', 
+            'SEO Specialist', 'Content Master', 'SEO Expert', 'Content Guru', 
+            'SEO Ninja', 'Content Legend'
+        ];
+
+        // Initialize application when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            loadUserProgress();
+            updateLevelDisplay();
+            setupEventListeners();
+            showWelcomeMessage();
+        });
+
+        // Set up event listeners
+        function setupEventListeners() {
+            const contentInput = document.getElementById('contentInput');
+            const keywordInput = document.getElementById('keywordInput');
+
+            // Real-time word count update
+            contentInput.addEventListener('input', updateWordCount);
+
+            // Smooth scrolling for navigation links
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const target = document.querySelector(this.getAttribute('href'));
+                    if (target) {
+                        target.scrollIntoView({ behavior: 'smooth' });
+                    }
+                });
+            });
+        }
+
+        // Update word count in real-time
+        function updateWordCount() {
+            const content = document.getElementById('contentInput').value.trim();
+            const wordCount = content ? content.split(/\s+/).length : 0;
+            const wordCountElement = document.getElementById('wordCount');
+
+            wordCountElement.textContent = wordCount;
+
+            // Change color based on word count
+            if (wordCount >= 300) {
+                wordCountElement.className = 'text-success fw-bold';
+            } else if (wordCount >= 150) {
+                wordCountElement.className = 'text-warning fw-bold';
+            } else {
+                wordCountElement.className = 'text-muted';
+            }
+        }
+
+        // Show welcome message for new users
+        function showWelcomeMessage() {
+            if (!localStorage.getItem('hasVisited')) {
+                setTimeout(() => {
+                    alert('🎉 Welcome to AI Content Optimizer! Start by pasting your content above and watch your SEO level grow!');
+                    localStorage.setItem('hasVisited', 'true');
+                }, 2000);
+            }
+        }
+
+        // Main content analysis function
+        async function analyzeContent() {
+            const content = document.getElementById('contentInput').value.trim();
+            const keywords = document.getElementById('keywordInput').value.trim();
+            const language = document.getElementById('languageSelect').value;
+
+            // Validation
+            if (!content) {
+                alert('🤔 Please enter some content to analyze!');
+                return;
+            }
+
+            if (content.split(/\s+/).length < 10) {
+                alert('📝 Please provide at least 10 words for a meaningful analysis.');
+                return;
+            }
+
+            // Show loading animation
+            showLoading(true);
+
+            try {
+                // Simulate AI processing delay
+                await new Promise(resolve => setTimeout(resolve, 2000 + Math.random() * 2000));
+
+                // Perform analysis
+                const analysisResults = performAdvancedAnalysis(content, keywords, language);
+
+                // Display results
+                displayResults(analysisResults);
+
+                // Update user progress
+                const xpEarned = calculateXPEarned(analysisResults);
+                addXP(xpEarned);
+
+                // Track analytics
+                totalAnalyses++;
+                saveUserProgress();
+
+            } catch (error) {
+                console.error('Analysis error:', error);
+                alert('😅 Oops! Something went wrong. Please try again.');
+            } finally {
+                showLoading(false);
+            }
+        }
+
+        // Advanced content analysis with multiple factors
+        function performAdvancedAnalysis(content, keywords, language) {
+            const words = content.split(/\s+/);
+            const sentences = content.split(/[.!?]+/).filter(s => s.trim().length > 0);
+            const paragraphs = content.split(/\n\s*\n/).filter(p => p.trim().length > 0);
+            const keywordArray = keywords.toLowerCase().split(',').map(k => k.trim()).filter(k => k);
+
+            // Calculate various scores
+            const wordCount = words.length;
+            const readabilityScore = calculateReadabilityScore(content, sentences, words);
+            const keywordScore = calculateKeywordScore(content, keywordArray);
+            const structureScore = calculateStructureScore(content, paragraphs);
+            const lengthScore = calculateLengthScore(wordCount);
+
+            // Calculate overall score
+            const overallScore = Math.round(
+                (readabilityScore * 0.25) + 
+                (keywordScore * 0.30) + 
+                (structureScore * 0.25) + 
+                (lengthScore * 0.20)
+            );
+
+            // Generate recommendations
+            const recommendations = generateRecommendations(
+                overallScore, readabilityScore, keywordScore, 
+                structureScore, wordCount, keywordArray.length
+            );
+
+            // Calculate keyword density
+            const keywordDensity = calculateKeywordDensity(content, keywordArray);
+
+            return {
+                overallScore,
+                readabilityScore,
+                keywordScore,
+                keywordDensity,
+                wordCount,
+                recommendations,
+                language
+            };
+        }
+
+        // Calculate readability score
+        function calculateReadabilityScore(content, sentences, words) {
+            if (sentences.length === 0) return 0;
+
+            const avgWordsPerSentence = words.length / sentences.length;
+            const avgCharsPerWord = content.replace(/\s/g, '').length / words.length;
+
+            let score = 100;
+
+            // Penalty for long sentences
+            if (avgWordsPerSentence > 20) score -= 20;
+            else if (avgWordsPerSentence > 15) score -= 10;
+
+            // Penalty for long words
+            if (avgCharsPerWord > 6) score -= 15;
+            else if (avgCharsPerWord > 5) score -= 5;
+
+            // Bonus for good structure
+            if (avgWordsPerSentence >= 10 && avgWordsPerSentence <= 15) score += 10;
+
+            return Math.max(0, Math.min(100, score));
+        }
+
+        // Calculate keyword optimization score
+        function calculateKeywordScore(content, keywords) {
+            if (keywords.length === 0) return 50;
+
+            const contentLower = content.toLowerCase();
+            let score = 0;
+            let totalKeywords = keywords.length;
+
+            keywords.forEach(keyword => {
+                if (keyword) {
+                    const keywordCount = (contentLower.match(new RegExp(keyword, 'g')) || []).length;
+                    if (keywordCount > 0) {
+                        if (keywordCount <= 3) score += 20; // Good usage
+                        else if (keywordCount <= 5) score += 15; // Acceptable
+                        else score += 5; // Overuse
+                    }
+                }
+            });
+
+            return Math.min(100, score);
+        }
+
+        // Calculate content structure score
+        function calculateStructureScore(content, paragraphs) {
+            let score = 0;
+
+            // Paragraph structure
+            if (paragraphs.length >= 3) score += 25;
+            else if (paragraphs.length >= 2) score += 15;
+            else score += 5;
+
+            // Headers (simple detection)
+            const hasHeaders = content.includes('\n#') || content.match(/^.{1,50}:$/m);
+            if (hasHeaders) score += 20;
+
+            // Lists (simple detection)
+            const hasLists = content.includes('- ') || content.includes('* ') || content.match(/^\d+\./m);
+            if (hasLists) score += 15;
+
+            // Links
+            const hasLinks = content.includes('http') || content.includes('[') || content.includes('](');
+            if (hasLinks) score += 20;
+
+            // Questions (engagement)
+            const hasQuestions = content.includes('?');
+            if (hasQuestions) score += 10;
+
+            // Call-to-action keywords
+            const ctaWords = ['click', 'download', 'subscribe', 'buy', 'get', 'try', 'start', 'join'];
+            const hasCTA = ctaWords.some(word => content.toLowerCase().includes(word));
+            if (hasCTA) score += 10;
+
+            return Math.min(100, score);
+        }
+
+        // Calculate length score
+        function calculateLengthScore(wordCount) {
+            if (wordCount >= 1000) return 100;
+            if (wordCount >= 500) return 90;
+            if (wordCount >= 300) return 80;
+            if (wordCount >= 150) return 60;
+            if (wordCount >= 50) return 40;
+            return 20;
+        }
+
+        // Calculate keyword density
+        function calculateKeywordDensity(content, keywords) {
+            if (keywords.length === 0) return 0;
+
+            const words = content.toLowerCase().split(/\s+/);
+            let keywordCount = 0;
+
+            keywords.forEach(keyword => {
+                if (keyword) {
+                    keywordCount += (content.toLowerCase().match(new RegExp(keyword, 'g')) || []).length;
+                }
+            });
+
+            return ((keywordCount / words.length) * 100);
+        }
+
+        // Generate intelligent recommendations
+        function generateRecommendations(overallScore, readabilityScore, keywordScore, structureScore, wordCount, keywordCount) {
+            const recommendations = [];
+
+            // Content length recommendations
+            if (wordCount < 300) {
+                recommendations.push({
+                    icon: 'fa-plus',
+                    text: 'Add more content - aim for at least 300 words for better SEO ranking',
+                    priority: 'high'
+                });
+            } else if (wordCount > 2000) {
+                recommendations.push({
+                    icon: 'fa-cut',
+                    text: 'Consider breaking this into multiple posts for better user experience',
+                    priority: 'medium'
+                });
+            }
+
+            // Keyword recommendations
+            if (keywordCount === 0) {
+                recommendations.push({
+                    icon: 'fa-key',
+                    text: 'Add target keywords to help search engines understand your content',
+                    priority: 'high'
+                });
+            } else if (keywordScore < 50) {
+                recommendations.push({
+                    icon: 'fa-search',
+                    text: 'Include your target keywords more naturally throughout the content',
+                    priority: 'high'
+                });
+            }
+
+            // Readability recommendations
+            if (readabilityScore < 60) {
+                recommendations.push({
+                    icon: 'fa-book-open',
+                    text: 'Use shorter sentences and simpler words to improve readability',
+                    priority: 'high'
+                });
+            }
+
+            // Structure recommendations
+            if (structureScore < 60) {
+                recommendations.push({
+                    icon: 'fa-list',
+                    text: 'Add subheadings, bullet points, or numbered lists to improve structure',
+                    priority: 'medium'
+                });
+            }
+
+            // Advanced recommendations
+            recommendations.push({
+                icon: 'fa-link',
+                text: 'Add internal links to related content on your website',
+                priority: 'medium'
+            });
+
+            recommendations.push({
+                icon: 'fa-mobile-alt',
+                text: 'Optimize for mobile users with shorter paragraphs',
+                priority: 'low'
+            });
+
+            if (overallScore >= 80) {
+                recommendations.push({
+                    icon: 'fa-share',
+                    text: 'Great content! Consider promoting on social media for maximum reach',
+                    priority: 'low'
+                });
+            }
+
+            return recommendations.slice(0, 6); // Return top 6 recommendations
+        }
+
+        // Display analysis results
+        function displayResults(results) {
+            // Update score displays
+            document.getElementById('overallScore').textContent = results.overallScore + '%';
+            document.getElementById('readabilityScore').textContent = results.readabilityScore + '%';
+            document.getElementById('keywordDensity').textContent = results.keywordDensity.toFixed(1) + '%';
+            document.getElementById('contentLength').textContent = results.wordCount.toLocaleString();
+
+            // Update recommendations
+            const recommendationsList = document.getElementById('recommendationsList');
+            recommendationsList.innerHTML = '';
+
+            results.recommendations.forEach((rec, index) => {
+                const recElement = document.createElement('div');
+                recElement.className = 'recommendation-item fade-in';
+                recElement.style.animationDelay = (index * 0.1) + 's';
+                recElement.innerHTML = \`
+                    <i class="fas \${rec.icon} text-primary me-2"></i>
+                    \${rec.text}
+                \`;
+                recommendationsList.appendChild(recElement);
+            });
+
+            // Award achievements
+            const achievements = awardAchievements(results);
+            displayAchievements(achievements);
+
+            // Show results section
+            document.getElementById('resultsSection').style.display = 'block';
+            document.getElementById('resultsSection').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Award achievements based on analysis results
+        function awardAchievements(results) {
+            const achievements = [];
+
+            // Score-based achievements
+            if (results.overallScore >= 95) {
+                achievements.push({ icon: '🏆', text: 'SEO Perfectionist', description: 'Scored 95%+ overall' });
+            } else if (results.overallScore >= 85) {
+                achievements.push({ icon: '⭐', text: 'SEO Expert', description: 'Scored 85%+ overall' });
+            } else if (results.overallScore >= 70) {
+                achievements.push({ icon: '👍', text: 'SEO Proficient', description: 'Scored 70%+ overall' });
+            }
+
+            // Content length achievements
+            if (results.wordCount >= 2000) {
+                achievements.push({ icon: '📚', text: 'Content Marathon', description: '2000+ words' });
+            } else if (results.wordCount >= 1000) {
+                achievements.push({ icon: '📝', text: 'Content Creator', description: '1000+ words' });
+            } else if (results.wordCount >= 500) {
+                achievements.push({ icon: '✍️', text: 'Word Smith', description: '500+ words' });
+            }
+
+            // Special achievements
+            if (results.readabilityScore >= 90) {
+                achievements.push({ icon: '🎯', text: 'Reader Friendly', description: 'Excellent readability' });
+            }
+
+            if (results.keywordScore >= 80) {
+                achievements.push({ icon: '🔍', text: 'Keyword Master', description: 'Perfect keyword usage' });
+            }
+
+            // First-time achievements
+            if (!localStorage.getItem('firstAnalysis')) {
+                achievements.push({ icon: '🚀', text: 'First Steps', description: 'Completed first analysis' });
+                localStorage.setItem('firstAnalysis', 'true');
+            }
+
+            // Milestone achievements
+            if (totalAnalyses === 10) {
+                achievements.push({ icon: '🔟', text: 'Analyzer Pro', description: '10 analyses completed' });
+            } else if (totalAnalyses === 50) {
+                achievements.push({ icon: '💯', text: 'Content Guru', description: '50 analyses completed' });
+            }
+
+            return achievements;
+        }
+
+        // Display achievements
+        function displayAchievements(achievements) {
+            const achievementsElement = document.getElementById('achievementsList');
+            achievementsElement.innerHTML = '';
+
+            if (achievements.length === 0) {
+                achievementsElement.innerHTML = '<p class="text-muted small">Complete more analyses to unlock achievements!</p>';
+                return;
+            }
+
+            achievements.forEach((achievement, index) => {
+                const badge = document.createElement('div');
+                badge.className = 'achievement-badge fade-in';
+                badge.style.animationDelay = (index * 0.1) + 's';
+                badge.innerHTML = \`\${achievement.icon} \${achievement.text}\`;
+                badge.title = achievement.description;
+                achievementsElement.appendChild(badge);
+            });
+        }
+
+        // Calculate XP earned from analysis
+        function calculateXPEarned(results) {
+            let xp = 20; // Base XP
+
+            // Bonus XP based on score
+            if (results.overallScore >= 90) xp += 30;
+            else if (results.overallScore >= 80) xp += 20;
+            else if (results.overallScore >= 70) xp += 10;
+
+            // Word count bonus
+            if (results.wordCount >= 1000) xp += 15;
+            else if (results.wordCount >= 500) xp += 10;
+            else if (results.wordCount >= 300) xp += 5;
+
+            // First analysis bonus
+            if (totalAnalyses === 0) xp += 50;
+
+            return xp;
+        }
+
+        // Add XP and handle level ups
+        function addXP(earnedXP) {
+            const oldLevel = userLevel;
+            userXP += earnedXP;
+
+            // Check for level up
+            while (userLevel < levelNames.length && userXP >= xpThresholds[userLevel]) {
+                userLevel++;
+            }
+
+            // Show XP earned
+            document.getElementById('xpEarned').textContent = earnedXP;
+
+            // Show level up notification
+            if (userLevel > oldLevel) {
+                showLevelUpNotification(oldLevel, userLevel);
+            }
+
+            updateLevelDisplay();
+            saveUserProgress();
+        }
+
+        // Update level display
+        function updateLevelDisplay() {
+            const currentXP = userXP;
+            const currentThreshold = xpThresholds[userLevel - 1] || 0;
+            const nextThreshold = xpThresholds[userLevel] || xpThresholds[xpThresholds.length - 1];
+            const progress = Math.min(100, ((currentXP - currentThreshold) / (nextThreshold - currentThreshold)) * 100);
+
+            // Update UI elements
+            document.getElementById('levelNumber').textContent = userLevel;
+            document.getElementById('userLevel').textContent = levelNames[userLevel - 1] || 'SEO Legend';
+            document.getElementById('userXP').textContent = currentXP.toLocaleString();
+            document.getElementById('nextLevelXP').textContent = nextThreshold.toLocaleString();
+            document.getElementById('levelProgress').style.width = progress + '%';
+
+            // Update score circle appearance
+            const scoreCircle = document.getElementById('seoScore');
+            scoreCircle.className = 'score-circle ' + getLevelColorClass(userLevel);
+        }
+
+        // Get level color class
+        function getLevelColorClass(level) {
+            if (level >= 8) return 'score-excellent';
+            if (level >= 5) return 'score-good';
+            if (level >= 3) return 'score-warning';
+            return 'score-default';
+        }
+
+        // Show level up notification
+        function showLevelUpNotification(oldLevel, newLevel) {
+            const levelName = levelNames[newLevel - 1] || 'SEO Master';
+            alert(\`🎉 LEVEL UP! You've reached \${levelName} (Level \${newLevel})! Keep optimizing your content to unlock more achievements.\`);
+        }
+
+        // Show/hide loading animation
+        function showLoading(show) {
+            document.getElementById('loadingSpinner').style.display = show ? 'block' : 'none';
+            document.getElementById('resultsSection').style.display = show ? 'none' : 'block';
+        }
+
+        // Save user progress to localStorage
+        function saveUserProgress() {
+            const progress = {
+                userLevel,
+                userXP,
+                totalAnalyses,
+                lastVisit: new Date().toISOString()
+            };
+            localStorage.setItem('aiSeoOptimizer', JSON.stringify(progress));
+        }
+
+        // Load user progress from localStorage
+        function loadUserProgress() {
+            const saved = localStorage.getItem('aiSeoOptimizer');
+            if (saved) {
+                try {
+                    const progress = JSON.parse(saved);
+                    userLevel = progress.userLevel || 1;
+                    userXP = progress.userXP || 0;
+                    totalAnalyses = progress.totalAnalyses || 0;
+                } catch (error) {
+                    console.error('Error loading progress:', error);
+                }
+            }
+        }
+
+        // Add some fun easter eggs
+        document.addEventListener('keydown', function(e) {
+            // Konami code easter egg
+            if (e.key === 'ArrowUp' && e.ctrlKey && e.shiftKey) {
+                addXP(100);
+                alert('🎊 Easter egg found! +100 XP bonus!');
+            }
+        });
+
+        // Add analytics tracking (placeholder)
+        function trackEvent(event, data) {
+            // Placeholder for analytics integration
+            console.log('Analytics:', event, data);
+        }
+    </script>
+</body>
+</html>
