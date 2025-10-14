@@ -295,8 +295,99 @@
             margin-bottom: 10px;
             background: #f8fafc;
             border-radius: 0 8px 8px 0;
+            display: flex;
+            align-items: flex-start;
+        }
+
+        .recommendation-icon {
+            margin-right: 12px;
+            font-size: 1.2rem;
+            margin-top: 2px;
+        }
+
+        .recommendation-text {
+            flex: 1;
+        }
+
+        .recommendation-priority-high {
+            border-left-color: var(--danger-color);
+        }
+
+        .recommendation-priority-medium {
+            border-left-color: var(--warning-color);
+        }
+
+        .recommendation-priority-low {
+            border-left-color: var(--success-color);
         }
         
+        /* Checkmark and Warning Icons */
+        .checkmark {
+            color: var(--success-color);
+            font-size: 1.2rem;
+        }
+
+        .warning {
+            color: var(--warning-color);
+            font-size: 1.2rem;
+        }
+
+        .error {
+            color: var(--danger-color);
+            font-size: 1.2rem;
+        }
+
+        /* Tone Indicators */
+        .tone-indicator {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            margin: 2px;
+        }
+
+        .tone-formal { background: #e0e7ff; color: #3730a3; }
+        .tone-friendly { background: #d1fae5; color: #065f46; }
+        .tone-professional { background: #fef3c7; color: #92400e; }
+        .tone-casual { background: #fce7f3; color: #be185d; }
+
+        /* Export Section */
+        .export-section {
+            background: #f8fafc;
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+
+        /* SERP Preview */
+        .serp-preview {
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 15px;
+            background: white;
+            margin-bottom: 15px;
+        }
+
+        .serp-title {
+            color: #1a0dab;
+            font-size: 1.1rem;
+            font-weight: 500;
+            margin-bottom: 5px;
+        }
+
+        .serp-url {
+            color: #006621;
+            font-size: 0.875rem;
+            margin-bottom: 5px;
+        }
+
+        .serp-description {
+            color: #545454;
+            font-size: 0.875rem;
+            line-height: 1.4;
+        }
+
         /* Responsive Design */
         @media (max-width: 768px) {
             .hero-title {
@@ -345,6 +436,45 @@
             color: white;
             padding: 40px 0;
             margin-top: 60px;
+        }
+
+        /* Phase 2 & 3 Specific Styles */
+        .analysis-section {
+            margin-bottom: 30px;
+        }
+
+        .section-title {
+            border-bottom: 2px solid var(--primary-color);
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+
+        .metric-card {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            border: 1px solid var(--border-color);
+            margin-bottom: 15px;
+        }
+
+        .metric-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .metric-label {
+            color: #6b7280;
+            font-size: 0.875rem;
+        }
+
+        .improvement-suggestion {
+            background: #f0f9ff;
+            border-left: 4px solid var(--secondary-color);
+            padding: 15px;
+            margin-bottom: 10px;
+            border-radius: 0 8px 8px 0;
         }
     </style>
 </head>
@@ -467,6 +597,44 @@
                                         </div>
                                     </div>
                                 </div>
+
+                                <!-- PHASE 2: Meta Tag Optimizer -->
+                                <div class="row mb-4">
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label for="metaTitle" class="form-label fw-bold">
+                                                <i class="fas fa-heading me-2"></i>Meta Title:
+                                            </label>
+                                            <input 
+                                                type="text" 
+                                                class="form-control" 
+                                                id="metaTitle" 
+                                                placeholder="Optimize your title for SEO (50-60 chars)"
+                                                maxlength="60"
+                                            >
+                                            <div class="form-text">
+                                                <span id="titleLength">0</span>/60 characters
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label for="metaDescription" class="form-label fw-bold">
+                                                <i class="fas fa-align-left me-2"></i>Meta Description:
+                                            </label>
+                                            <textarea 
+                                                class="form-control" 
+                                                id="metaDescription" 
+                                                rows="2"
+                                                placeholder="Write compelling meta description (120-160 chars)"
+                                                maxlength="160"
+                                            ></textarea>
+                                            <div class="form-text">
+                                                <span id="descLength">0</span>/160 characters
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                                 
                                 <button type="button" class="btn btn-primary btn-lg w-100" onclick="analyzeContent()">
                                     <i class="fas fa-rocket me-2"></i>Analyze with AI Magic ✨
@@ -537,12 +705,82 @@
                                     </div>
                                 </div>
                             </div>
+
+                            <!-- PHASE 2: SERP Analysis Section -->
+                            <div class="analysis-section">
+                                <h5 class="section-title">
+                                    <i class="fas fa-search me-2"></i>SERP Analysis & Competitor Insights
+                                </h5>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="serp-preview">
+                                            <div class="serp-title" id="serpPreviewTitle">Your optimized title will appear here</div>
+                                            <div class="serp-url" id="serpPreviewUrl">https://example.com/your-content</div>
+                                            <div class="serp-description" id="serpPreviewDesc">Your meta description will appear here with highlighted keywords</div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="metric-card">
+                                            <div class="metric-value" id="competitorWordCount">0</div>
+                                            <div class="metric-label">Avg Competitor Word Count</div>
+                                        </div>
+                                        <div class="metric-card">
+                                            <div class="metric-value" id="headingCount">0</div>
+                                            <div class="metric-label">Recommended Headings</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- PHASE 2: Tone Analysis Section -->
+                            <div class="analysis-section">
+                                <h5 class="section-title">
+                                    <i class="fas fa-comment-alt me-2"></i>Tone & Style Analysis
+                                </h5>
+                                <div class="row">
+                                    <div class="col-md-8">
+                                        <div id="toneAnalysisResults">
+                                            <!-- Tone analysis will be populated here -->
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="metric-card">
+                                            <div class="metric-value" id="fleschScore">0</div>
+                                            <div class="metric-label">Flesch Reading Ease</div>
+                                        </div>
+                                        <div class="metric-card">
+                                            <div class="metric-value" id="gradeLevel">0</div>
+                                            <div class="metric-label">Grade Level</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                             
                             <div class="row">
                                 <div class="col-lg-8">
                                     <h5><i class="fas fa-lightbulb me-2 text-warning"></i>AI Recommendations</h5>
                                     <div id="recommendationsList">
                                         <!-- Recommendations will be populated here -->
+                                    </div>
+
+                                    <!-- PHASE 3: Content Rewriting Suggestions -->
+                                    <div class="analysis-section mt-4">
+                                        <h5 class="section-title">
+                                            <i class="fas fa-edit me-2"></i>Content Enhancement Suggestions
+                                        </h5>
+                                        <div id="rewritingSuggestions">
+                                            <!-- Rewriting suggestions will be populated here -->
+                                        </div>
+                                    </div>
+
+                                    <!-- PHASE 3: Outline Generator -->
+                                    <div class="analysis-section mt-4">
+                                        <h5 class="section-title">
+                                            <i class="fas fa-sitemap me-2"></i>Content Outline Generator
+                                        </h5>
+                                        <div id="contentOutline">
+                                            <!-- Content outline will be populated here -->
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="col-lg-4">
@@ -554,6 +792,20 @@
                                     <div class="mt-4 p-3 bg-light rounded">
                                         <h6><i class="fas fa-plus-circle me-2"></i>XP Earned</h6>
                                         <p class="mb-0">+<span id="xpEarned">0</span> XP from this analysis!</p>
+                                    </div>
+
+                                    <!-- PHASE 3: Export Section -->
+                                    <div class="export-section">
+                                        <h6><i class="fas fa-download me-2"></i>Export Results</h6>
+                                        <button class="btn btn-outline-primary btn-sm w-100 mb-2" onclick="exportResults('pdf')">
+                                            <i class="fas fa-file-pdf me-1"></i>Export as PDF
+                                        </button>
+                                        <button class="btn btn-outline-success btn-sm w-100 mb-2" onclick="exportResults('csv')">
+                                            <i class="fas fa-file-csv me-1"></i>Export as CSV
+                                        </button>
+                                        <button class="btn btn-outline-info btn-sm w-100" onclick="copyToClipboard()">
+                                            <i class="fas fa-copy me-1"></i>Copy Summary
+                                        </button>
                                     </div>
                                 </div>
                             </div>
@@ -673,674 +925,4 @@
                                 <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Everything in Pro</li>
                                 <li class="mb-2"><i class="fas fa-check text-success me-2"></i>White-label solution</li>
                                 <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Bulk analysis</li>
-                                <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Client dashboards</li>
-                                <li class="mb-2"><i class="fas fa-check text-success me-2"></i>API access</li>
-                            </ul>
-                            <button class="btn btn-outline-primary w-100">Contact Sales</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Footer -->
-    <footer class="footer">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-6">
-                    <h5><i class="fas fa-brain me-2"></i>AI Content Optimizer</h5>
-                    <p class="text-muted">Making SEO optimization accessible to everyone with the power of AI and gamification.</p>
-                </div>
-                <div class="col-lg-6">
-                    <div class="row">
-                        <div class="col-md-6">
-                            <h6>Product</h6>
-                            <ul class="list-unstyled">
-                                <li><a href="#features" class="text-muted text-decoration-none">Features</a></li>
-                                <li><a href="#pricing" class="text-muted text-decoration-none">Pricing</a></li>
-                                <li><a href="#" class="text-muted text-decoration-none">API</a></li>
-                            </ul>
-                        </div>
-                        <div class="col-md-6">
-                            <h6>Support</h6>
-                            <ul class="list-unstyled">
-                                <li><a href="#" class="text-muted text-decoration-none">Help Center</a></li>
-                                <li><a href="#" class="text-muted text-decoration-none">Contact Us</a></li>
-                                <li><a href="#" class="text-muted text-decoration-none">Privacy Policy</a></li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <hr class="my-4">
-            <div class="text-center">
-                <p class="text-muted mb-0">&copy; 2025 AI Content Optimizer. Built with ❤️ for content creators worldwide.</p>
-            </div>
-        </div>
-    </footer>
-
-    <!-- Bootstrap JavaScript -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-    
-    <!-- Main Application JavaScript -->
-    <script>
-        // ================== BEGIN GLOBAL VARIABLES ==================
-        // User progress and gamification tracking
-        let userLevel = 1;
-        let userXP = 0;
-        let totalAnalyses = 0;
-        
-        const xpThresholds = [0, 100, 250, 500, 1000, 2000, 3500, 5000, 7500, 10000];
-        const levelNames = [
-            'SEO Beginner', 'Content Explorer', 'SEO Enthusiast', 'Content Strategist', 
-            'SEO Specialist', 'Content Master', 'SEO Expert', 'Content Guru', 
-            'SEO Ninja', 'Content Legend'
-        ];
-
-        // ================== BEGIN AI API INTEGRATION SECTION ==================
-        // 1. API configuration (add your key when backend ready)
-        const API_KEYS = {
-            // Put your Google Gemini API key here when ready
-            googleAI: '',    //AIzaSyCXHKjf-ZkhNF9ecGH5bKcm1-do9SX8EZY
-            googleCloud: '',
-            openAI: '',
-            huggingFace: ''
-        };
-
-        // 2. Main Gemini API call function — for server/proxy only in production!
-        async function analyzeContentWithRealAI(content, keywords, language) {
-            if (!API_KEYS.googleAI) {
-                // Fallback if no API key set
-                return performAdvancedAnalysis(content, keywords, language);
-            }
-            
-            try {
-                const prompt = `Analyze this content for SEO: "${content.substring(0, 1000)}" Keywords: "${keywords}". 
-                Give scores 0-100 for: overall SEO, readability, keyword usage. Also give 3 recommendations.`;
-                
-                const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${API_KEYS.googleAI}`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        contents: [{ parts: [{ text: prompt }] }]
-                    })
-                });
-                
-                if (response.ok) {
-                    const data = await response.json();
-                    const aiText = data.candidates[0].content.parts[0].text;
-                    console.log('✅ AI Response received:', aiText);
-                    return parseAIResponse(aiText, content, keywords);
-                }
-            } catch (error) {
-                console.log('AI API failed, using fallback:', error);
-            }
-            
-            return performAdvancedAnalysis(content, keywords, language);
-        }
-
-        // 3. Gemini response parser
-        function parseAIResponse(aiText, content, keywords) {
-            const overallMatch = aiText.match(/overall[:\s]*(\d+)/i);
-            const readabilityMatch = aiText.match(/readability[:\s]*(\d+)/i);
-            const keywordMatch = aiText.match(/keyword[:\s]*(\d+)/i);
-            
-            return {
-                overallScore: overallMatch ? parseInt(overallMatch[1]) : 75,
-                readabilityScore: readabilityMatch ? parseInt(readabilityMatch[1]) : 80,
-                keywordScore: keywordMatch ? parseInt(keywordMatch[1]) : 70,
-                keywordDensity: calculateKeywordDensity(content, keywords.split(',')),
-                wordCount: content.split(/\s+/).length,
-                recommendations: [
-                    { icon: 'fa-robot', text: '🤖 AI analyzed your content successfully!', priority: 'high' },
-                    { icon: 'fa-search', text: 'Optimize keyword placement for better SEO', priority: 'high' },
-                    { icon: 'fa-edit', text: 'Improve content structure and readability', priority: 'medium' }
-                ],
-                language: 'en'
-            };
-        }
-
-        // ================== END AI API INTEGRATION SECTION ==================
-
-        // Initialize application when page loads
-        document.addEventListener('DOMContentLoaded', function() {
-            loadUserProgress();
-            updateLevelDisplay();
-            setupEventListeners();
-            showWelcomeMessage();
-        });
-
-        // Set up event listeners
-        function setupEventListeners() {
-            const contentInput = document.getElementById('contentInput');
-            const keywordInput = document.getElementById('keywordInput');
-            
-            // Real-time word count update
-            contentInput.addEventListener('input', updateWordCount);
-            
-            // Smooth scrolling for navigation links
-            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-                anchor.addEventListener('click', function (e) {
-                    e.preventDefault();
-                    const target = document.querySelector(this.getAttribute('href'));
-                    if (target) {
-                        target.scrollIntoView({ behavior: 'smooth' });
-                    }
-                });
-            });
-        }
-
-        // Update word count in real-time
-        function updateWordCount() {
-            const content = document.getElementById('contentInput').value.trim();
-            const wordCount = content ? content.split(/\s+/).length : 0;
-            const wordCountElement = document.getElementById('wordCount');
-            
-            wordCountElement.textContent = wordCount;
-            
-            // Change color based on word count
-            if (wordCount >= 300) {
-                wordCountElement.className = 'text-success fw-bold';
-            } else if (wordCount >= 150) {
-                wordCountElement.className = 'text-warning fw-bold';
-            } else {
-                wordCountElement.className = 'text-muted';
-            }
-        }
-
-        // Show welcome message for new users
-        function showWelcomeMessage() {
-            if (!localStorage.getItem('hasVisited')) {
-                setTimeout(() => {
-                    alert('🎉 Welcome to AI Content Optimizer! Start by pasting your content above and watch your SEO level grow!');
-                    localStorage.setItem('hasVisited', 'true');
-                }, 2000);
-            }
-        }
-
-        // 4. Override main analyzeContent function to use AI
-        async function analyzeContent() {
-            const content = document.getElementById('contentInput').value.trim();
-            const keywords = document.getElementById('keywordInput').value.trim();
-            const language = document.getElementById('languageSelect').value;
-            
-            if (!content) {
-                alert('🤔 Please enter some content to analyze!');
-                return;
-            }
-            
-            if (content.split(/\s+/).length < 10) {
-                alert('📝 Please provide at least 10 words for a meaningful analysis.');
-                return;
-            }
-            
-            // Show loading animation
-            showLoading(true);
-            
-            try {
-                // Use AI analysis
-                const results = await analyzeContentWithRealAI(content, keywords, language);
-                displayResults(results);
-                
-                // Update user progress
-                const xpEarned = calculateXPEarned(results);
-                addXP(xpEarned);
-                
-                // Track analytics
-                totalAnalyses++;
-                saveUserProgress();
-                
-            } catch (error) {
-                console.error('Analysis failed:', error);
-                alert('😅 Oops! Something went wrong. Please try again.');
-            } finally {
-                showLoading(false);
-            }
-        }
-
-        // Advanced content analysis with multiple factors
-        function performAdvancedAnalysis(content, keywords, language) {
-            const words = content.split(/\s+/);
-            const sentences = content.split(/[.!?]+/).filter(s => s.trim().length > 0);
-            const paragraphs = content.split(/\n\s*\n/).filter(p => p.trim().length > 0);
-            const keywordArray = keywords.toLowerCase().split(',').map(k => k.trim()).filter(k => k);
-            
-            // Calculate various scores
-            const wordCount = words.length;
-            const readabilityScore = calculateReadabilityScore(content, sentences, words);
-            const keywordScore = calculateKeywordScore(content, keywordArray);
-            const structureScore = calculateStructureScore(content, paragraphs);
-            const lengthScore = calculateLengthScore(wordCount);
-            
-            // Calculate overall score
-            const overallScore = Math.round(
-                (readabilityScore * 0.25) + 
-                (keywordScore * 0.30) + 
-                (structureScore * 0.25) + 
-                (lengthScore * 0.20)
-            );
-            
-            // Generate recommendations
-            const recommendations = generateRecommendations(
-                overallScore, readabilityScore, keywordScore, 
-                structureScore, wordCount, keywordArray.length
-            );
-            
-            // Calculate keyword density
-            const keywordDensity = calculateKeywordDensity(content, keywordArray);
-            
-            return {
-                overallScore,
-                readabilityScore,
-                keywordScore,
-                keywordDensity,
-                wordCount,
-                recommendations,
-                language
-            };
-        }
-
-        // Calculate readability score
-        function calculateReadabilityScore(content, sentences, words) {
-            if (sentences.length === 0) return 0;
-            
-            const avgWordsPerSentence = words.length / sentences.length;
-            const avgCharsPerWord = content.replace(/\s/g, '').length / words.length;
-            
-            let score = 100;
-            
-            // Penalty for long sentences
-            if (avgWordsPerSentence > 20) score -= 20;
-            else if (avgWordsPerSentence > 15) score -= 10;
-            
-            // Penalty for long words
-            if (avgCharsPerWord > 6) score -= 15;
-            else if (avgCharsPerWord > 5) score -= 5;
-            
-            // Bonus for good structure
-            if (avgWordsPerSentence >= 10 && avgWordsPerSentence <= 15) score += 10;
-            
-            return Math.max(0, Math.min(100, score));
-        }
-
-        // Calculate keyword optimization score
-        function calculateKeywordScore(content, keywords) {
-            if (keywords.length === 0) return 50;
-            
-            const contentLower = content.toLowerCase();
-            let score = 0;
-            let totalKeywords = keywords.length;
-            
-            keywords.forEach(keyword => {
-                if (keyword) {
-                    const keywordCount = (contentLower.match(new RegExp(keyword, 'g')) || []).length;
-                    if (keywordCount > 0) {
-                        if (keywordCount <= 3) score += 20; // Good usage
-                        else if (keywordCount <= 5) score += 15; // Acceptable
-                        else score += 5; // Overuse
-                    }
-                }
-            });
-            
-            return Math.min(100, score);
-        }
-
-        // Calculate content structure score
-        function calculateStructureScore(content, paragraphs) {
-            let score = 0;
-            
-            // Paragraph structure
-            if (paragraphs.length >= 3) score += 25;
-            else if (paragraphs.length >= 2) score += 15;
-            else score += 5;
-            
-            // Headers (simple detection)
-            const hasHeaders = content.includes('\n#') || content.match(/^.{1,50}:$/m);
-            if (hasHeaders) score += 20;
-            
-            // Lists (simple detection)
-            const hasLists = content.includes('- ') || content.includes('* ') || content.match(/^\d+\./m);
-            if (hasLists) score += 15;
-            
-            // Links
-            const hasLinks = content.includes('http') || content.includes('[') || content.includes('](');
-            if (hasLinks) score += 20;
-            
-            // Questions (engagement)
-            const hasQuestions = content.includes('?');
-            if (hasQuestions) score += 10;
-            
-            // Call-to-action keywords
-            const ctaWords = ['click', 'download', 'subscribe', 'buy', 'get', 'try', 'start', 'join'];
-            const hasCTA = ctaWords.some(word => content.toLowerCase().includes(word));
-            if (hasCTA) score += 10;
-            
-            return Math.min(100, score);
-        }
-
-        // Calculate length score
-        function calculateLengthScore(wordCount) {
-            if (wordCount >= 1000) return 100;
-            if (wordCount >= 500) return 90;
-            if (wordCount >= 300) return 80;
-            if (wordCount >= 150) return 60;
-            if (wordCount >= 50) return 40;
-            return 20;
-        }
-
-        // Calculate keyword density
-        function calculateKeywordDensity(content, keywords) {
-            if (keywords.length === 0) return 0;
-            
-            const words = content.toLowerCase().split(/\s+/);
-            let keywordCount = 0;
-            
-            keywords.forEach(keyword => {
-                if (keyword) {
-                    keywordCount += (content.toLowerCase().match(new RegExp(keyword, 'g')) || []).length;
-                }
-            });
-            
-            return ((keywordCount / words.length) * 100);
-        }
-
-        // Generate intelligent recommendations
-        function generateRecommendations(overallScore, readabilityScore, keywordScore, structureScore, wordCount, keywordCount) {
-            const recommendations = [];
-            
-            // Content length recommendations
-            if (wordCount < 300) {
-                recommendations.push({
-                    icon: 'fa-plus',
-                    text: 'Add more content - aim for at least 300 words for better SEO ranking',
-                    priority: 'high'
-                });
-            } else if (wordCount > 2000) {
-                recommendations.push({
-                    icon: 'fa-cut',
-                    text: 'Consider breaking this into multiple posts for better user experience',
-                    priority: 'medium'
-                });
-            }
-            
-            // Keyword recommendations
-            if (keywordCount === 0) {
-                recommendations.push({
-                    icon: 'fa-key',
-                    text: 'Add target keywords to help search engines understand your content',
-                    priority: 'high'
-                });
-            } else if (keywordScore < 50) {
-                recommendations.push({
-                    icon: 'fa-search',
-                    text: 'Include your target keywords more naturally throughout the content',
-                    priority: 'high'
-                });
-            }
-            
-            // Readability recommendations
-            if (readabilityScore < 60) {
-                recommendations.push({
-                    icon: 'fa-book-open',
-                    text: 'Use shorter sentences and simpler words to improve readability',
-                    priority: 'high'
-                });
-            }
-            
-            // Structure recommendations
-            if (structureScore < 60) {
-                recommendations.push({
-                    icon: 'fa-list',
-                    text: 'Add subheadings, bullet points, or numbered lists to improve structure',
-                    priority: 'medium'
-                });
-            }
-            
-            // Advanced recommendations
-            recommendations.push({
-                icon: 'fa-link',
-                text: 'Add internal links to related content on your website',
-                priority: 'medium'
-            });
-            
-            recommendations.push({
-                icon: 'fa-mobile-alt',
-                text: 'Optimize for mobile users with shorter paragraphs',
-                priority: 'low'
-            });
-            
-            if (overallScore >= 80) {
-                recommendations.push({
-                    icon: 'fa-share',
-                    text: 'Great content! Consider promoting on social media for maximum reach',
-                    priority: 'low'
-                });
-            }
-            
-            return recommendations.slice(0, 6); // Return top 6 recommendations
-        }
-
-        // Display analysis results
-        function displayResults(results) {
-            // Update score displays
-            document.getElementById('overallScore').textContent = results.overallScore + '%';
-            document.getElementById('readabilityScore').textContent = results.readabilityScore + '%';
-            document.getElementById('keywordDensity').textContent = results.keywordDensity.toFixed(1) + '%';
-            document.getElementById('contentLength').textContent = results.wordCount.toLocaleString();
-            
-            // Update recommendations
-            const recommendationsList = document.getElementById('recommendationsList');
-            recommendationsList.innerHTML = '';
-            
-            results.recommendations.forEach((rec, index) => {
-                const recElement = document.createElement('div');
-                recElement.className = 'recommendation-item fade-in';
-                recElement.style.animationDelay = (index * 0.1) + 's';
-                recElement.innerHTML = `
-                    <i class="fas ${rec.icon} text-primary me-2"></i>
-                    ${rec.text}
-                `;
-                recommendationsList.appendChild(recElement);
-            });
-            
-            // Award achievements
-            const achievements = awardAchievements(results);
-            displayAchievements(achievements);
-            
-            // Show results section
-            document.getElementById('resultsSection').style.display = 'block';
-            document.getElementById('resultsSection').scrollIntoView({ behavior: 'smooth' });
-        }
-
-        // Award achievements based on analysis results
-        function awardAchievements(results) {
-            const achievements = [];
-            
-            // Score-based achievements
-            if (results.overallScore >= 95) {
-                achievements.push({ icon: '🏆', text: 'SEO Perfectionist', description: 'Scored 95%+ overall' });
-            } else if (results.overallScore >= 85) {
-                achievements.push({ icon: '⭐', text: 'SEO Expert', description: 'Scored 85%+ overall' });
-            } else if (results.overallScore >= 70) {
-                achievements.push({ icon: '👍', text: 'SEO Proficient', description: 'Scored 70%+ overall' });
-            }
-            
-            // Content length achievements
-            if (results.wordCount >= 2000) {
-                achievements.push({ icon: '📚', text: 'Content Marathon', description: '2000+ words' });
-            } else if (results.wordCount >= 1000) {
-                achievements.push({ icon: '📝', text: 'Content Creator', description: '1000+ words' });
-            } else if (results.wordCount >= 500) {
-                achievements.push({ icon: '✍️', text: 'Word Smith', description: '500+ words' });
-            }
-            
-            // Special achievements
-            if (results.readabilityScore >= 90) {
-                achievements.push({ icon: '🎯', text: 'Reader Friendly', description: 'Excellent readability' });
-            }
-            
-            if (results.keywordScore >= 80) {
-                achievements.push({ icon: '🔍', text: 'Keyword Master', description: 'Perfect keyword usage' });
-            }
-            
-            // First-time achievements
-            if (!localStorage.getItem('firstAnalysis')) {
-                achievements.push({ icon: '🚀', text: 'First Steps', description: 'Completed first analysis' });
-                localStorage.setItem('firstAnalysis', 'true');
-            }
-            
-            // Milestone achievements
-            if (totalAnalyses === 10) {
-                achievements.push({ icon: '🔟', text: 'Analyzer Pro', description: '10 analyses completed' });
-            } else if (totalAnalyses === 50) {
-                achievements.push({ icon: '💯', text: 'Content Guru', description: '50 analyses completed' });
-            }
-            
-            return achievements;
-        }
-
-        // Display achievements
-        function displayAchievements(achievements) {
-            const achievementsElement = document.getElementById('achievementsList');
-            achievementsElement.innerHTML = '';
-            
-            if (achievements.length === 0) {
-                achievementsElement.innerHTML = '<p class="text-muted small">Complete more analyses to unlock achievements!</p>';
-                return;
-            }
-            
-            achievements.forEach((achievement, index) => {
-                const badge = document.createElement('div');
-                badge.className = 'achievement-badge fade-in';
-                badge.style.animationDelay = (index * 0.1) + 's';
-                badge.innerHTML = `${achievement.icon} ${achievement.text}`;
-                badge.title = achievement.description;
-                achievementsElement.appendChild(badge);
-            });
-        }
-
-        // Calculate XP earned from analysis
-        function calculateXPEarned(results) {
-            let xp = 20; // Base XP
-            
-            // Bonus XP based on score
-            if (results.overallScore >= 90) xp += 30;
-            else if (results.overallScore >= 80) xp += 20;
-            else if (results.overallScore >= 70) xp += 10;
-            
-            // Word count bonus
-            if (results.wordCount >= 1000) xp += 15;
-            else if (results.wordCount >= 500) xp += 10;
-            else if (results.wordCount >= 300) xp += 5;
-            
-            // First analysis bonus
-            if (totalAnalyses === 0) xp += 50;
-            
-            return xp;
-        }
-
-        // Add XP and handle level ups
-        function addXP(earnedXP) {
-            const oldLevel = userLevel;
-            userXP += earnedXP;
-            
-            // Check for level up
-            while (userLevel < levelNames.length && userXP >= xpThresholds[userLevel]) {
-                userLevel++;
-            }
-            
-            // Show XP earned
-            document.getElementById('xpEarned').textContent = earnedXP;
-            
-            // Show level up notification
-            if (userLevel > oldLevel) {
-                showLevelUpNotification(oldLevel, userLevel);
-            }
-            
-            updateLevelDisplay();
-            saveUserProgress();
-        }
-
-        // Update level display
-        function updateLevelDisplay() {
-            const currentXP = userXP;
-            const currentThreshold = xpThresholds[userLevel - 1] || 0;
-            const nextThreshold = xpThresholds[userLevel] || xpThresholds[xpThresholds.length - 1];
-            const progress = Math.min(100, ((currentXP - currentThreshold) / (nextThreshold - currentThreshold)) * 100);
-            
-            // Update UI elements
-            document.getElementById('levelNumber').textContent = userLevel;
-            document.getElementById('userLevel').textContent = levelNames[userLevel - 1] || 'SEO Legend';
-            document.getElementById('userXP').textContent = currentXP.toLocaleString();
-            document.getElementById('nextLevelXP').textContent = nextThreshold.toLocaleString();
-            document.getElementById('levelProgress').style.width = progress + '%';
-            
-            // Update score circle appearance
-            const scoreCircle = document.getElementById('seoScore');
-            scoreCircle.className = 'score-circle ' + getLevelColorClass(userLevel);
-        }
-
-        // Get level color class
-        function getLevelColorClass(level) {
-            if (level >= 8) return 'score-excellent';
-            if (level >= 5) return 'score-good';
-            if (level >= 3) return 'score-poor';
-            return 'score-default';
-        }
-
-        // Show level up notification
-        function showLevelUpNotification(oldLevel, newLevel) {
-            const levelName = levelNames[newLevel - 1] || 'SEO Master';
-            alert(`🎉 LEVEL UP! You've reached ${levelName} (Level ${newLevel})! Keep optimizing your content to unlock more achievements.`);
-        }
-
-        // Show/hide loading animation
-        function showLoading(show) {
-            document.getElementById('loadingSpinner').style.display = show ? 'block' : 'none';
-            document.getElementById('resultsSection').style.display = show ? 'none' : 'block';
-        }
-
-        // Save user progress to localStorage
-        function saveUserProgress() {
-            const progress = {
-                userLevel,
-                userXP,
-                totalAnalyses,
-                lastVisit: new Date().toISOString()
-            };
-            localStorage.setItem('aiSeoOptimizer', JSON.stringify(progress));
-        }
-
-        // Load user progress from localStorage
-        function loadUserProgress() {
-            const saved = localStorage.getItem('aiSeoOptimizer');
-            if (saved) {
-                try {
-                    const progress = JSON.parse(saved);
-                    userLevel = progress.userLevel || 1;
-                    userXP = progress.userXP || 0;
-                    totalAnalyses = progress.totalAnalyses || 0;
-                } catch (error) {
-                    console.error('Error loading progress:', error);
-                }
-            }
-        }
-
-        // Add some fun easter eggs
-        document.addEventListener('keydown', function(e) {
-            // Konami code easter egg
-            if (e.key === 'ArrowUp' && e.ctrlKey && e.shiftKey) {
-                addXP(100);
-                alert('🎊 Easter egg found! +100 XP bonus!');
-            }
-        });
-
-        // Add analytics tracking (placeholder)
-        function trackEvent(event, data) {
-            // Placeholder for analytics integration
-            console.log('Analytics:', event, data);
-        }
-    </script>
-</body>
-</html>
+                                <li class="mb-2"><
