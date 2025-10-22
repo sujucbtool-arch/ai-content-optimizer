@@ -1,4 +1,4 @@
- <script>
+    <script>
         // ===== GLOBAL VARIABLES =====
         let userXP = 0;
         let userLevel = 1;
@@ -38,3 +38,216 @@
                 alert('⚠️ Please enter at least 50 words. You have ' + wordCount + ' words.');
                 return;
             }
+
+            document.getElementById('loadingSpinner').style.display = 'block';
+            document.getElementById('resultsSection').style.display = 'none';
+
+            setTimeout(() => {
+                performAnalysis(content, keywords, metaTitle, metaDescription, wordCount);
+            }, 3000);
+        }
+
+        // ===== ANALYSIS LOGIC =====
+        function performAnalysis(content, keywords, metaTitle, metaDescription, wordCount) {
+            const sentences = content.split(/[.!?]+/).filter(s => s.trim().length > 0);
+            const avgWordsPerSentence = sentences.length > 0 ? (wordCount / sentences.length).toFixed(1) : 0;
+
+            const keywordArray = keywords ? keywords.split(',').map(k => k.trim().toLowerCase()) : [];
+            let keywordOccurrences = 0;
+            const contentLower = content.toLowerCase();
+            
+            keywordArray.forEach(keyword => {
+                const regex = new RegExp('\\b' + keyword.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '\\b', 'gi');
+                const matches = contentLower.match(regex);
+                if (matches) keywordOccurrences += matches.length;
+            });
+
+            const keywordDensity = wordCount > 0 ? ((keywordOccurrences / wordCount) * 100).toFixed(2) : 0;
+            const fleschScore = Math.max(0, Math.min(100, 206.835 - (1.015 * avgWordsPerSentence) - (84.6 * 1.5))).toFixed(1);
+
+            let overallScore = 0;
+            if (wordCount >= 1500) overallScore += 30;
+            else if (wordCount >= 1000) overallScore += 25;
+            else if (wordCount >= 500) overallScore += 20;
+            else if (wordCount >= 300) overallScore += 15;
+            else overallScore += 10;
+
+            if (keywordDensity >= 1 && keywordDensity <= 3) overallScore += 25;
+            else if (keywordDensity > 0.5 && keywordDensity < 4) overallScore += 20;
+            else if (keywordDensity > 0) overallScore += 10;
+
+            if (fleschScore >= 60) overallScore += 25;
+            else if (fleschScore >= 50) overallScore += 20;
+            else overallScore += 15;
+
+            if (metaTitle && metaTitle.length >= 50 && metaTitle.length <= 60) overallScore += 10;
+            else if (metaTitle && metaTitle.length > 0) overallScore += 5;
+            
+            if (metaDescription && metaDescription.length >= 120 && metaDescription.length <= 160) overallScore += 10;
+            else if (metaDescription && metaDescription.length > 0) overallScore += 5;
+
+            displayResults(overallScore, fleschScore, keywordDensity, wordCount, metaTitle, metaDescription, keywordArray, avgWordsPerSentence);
+            updateGamification(overallScore, wordCount);
+
+            document.getElementById('loadingSpinner').style.display = 'none';
+            document.getElementById('resultsSection').style.display = 'block';
+            document.getElementById('resultsSection').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // ===== DISPLAY RESULTS =====
+        function displayResults(overallScore, fleschScore, keywordDensity, wordCount, metaTitle, metaDescription, keywords, avgWords) {
+            document.getElementById('overallScore').textContent = overallScore + '%';
+            document.getElementById('readabilityScore').textContent = Math.round(fleschScore) + '%';
+            document.getElementById('keywordDensity').textContent = keywordDensity + '%';
+            document.getElementById('contentLength').textContent = wordCount;
+
+            document.getElementById('serpPreviewTitle').textContent = metaTitle || 'Your title here';
+            document.getElementById('serpPreviewDesc').textContent = metaDescription || 'Your description here';
+            
+            document.getElementById('fleschScore').textContent = fleschScore;
+            const gradeLevel = Math.max(1, Math.min(16, Math.round(0.39 * avgWords + 11.8)));
+            document.getElementById('gradeLevel').textContent = gradeLevel + 'th';
+
+            let toneHTML = avgWords > 20 ? '<span class="badge bg-primary">Formal</span>' : 
+                          avgWords < 15 ? '<span class="badge bg-info">Casual</span>' : 
+                          '<span class="badge bg-success">Professional</span>';
+            document.getElementById('toneAnalysisResults').innerHTML = toneHTML;
+
+            generateRecommendations(overallScore, keywordDensity, wordCount, metaTitle, metaDescription, fleschScore);
+            generateContentOutline(keywords);
+            generateRewritingSuggestions(keywordDensity, avgWords);
+        }
+
+        // ===== RECOMMENDATIONS =====
+        function generateRecommendations(score, density, wordCount, title, description, flesch) {
+            let recs = [];
+            
+            if (wordCount < 300) recs.push('<i class="fas fa-exclamation-triangle text-danger me-2"></i>Content too short. Aim for 300+ words.');
+            else if (wordCount < 800) recs.push('<i class="fas fa-info-circle text-warning me-2"></i>Consider expanding to 800-1500 words.');
+            else recs.push('<i class="fas fa-check-circle text-success me-2"></i>Excellent word count!');
+
+            if (density < 0.5) recs.push('<i class="fas fa-exclamation-triangle text-danger me-2"></i>Keyword density too low.');
+            else if (density > 3) recs.push('<i class="fas fa-exclamation-triangle text-warning me-2"></i>Keyword density too high.');
+            else recs.push('<i class="fas fa-check-circle text-success me-2"></i>Perfect keyword density!');
+
+            if (!title) recs.push('<i class="fas fa-exclamation-triangle text-danger me-2"></i>Add meta title (50-60 chars).');
+            else if (title.length < 50 || title.length > 60) recs.push('<i class="fas fa-info-circle text-warning me-2"></i>Meta title length not optimal.');
+            else recs.push('<i class="fas fa-check-circle text-success me-2"></i>Meta title perfect!');
+
+            if (!description) recs.push('<i class="fas fa-exclamation-triangle text-danger me-2"></i>Add meta description (120-160 chars).');
+            else if (description.length < 120) recs.push('<i class="fas fa-info-circle text-warning me-2"></i>Meta description too short.');
+
+            if (flesch < 50) recs.push('<i class="fas fa-info-circle text-warning me-2"></i>Content is difficult to read. Use shorter sentences.');
+            else recs.push('<i class="fas fa-check-circle text-success me-2"></i>Great readability!');
+
+            document.getElementById('recommendationsList').innerHTML = '<div class="list-group">' + 
+                recs.map(r => '<div class="list-group-item">' + r + '</div>').join('') + '</div>';
+        }
+
+        // ===== CONTENT OUTLINE =====
+        function generateContentOutline(keywords) {
+            let outline = '<div class="metric-card"><h6 class="fw-bold mb-3">Suggested Content Structure:</h6><ol>';
+            if (keywords.length > 0) {
+                outline += '<li class="mb-2"><strong>Introduction</strong> - Introduce "' + keywords + '" (100-150 words)</li>';
+                outline += '<li class="mb-2"><strong>Main Content</strong> - Key aspects (300-400 words)</li>';
+                if (keywords.length > 1) outline += '<li class="mb-2"><strong>' + keywords + '</strong> - Deep dive (250-300 words)</li>';
+                outline += '<li class="mb-2"><strong>Solution Section</strong> - Practical steps (300-400 words)</li>';
+                outline += '<li class="mb-2"><strong>Examples</strong> - Real-world applications (200-300 words)</li>';
+                outline += '<li class="mb-2"><strong>Conclusion</strong> - Summary and CTA (100-150 words)</li>';
+            } else {
+                outline += '<li class="mb-2"><strong>Introduction</strong> - Hook readers (100-150 words)</li>';
+                outline += '<li class="mb-2"><strong>Main Content</strong> - Core message (500-800 words)</li>';
+                outline += '<li class="mb-2"><strong>Supporting Details</strong> - Examples (300-400 words)</li>';
+                outline += '<li class="mb-2"><strong>Conclusion</strong> - Summary (100-150 words)</li>';
+            }
+            outline += '</ol></div>';
+            document.getElementById('contentOutline').innerHTML = outline;
+        }
+
+        // ===== REWRITING SUGGESTIONS =====
+        function generateRewritingSuggestions(density, avgWords) {
+            let sugs = [];
+            if (avgWords > 25) sugs.push('Break down long sentences for better readability.');
+            if (density < 1) sugs.push('Incorporate target keywords 2-3 more times.');
+            sugs.push('Add rhetorical questions for engagement.');
+            sugs.push('Use bullet points and lists to break up paragraphs.');
+            sugs.push('Include power words in headings.');
+            
+            document.getElementById('rewritingSuggestions').innerHTML = '<ul class="mb-0">' + 
+                sugs.map(s => '<li class="mb-2">' + s + '</li>').join('') + '</ul>';
+        }
+
+        // ===== GAMIFICATION =====
+        function updateGamification(score, wordCount) {
+            let xpEarned = Math.round(score / 2) + Math.floor(wordCount / 100);
+            userXP += xpEarned;
+            analysisCount++;
+
+            document.getElementById('xpEarned').textContent = xpEarned;
+            document.getElementById('userXP').textContent = userXP;
+
+            const levels = [0, 100, 250, 500, 1000, 2000, 3500, 5000, 7500, 10000];
+            let newLevel = 1;
+            for (let i = 0; i < levels.length; i++) {
+                if (userXP >= levels[i]) newLevel = i + 1;
+            }
+            userLevel = newLevel;
+
+            document.getElementById('levelNumber').textContent = userLevel;
+            const names = ['Beginner', 'Novice', 'Intermediate', 'Advanced', 'Expert', 'Master', 'Guru', 'Legend', 'Champion', 'SEO God'];
+            document.getElementById('userLevel').textContent = 'SEO ' + names[userLevel - 1];
+
+            const current = levels[userLevel - 1];
+            const next = levels[userLevel] || levels[levels.length - 1] + 5000;
+            document.getElementById('nextLevelXP').textContent = next;
+            
+            const progress = ((userXP - current) / (next - current)) * 100;
+            document.getElementById('levelProgress').style.width = Math.min(100, progress) + '%';
+
+            checkAchievements(score, wordCount);
+        }
+
+        // ===== ACHIEVEMENTS =====
+        function checkAchievements(score, wordCount) {
+            let newAchs = [];
+            if (analysisCount === 1 && !achievements.includes('first')) {
+                newAchs.push('🎯 <strong>First Steps</strong> - Completed first analysis');
+                achievements.push('first');
+            }
+            if (score >= 80 && !achievements.includes('high')) {
+                newAchs.push('⭐ <strong>SEO Master</strong> - Achieved 80+ score');
+                achievements.push('high');
+            }
+            if (wordCount >= 1000 && !achievements.includes('words')) {
+                newAchs.push('✍️ <strong>Word Warrior</strong> - Wrote 1000+ words');
+                achievements.push('words');
+            }
+            
+            let html = newAchs.length > 0 ? newAchs.map(a => '<div class="alert alert-success mb-2">' + a + '</div>').join('') :
+                       '<p class="text-muted small">Keep analyzing to unlock achievements!</p>';
+            document.getElementById('achievementsList').innerHTML = html;
+        }
+
+        // ===== EXPORT FUNCTIONS =====
+        function exportResults(format) {
+            alert('📄 ' + format.toUpperCase() + ' export coming soon!');
+        }
+
+        function copyToClipboard() {
+            const summary = 'SEO Analysis Summary\n\n' +
+                          'Overall Score: ' + document.getElementById('overallScore').textContent + '\n' +
+                          'Readability: ' + document.getElementById('readabilityScore').textContent + '\n' +
+                          'Keyword Density: ' + document.getElementById('keywordDensity').textContent + '\n' +
+                          'Word Count: ' + document.getElementById('contentLength').textContent;
+            
+            navigator.clipboard.writeText(summary).then(() => {
+                alert('✅ Copied to clipboard!');
+            }).catch(() => {
+                alert('❌ Failed to copy.');
+            });
+        }
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
