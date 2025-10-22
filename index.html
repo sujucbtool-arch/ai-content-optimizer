@@ -1,27 +1,379 @@
-    <script>
-        // ===== GLOBAL VARIABLES =====
-        let userXP = 0;
-        let userLevel = 1;
-        let analysisCount = 0;
-        let achievements = [];
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Free AI Content Optimizer Tool | Analyze & Improve Your SEO - SujuCBTool</title>
+    <meta name="description" content="Free AI-powered content optimization tool with multilingual support, gamified scoring, and real-time SEO analysis. Beat your competitors with 30+ language support!">
+    <meta name="keywords" content="SEO tool, content optimization, AI SEO, multilingual SEO, free SEO analyzer, keyword density checker">
+    <meta name="author" content="Free AI Content Optimizer: Make Your Content SEO-Friendly in Seconds">
+    
+    <!-- Open Graph Meta Tags -->
+    <meta property="og:title" content="AI Content Optimizer - Free SEO Tool">
+    <meta property="og:description" content="Optimize your content in 30+ languages with gamified AI-powered SEO analysis">
+    <meta property="og:type" content="website">
+    <meta property="og:image" content="https://via.placeholder.com/1200x630/4f46e5/white?text=AI+Content+Optimizer">
+    
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome Icons -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary-color: #4f46e5;
+            --secondary-color: #06b6d4;
+            --success-color: #10b981;
+            --warning-color: #f59e0b;
+            --danger-color: #ef4444;
+            --dark-color: #1f2937;
+            --light-color: #f8fafc;
+            --text-color: #374151;
+            --border-color: #e5e7eb;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--light-color);
+        }
+        
+        .navbar {
+            background: var(--dark-color) !important;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            padding: 1rem 0;
+        }
+        
+        .navbar-brand {
+            font-weight: 700;
+            font-size: 1.5rem;
+            color: white !important;
+        }
+        
+        .hero-section {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 80px 0;
+            position: relative;
+        }
+        
+        .hero-title {
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+        }
+        
+        .tool-card {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            padding: 2.5rem;
+            margin: 2rem 0;
+        }
+        
+        .score-circle {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            font-weight: 700;
+            margin: 20px auto;
+            background: #f3f4f6;
+            color: var(--text-color);
+            border: 4px solid #e5e7eb;
+        }
+        
+        .spinner-container {
+            display: none;
+            text-align: center;
+            padding: 60px;
+        }
+        
+        .custom-spinner {
+            width: 60px;
+            height: 60px;
+            border: 4px solid #e5e7eb;
+            border-top: 4px solid var(--primary-color);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .results-container {
+            display: none;
+            margin-top: 2rem;
+        }
+        
+        .score-card {
+            text-align: center;
+            padding: 2rem;
+            border: 2px solid var(--border-color);
+            border-radius: 15px;
+            margin-bottom: 1rem;
+            background: white;
+        }
+        
+        .score-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+        
+        .form-control, .form-select {
+            border: 2px solid var(--border-color);
+            border-radius: 10px;
+            padding: 12px 16px;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            border: none;
+            border-radius: 10px;
+            padding: 15px 30px;
+            font-weight: 600;
+        }
+        
+        .metric-card {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            border: 1px solid var(--border-color);
+            margin-bottom: 15px;
+        }
+        
+        .serp-preview {
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 15px;
+            background: white;
+            margin-bottom: 15px;
+        }
+        
+        .serp-title {
+            color: #1a0dab;
+            font-size: 1.1rem;
+            font-weight: 500;
+            margin-bottom: 5px;
+        }
+        
+        .serp-url {
+            color: #006621;
+            font-size: 0.875rem;
+        }
+        
+        .serp-description {
+            color: #545454;
+            font-size: 0.875rem;
+        }
+        
+        .progress-custom {
+            height: 25px;
+            border-radius: 15px;
+            background-color: #e5e7eb;
+        }
+        
+        .progress-bar-custom {
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container">
+            <a class="navbar-brand" href="#">
+                <i class="fas fa-brain me-2"></i>AI Content Optimizer
+            </a>
+        </div>
+    </nav>
 
-        // ===== UPDATE COUNTERS =====
+    <section class="hero-section">
+        <div class="container text-center text-white">
+            <h1 class="hero-title">AI-Powered Content Optimization</h1>
+            <p class="fs-5">Optimize your content for 30+ languages with gamified SEO scoring</p>
+        </div>
+    </section>
+
+    <section class="py-5">
+        <div class="container">
+            <div class="tool-card">
+                <h2 class="text-center mb-4"><i class="fas fa-magic me-2"></i>Free AI Content Analyzer</h2>
+                
+                <div class="row">
+                    <div class="col-lg-8">
+                        <div class="mb-4">
+                            <label class="form-label fw-bold">Paste Your Content:</label>
+                            <textarea class="form-control" id="contentInput" rows="8" placeholder="Enter your content here..."></textarea>
+                            <div class="form-text"><span id="wordCount">0</span> words | Recommended: 300+</div>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label fw-bold">Target Keywords:</label>
+                                <input type="text" class="form-control" id="keywordInput" placeholder="SEO, content, AI">
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label fw-bold">Language:</label>
+                                <select class="form-select" id="languageSelect">
+                                    <option value="en">🇺🇸 English</option>
+                                    <option value="es">🇪🇸 Spanish</option>
+                                    <option value="fr">🇫🇷 French</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="row mb-4">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label fw-bold">Meta Title:</label>
+                                <input type="text" class="form-control" id="metaTitle" maxlength="60" placeholder="Your SEO title">
+                                <div class="form-text"><span id="titleLength">0</span>/60 characters</div>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label fw-bold">Meta Description:</label>
+                                <textarea class="form-control" id="metaDescription" rows="2" maxlength="160"></textarea>
+                                <div class="form-text"><span id="descLength">0</span>/160 characters</div>
+                            </div>
+                        </div>
+                        
+                        <button class="btn btn-primary btn-lg w-100" onclick="analyzeContent()">
+                            <i class="fas fa-rocket me-2"></i>Analyze My Content
+                        </button>
+                    </div>
+                    
+                    <div class="col-lg-4 text-center">
+                        <h5 class="mb-3">Your SEO Level</h5>
+                        <div class="score-circle" id="seoScore">
+                            <span id="levelNumber">1</span>
+                        </div>
+                        <h6 id="userLevel" class="fw-bold text-primary">SEO Beginner</h6>
+                        <p class="text-muted small"><span id="userXP">0</span> XP | Next: <span id="nextLevelXP">100</span> XP</p>
+                        <div class="progress progress-custom mb-3">
+                            <div class="progress-bar progress-bar-custom" id="levelProgress" style="width: 0%"></div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="spinner-container" id="loadingSpinner">
+                    <div class="custom-spinner"></div>
+                    <h5 class="mt-3 text-primary">🤖 AI is analyzing...</h5>
+                    <p class="text-muted">This takes 3-5 seconds</p>
+                </div>
+                
+                <div class="results-container" id="resultsSection">
+                    <hr class="my-4">
+                    <h3 class="mb-4"><i class="fas fa-chart-bar me-2"></i>Analysis Results</h3>
+                    
+                    <div class="row mb-4">
+                        <div class="col-md-3">
+                            <div class="score-card">
+                                <div class="score-number text-primary" id="overallScore">0%</div>
+                                <div>Overall Score</div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="score-card">
+                                <div class="score-number text-success" id="readabilityScore">0%</div>
+                                <div>Readability</div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="score-card">
+                                <div class="score-number text-warning" id="keywordDensity">0%</div>
+                                <div>Keyword Density</div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="score-card">
+                                <div class="score-number text-info" id="contentLength">0</div>
+                                <div>Words</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-6 mb-4">
+                            <h5>SERP Preview</h5>
+                            <div class="serp-preview">
+                                <div class="serp-title" id="serpPreviewTitle">Your title here</div>
+                                <div class="serp-url">https://yourwebsite.com</div>
+                                <div class="serp-description" id="serpPreviewDesc">Your description here</div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-4">
+                            <h5>Reading Stats</h5>
+                            <div class="metric-card">
+                                <strong>Flesch Score:</strong> <span id="fleschScore">0</span>
+                            </div>
+                            <div class="metric-card">
+                                <strong>Grade Level:</strong> <span id="gradeLevel">0</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-lg-8">
+                            <h5><i class="fas fa-lightbulb me-2"></i>Recommendations</h5>
+                            <div id="recommendationsList"></div>
+                            
+                            <div class="mt-4">
+                                <h5><i class="fas fa-sitemap me-2"></i>Content Outline</h5>
+                                <div id="contentOutline"></div>
+                            </div>
+                            
+                            <div class="mt-4">
+                                <h5><i class="fas fa-edit me-2"></i>Suggestions</h5>
+                                <div id="rewritingSuggestions"></div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <h5><i class="fas fa-trophy me-2"></i>Achievements</h5>
+                            <div id="achievementsList"></div>
+                            <div class="mt-4 p-3 bg-light rounded">
+                                <h6>XP Earned</h6>
+                                <p>+<span id="xpEarned">0</span> XP</p>
+                            </div>
+                            <div class="mt-4">
+                                <h6>Export Results</h6>
+                                <button class="btn btn-outline-primary btn-sm w-100 mb-2" onclick="exportResults('pdf')">
+                                    <i class="fas fa-file-pdf"></i> PDF
+                                </button>
+                                <button class="btn btn-outline-info btn-sm w-100" onclick="copyToClipboard()">
+                                    <i class="fas fa-copy"></i> Copy
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        let userXP = 0, userLevel = 1, analysisCount = 0, achievements = [];
+
         document.addEventListener('DOMContentLoaded', function() {
             document.getElementById('contentInput').addEventListener('input', function() {
-                const words = this.value.trim().split(/\s+/).filter(word => word.length > 0);
+                const words = this.value.trim().split(/\s+/).filter(w => w.length > 0);
                 document.getElementById('wordCount').textContent = words.length;
             });
-
             document.getElementById('metaTitle').addEventListener('input', function() {
                 document.getElementById('titleLength').textContent = this.value.length;
             });
-
             document.getElementById('metaDescription').addEventListener('input', function() {
                 document.getElementById('descLength').textContent = this.value.length;
             });
         });
 
-        // ===== MAIN ANALYSIS FUNCTION =====
         function analyzeContent() {
             const content = document.getElementById('contentInput').value.trim();
             const keywords = document.getElementById('keywordInput').value.trim();
@@ -29,13 +381,13 @@
             const metaDescription = document.getElementById('metaDescription').value.trim();
 
             if (!content) {
-                alert('⚠️ Please enter some content to analyze!');
+                alert('⚠️ Please enter content!');
                 return;
             }
 
             const wordCount = content.split(/\s+/).filter(w => w.length > 0).length;
             if (wordCount < 50) {
-                alert('⚠️ Please enter at least 50 words. You have ' + wordCount + ' words.');
+                alert('⚠️ Need at least 50 words. You have ' + wordCount);
                 return;
             }
 
@@ -47,10 +399,9 @@
             }, 3000);
         }
 
-        // ===== ANALYSIS LOGIC =====
         function performAnalysis(content, keywords, metaTitle, metaDescription, wordCount) {
             const sentences = content.split(/[.!?]+/).filter(s => s.trim().length > 0);
-            const avgWordsPerSentence = sentences.length > 0 ? (wordCount / sentences.length).toFixed(1) : 0;
+            const avgWords = sentences.length > 0 ? (wordCount / sentences.length).toFixed(1) : 0;
 
             const keywordArray = keywords ? keywords.split(',').map(k => k.trim().toLowerCase()) : [];
             let keywordOccurrences = 0;
@@ -63,7 +414,7 @@
             });
 
             const keywordDensity = wordCount > 0 ? ((keywordOccurrences / wordCount) * 100).toFixed(2) : 0;
-            const fleschScore = Math.max(0, Math.min(100, 206.835 - (1.015 * avgWordsPerSentence) - (84.6 * 1.5))).toFixed(1);
+            const fleschScore = Math.max(0, Math.min(100, 206.835 - (1.015 * avgWords) - (84.6 * 1.5))).toFixed(1);
 
             let overallScore = 0;
             if (wordCount >= 1500) overallScore += 30;
@@ -86,15 +437,13 @@
             if (metaDescription && metaDescription.length >= 120 && metaDescription.length <= 160) overallScore += 10;
             else if (metaDescription && metaDescription.length > 0) overallScore += 5;
 
-            displayResults(overallScore, fleschScore, keywordDensity, wordCount, metaTitle, metaDescription, keywordArray, avgWordsPerSentence);
+            displayResults(overallScore, fleschScore, keywordDensity, wordCount, metaTitle, metaDescription, keywordArray, avgWords);
             updateGamification(overallScore, wordCount);
 
             document.getElementById('loadingSpinner').style.display = 'none';
             document.getElementById('resultsSection').style.display = 'block';
-            document.getElementById('resultsSection').scrollIntoView({ behavior: 'smooth' });
         }
 
-        // ===== DISPLAY RESULTS =====
         function displayResults(overallScore, fleschScore, keywordDensity, wordCount, metaTitle, metaDescription, keywords, avgWords) {
             document.getElementById('overallScore').textContent = overallScore + '%';
             document.getElementById('readabilityScore').textContent = Math.round(fleschScore) + '%';
@@ -108,76 +457,62 @@
             const gradeLevel = Math.max(1, Math.min(16, Math.round(0.39 * avgWords + 11.8)));
             document.getElementById('gradeLevel').textContent = gradeLevel + 'th';
 
-            let toneHTML = avgWords > 20 ? '<span class="badge bg-primary">Formal</span>' : 
-                          avgWords < 15 ? '<span class="badge bg-info">Casual</span>' : 
-                          '<span class="badge bg-success">Professional</span>';
-            document.getElementById('toneAnalysisResults').innerHTML = toneHTML;
-
             generateRecommendations(overallScore, keywordDensity, wordCount, metaTitle, metaDescription, fleschScore);
             generateContentOutline(keywords);
             generateRewritingSuggestions(keywordDensity, avgWords);
         }
 
-        // ===== RECOMMENDATIONS =====
         function generateRecommendations(score, density, wordCount, title, description, flesch) {
             let recs = [];
             
-            if (wordCount < 300) recs.push('<i class="fas fa-exclamation-triangle text-danger me-2"></i>Content too short. Aim for 300+ words.');
-            else if (wordCount < 800) recs.push('<i class="fas fa-info-circle text-warning me-2"></i>Consider expanding to 800-1500 words.');
-            else recs.push('<i class="fas fa-check-circle text-success me-2"></i>Excellent word count!');
+            if (wordCount < 300) recs.push('<div class="alert alert-danger mb-2">❌ Content too short. Aim for 300+ words.</div>');
+            else if (wordCount < 800) recs.push('<div class="alert alert-warning mb-2">⚠️ Consider expanding to 800-1500 words.</div>');
+            else recs.push('<div class="alert alert-success mb-2">✅ Excellent word count!</div>');
 
-            if (density < 0.5) recs.push('<i class="fas fa-exclamation-triangle text-danger me-2"></i>Keyword density too low.');
-            else if (density > 3) recs.push('<i class="fas fa-exclamation-triangle text-warning me-2"></i>Keyword density too high.');
-            else recs.push('<i class="fas fa-check-circle text-success me-2"></i>Perfect keyword density!');
+            if (density < 0.5) recs.push('<div class="alert alert-danger mb-2">❌ Keyword density too low.</div>');
+            else if (density > 3) recs.push('<div class="alert alert-warning mb-2">⚠️ Keyword density too high.</div>');
+            else recs.push('<div class="alert alert-success mb-2">✅ Perfect keyword density!</div>');
 
-            if (!title) recs.push('<i class="fas fa-exclamation-triangle text-danger me-2"></i>Add meta title (50-60 chars).');
-            else if (title.length < 50 || title.length > 60) recs.push('<i class="fas fa-info-circle text-warning me-2"></i>Meta title length not optimal.');
-            else recs.push('<i class="fas fa-check-circle text-success me-2"></i>Meta title perfect!');
+            if (!title) recs.push('<div class="alert alert-danger mb-2">❌ Add meta title (50-60 chars).</div>');
+            else if (title.length < 50 || title.length > 60) recs.push('<div class="alert alert-warning mb-2">⚠️ Meta title length not optimal.</div>');
+            else recs.push('<div class="alert alert-success mb-2">✅ Meta title perfect!</div>');
 
-            if (!description) recs.push('<i class="fas fa-exclamation-triangle text-danger me-2"></i>Add meta description (120-160 chars).');
-            else if (description.length < 120) recs.push('<i class="fas fa-info-circle text-warning me-2"></i>Meta description too short.');
+            if (!description) recs.push('<div class="alert alert-danger mb-2">❌ Add meta description.</div>');
+            if (flesch < 50) recs.push('<div class="alert alert-warning mb-2">⚠️ Content is difficult to read.</div>');
 
-            if (flesch < 50) recs.push('<i class="fas fa-info-circle text-warning me-2"></i>Content is difficult to read. Use shorter sentences.');
-            else recs.push('<i class="fas fa-check-circle text-success me-2"></i>Great readability!');
-
-            document.getElementById('recommendationsList').innerHTML = '<div class="list-group">' + 
-                recs.map(r => '<div class="list-group-item">' + r + '</div>').join('') + '</div>';
+            document.getElementById('recommendationsList').innerHTML = recs.join('');
         }
 
-        // ===== CONTENT OUTLINE =====
         function generateContentOutline(keywords) {
-            let outline = '<div class="metric-card"><h6 class="fw-bold mb-3">Suggested Content Structure:</h6><ol>';
+            let html = '<div class="metric-card"><strong>Suggested Structure:</strong><ol class="mt-2">';
             if (keywords.length > 0) {
-                outline += '<li class="mb-2"><strong>Introduction</strong> - Introduce "' + keywords + '" (100-150 words)</li>';
-                outline += '<li class="mb-2"><strong>Main Content</strong> - Key aspects (300-400 words)</li>';
-                if (keywords.length > 1) outline += '<li class="mb-2"><strong>' + keywords + '</strong> - Deep dive (250-300 words)</li>';
-                outline += '<li class="mb-2"><strong>Solution Section</strong> - Practical steps (300-400 words)</li>';
-                outline += '<li class="mb-2"><strong>Examples</strong> - Real-world applications (200-300 words)</li>';
-                outline += '<li class="mb-2"><strong>Conclusion</strong> - Summary and CTA (100-150 words)</li>';
+                html += '<li>Introduction - "' + keywords[0] + '" (100-150 words)</li>';
+                html += '<li>Main Content (300-400 words)</li>';
+                if (keywords.length > 1) html += '<li>' + keywords[1] + ' (250-300 words)</li>';
+                html += '<li>Solutions (300-400 words)</li>';
+                html += '<li>Conclusion (100-150 words)</li>';
             } else {
-                outline += '<li class="mb-2"><strong>Introduction</strong> - Hook readers (100-150 words)</li>';
-                outline += '<li class="mb-2"><strong>Main Content</strong> - Core message (500-800 words)</li>';
-                outline += '<li class="mb-2"><strong>Supporting Details</strong> - Examples (300-400 words)</li>';
-                outline += '<li class="mb-2"><strong>Conclusion</strong> - Summary (100-150 words)</li>';
+                html += '<li>Introduction (100-150 words)</li>';
+                html += '<li>Main Content (500-800 words)</li>';
+                html += '<li>Conclusion (100-150 words)</li>';
             }
-            outline += '</ol></div>';
-            document.getElementById('contentOutline').innerHTML = outline;
+            html += '</ol></div>';
+            document.getElementById('contentOutline').innerHTML = html;
         }
 
-        // ===== REWRITING SUGGESTIONS =====
         function generateRewritingSuggestions(density, avgWords) {
             let sugs = [];
-            if (avgWords > 25) sugs.push('Break down long sentences for better readability.');
-            if (density < 1) sugs.push('Incorporate target keywords 2-3 more times.');
-            sugs.push('Add rhetorical questions for engagement.');
-            sugs.push('Use bullet points and lists to break up paragraphs.');
-            sugs.push('Include power words in headings.');
+            if (avgWords > 25) sugs.push('Break down long sentences');
+            if (density < 1) sugs.push('Add more keywords naturally');
+            sugs.push('Use bullet points and lists');
+            sugs.push('Add rhetorical questions');
             
-            document.getElementById('rewritingSuggestions').innerHTML = '<ul class="mb-0">' + 
-                sugs.map(s => '<li class="mb-2">' + s + '</li>').join('') + '</ul>';
+            let html = '<ul class="mb-0">';
+            sugs.forEach(s => { html += '<li>' + s + '</li>'; });
+            html += '</ul>';
+            document.getElementById('rewritingSuggestions').innerHTML = html;
         }
 
-        // ===== GAMIFICATION =====
         function updateGamification(score, wordCount) {
             let xpEarned = Math.round(score / 2) + Math.floor(wordCount / 100);
             userXP += xpEarned;
@@ -186,7 +521,7 @@
             document.getElementById('xpEarned').textContent = xpEarned;
             document.getElementById('userXP').textContent = userXP;
 
-            const levels = [0, 100, 250, 500, 1000, 2000, 3500, 5000, 7500, 10000];
+            const levels = [0, 100, 250, 500, 1000, 2000];
             let newLevel = 1;
             for (let i = 0; i < levels.length; i++) {
                 if (userXP >= levels[i]) newLevel = i + 1;
@@ -194,11 +529,11 @@
             userLevel = newLevel;
 
             document.getElementById('levelNumber').textContent = userLevel;
-            const names = ['Beginner', 'Novice', 'Intermediate', 'Advanced', 'Expert', 'Master', 'Guru', 'Legend', 'Champion', 'SEO God'];
-            document.getElementById('userLevel').textContent = 'SEO ' + names[userLevel - 1];
+            const names = ['Beginner', 'Novice', 'Intermediate', 'Advanced', 'Expert', 'Master'];
+            document.getElementById('userLevel').textContent = 'SEO ' + names[Math.min(userLevel - 1, names.length - 1)];
 
             const current = levels[userLevel - 1];
-            const next = levels[userLevel] || levels[levels.length - 1] + 5000;
+            const next = levels[userLevel] || 5000;
             document.getElementById('nextLevelXP').textContent = next;
             
             const progress = ((userXP - current) / (next - current)) * 100;
@@ -207,43 +542,41 @@
             checkAchievements(score, wordCount);
         }
 
-        // ===== ACHIEVEMENTS =====
         function checkAchievements(score, wordCount) {
             let newAchs = [];
             if (analysisCount === 1 && !achievements.includes('first')) {
-                newAchs.push('🎯 <strong>First Steps</strong> - Completed first analysis');
+                newAchs.push('🎯 First Analysis!');
                 achievements.push('first');
             }
             if (score >= 80 && !achievements.includes('high')) {
-                newAchs.push('⭐ <strong>SEO Master</strong> - Achieved 80+ score');
+                newAchs.push('⭐ SEO Master!');
                 achievements.push('high');
             }
             if (wordCount >= 1000 && !achievements.includes('words')) {
-                newAchs.push('✍️ <strong>Word Warrior</strong> - Wrote 1000+ words');
+                newAchs.push('✍️ Word Warrior!');
                 achievements.push('words');
             }
             
-            let html = newAchs.length > 0 ? newAchs.map(a => '<div class="alert alert-success mb-2">' + a + '</div>').join('') :
-                       '<p class="text-muted small">Keep analyzing to unlock achievements!</p>';
+            let html = newAchs.length > 0 ? 
+                newAchs.map(a => '<div class="alert alert-success mb-2">' + a + '</div>').join('') :
+                '<p class="text-muted">Keep analyzing to unlock achievements!</p>';
             document.getElementById('achievementsList').innerHTML = html;
         }
 
-        // ===== EXPORT FUNCTIONS =====
         function exportResults(format) {
             alert('📄 ' + format.toUpperCase() + ' export coming soon!');
         }
 
         function copyToClipboard() {
-            const summary = 'SEO Analysis Summary\n\n' +
-                          'Overall Score: ' + document.getElementById('overallScore').textContent + '\n' +
-                          'Readability: ' + document.getElementById('readabilityScore').textContent + '\n' +
-                          'Keyword Density: ' + document.getElementById('keywordDensity').textContent + '\n' +
-                          'Word Count: ' + document.getElementById('contentLength').textContent;
+            const summary = 'SEO Analysis\n\nOverall: ' + document.getElementById('overallScore').textContent + 
+                          '\nReadability: ' + document.getElementById('readabilityScore').textContent +
+                          '\nKeyword Density: ' + document.getElementById('keywordDensity').textContent +
+                          '\nWords: ' + document.getElementById('contentLength').textContent;
             
             navigator.clipboard.writeText(summary).then(() => {
                 alert('✅ Copied to clipboard!');
             }).catch(() => {
-                alert('❌ Failed to copy.');
+                alert('❌ Failed to copy');
             });
         }
     </script>
