@@ -448,6 +448,58 @@ Yes, secure AI rewriting + advanced SEO tools are being added soon.</p>
 <footer>
 SEO Toolkit © 2025 — Built for Creators • Free Forever • Privacy Focused
 </footer>
+<script>
+
+function updateResultsUI(seoScore, readability, keywords = [], suggestions = []){
+
+document.getElementById("resultsSection").style.display="block";
+
+/* SEO SCORE */
+let seoCircle=document.getElementById("seoScoreCircle");
+seoCircle.innerHTML = seoScore;
+
+if(seoScore >= 80) seoCircle.classList.add("score-good");
+else if(seoScore >= 60) seoCircle.classList.add("score-ok");
+else seoCircle.classList.add("score-bad");
+
+document.getElementById("seoBar").style.width = seoScore+"%";
+
+
+/* READABILITY */
+let readCircle=document.getElementById("readScoreCircle");
+readCircle.innerHTML = readability;
+
+if(readability >= 80) readCircle.classList.add("score-good");
+else if(readability >= 60) readCircle.classList.add("score-ok");
+else readCircle.classList.add("score-bad");
+
+document.getElementById("readBar").style.width = readability+"%";
+
+
+/* KEYWORDS */
+let keyHTML="";
+keywords.slice(0,12).forEach(k=>{
+keyHTML += `<span class="keyword-tag">${k.word} (${k.count})</span>`;
+});
+document.getElementById("keywordList").innerHTML = keyHTML;
+
+
+/* SUGGESTIONS */
+let sugHTML="";
+suggestions.forEach(s=>{
+let type = s.type || "warn";
+sugHTML += `
+<div class="suggest-card ${type}">
+<div class="suggest-title">${s.title || "Suggestion"}</div>
+<div>${s.text}</div>
+</div>`;
+});
+
+document.getElementById("suggestionsBox").innerHTML = sugHTML;
+
+}
+
+</script>
 
 </body>
 </html>
