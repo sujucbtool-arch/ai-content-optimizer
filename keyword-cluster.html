@@ -9,15 +9,9 @@
 
 body{
 margin:0;
-font-family: Arial, Helvetica, sans-serif;
+font-family:Arial, Helvetica, sans-serif;
 background:#0f172a;
 color:white;
-}
-
-.container{
-max-width:1200px;
-margin:auto;
-padding:20px;
 }
 
 .header{
@@ -29,73 +23,91 @@ padding:15px 30px;
 border-bottom:1px solid #1e293b;
 }
 
-.logo{
-font-size:24px;
-font-weight:bold;
-color:#38bdf8;
-}
+.logo{font-size:22px;font-weight:bold;color:#38bdf8;}
 
 .nav a{
 margin-right:15px;
 color:#cbd5f5;
 text-decoration:none;
 }
+.nav a:hover{color:white;}
 
-.hero{
-text-align:center;
-padding:50px 10px;
-background:linear-gradient(135deg,#020617,#1e3a8a);
-border-radius:12px;
-}
-
-.hero h1{
-font-size:40px;
-margin-bottom:10px;
-}
-
-.main{
-display:grid;
-grid-template-columns:1fr 1fr;
-gap:25px;
-margin-top:30px;
+.container{
+max-width:1100px;
+margin:auto;
+padding:25px;
 }
 
 .card{
 background:#020617;
-padding:20px;
-border-radius:10px;
+padding:18px;
+border-radius:12px;
 border:1px solid #1f2937;
+margin-top:18px;
 }
 
 textarea{
 width:100%;
-padding:10px;
-border-radius:6px;
-border:1px solid #334155;
-background:#020617;
+height:180px;
+background:#0b1220;
 color:white;
-margin-top:5px;
+border:1px solid #1f2937;
+border-radius:8px;
+padding:10px;
 }
 
 button{
-width:100%;
-padding:12px;
-margin-top:10px;
+background:#2563eb;
+padding:12px 18px;
 border-radius:6px;
 border:none;
-cursor:pointer;
+color:white;
 font-weight:bold;
+cursor:pointer;
+margin-top:10px;
+}
+button:hover{background:#1d4ed8;}
+
+.cluster-grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(320px,1fr));
+gap:18px;
+margin-top:20px;
 }
 
-.primary{ background:#2563eb; color:white; }
-.black{ background:black; color:white; }
-
-.clusterBox{
+.cluster-card{
 background:#020617;
-border:1px solid #334155;
+border:1px solid #1f2937;
 padding:15px;
-border-radius:6px;
-margin-top:10px;
+border-radius:10px;
+}
+
+.cluster-title{
+font-size:18px;
+font-weight:bold;
+margin-bottom:8px;
+}
+
+.badge{
+display:inline-block;
+padding:4px 8px;
+border-radius:8px;
+font-size:12px;
+margin-right:6px;
+}
+
+.badge.green{background:#022c22;color:#22c55e;border:1px solid #14532d;}
+.badge.blue{background:#172554;color:#60a5fa;border:1px solid #1d4ed8;}
+.badge.yellow{background:#422006;color:#facc15;border:1px solid #ca8a04;}
+
+.keyword-tag{
+display:inline-block;
+padding:6px 10px;
+border-radius:8px;
+background:#0b1220;
+border:1px solid #1f2937;
+margin:4px;
+font-size:13px;
 }
 
 footer{
@@ -105,142 +117,140 @@ padding:20px;
 border-top:1px solid #374151;
 }
 
-.badge{
-display:inline-block;
-padding:3px 8px;
-border-radius:5px;
-background:#1e293b;
-margin-right:6px;
-margin-top:4px;
-font-size:12px;
-}
-
 </style>
 </head>
 
 <body>
 
-<!-- HEADER -->
+
 <div class="header">
-<div class="logo">SEO Toolkit</div>
-<div class="nav">
-<a href="home.html">Home</a>
-<a href="index.html">Optimizer</a>
-<a href="ai-humanizer.html">Humanizer</a>
-<a href="keyword-cluster.html">Clusters</a>
-<a href="meta-generator.html">Meta</a>
-<a href="readability.html">Readability</a>
-<a href="outline.html">Brief</a>
-</div>
+  <div class="logo">SEO Toolkit</div>
+  <div class="nav">
+    <a href="home.html">Home</a>
+    <a href="index.html">Optimizer</a>
+    <a href="ai-humanizer.html">Humanizer</a>
+    <a href="meta-generator.html">Meta Suite</a>
+    <a href="readability.html">Readability</a>
+    <a href="keyword-cluster.html">Cluster</a>
+    <a href="outline.html">Brief</a>
+  </div>
 </div>
 
 <div class="container">
 
-<!-- HERO -->
-<div class="hero">
-<h1>Keyword Cluster & Topic Mapper</h1>
-<p>Turn long keyword lists into powerful topic clusters to improve SEO strategy, internal linking, and ranking potential.</p>
-<p>Free Forever • No Login Required • Privacy Safe</p>
-</div>
+<h1>🔗 Keyword Cluster & Topic Mapper</h1>
+<p>Paste your keyword list and get automatic topic clusters, parent keywords, and search intent grouping.</p>
 
-<div class="main">
-
-<!-- LEFT -->
 <div class="card">
-<h2>Paste Your Keywords</h2>
-<p>Enter keywords (one per line)</p>
-
-<textarea id="keywordInput" rows="12" placeholder="ai tools
-ai tools for students
-best ai software
-seo content tools
-keyword clustering
-keyword grouping
+<label>Paste Keywords (one per line)</label>
+<textarea id="kwInput" placeholder="ai seo tools
+best ai seo software
+seo ai automation
+ai content optimization
+best seo tools for ai
 ..."></textarea>
 
-<button onclick="clusterKeywords()" class="primary">Generate Clusters</button>
-<button onclick="clearAll()" class="black">Clear</button>
+<button onclick="clusterKeywords()">Generate Clusters</button>
 </div>
 
-<!-- RIGHT -->
-<div class="card">
-<h2>Keyword Clusters</h2>
-<div id="outputArea">Your clustered results will appear here...</div>
-
-<div class="card" style="margin-top:20px;">
-<h3>Why Use Keyword Clusters?</h3>
-<ul>
-<li>Improve Topical Authority</li>
-<li>Rank for multiple related keywords</li>
-<li>Smarter internal linking</li>
-<li>Better content structure</li>
-<li>Helps you plan full content silos</li>
-</ul>
-</div>
-
+<div id="results" style="display:none;">
+<h2>Clusters Found</h2>
+<div id="clusterContainer" class="cluster-grid"></div>
 </div>
 
 </div>
 
 <footer>
-SEO Toolkit © 2025 • Free Forever • Privacy Safe
+SEO Toolkit © 2025 — Built for Creators • Free Forever • Privacy Focused
 </footer>
+
 
 <script>
 
+// Basic similarity matching (CSP SAFE)
+function similarity(a,b){
+a=a.toLowerCase();
+b=b.toLowerCase();
+let match=0;
+a.split(" ").forEach(w=>{
+if(b.includes(w)) match++;
+});
+return match;
+}
+
+function detectIntent(word){
+word=word.toLowerCase();
+if(word.includes("best") || word.includes("top") || word.includes("buy"))
+return "Commercial";
+if(word.includes("how") || word.includes("guide") || word.includes("tutorial"))
+return "Informational";
+if(word.includes("near me") || word.includes("service"))
+return "Transactional";
+return "Mixed";
+}
+
 function clusterKeywords(){
-let text=document.getElementById("keywordInput").value.trim();
-let output=document.getElementById("outputArea");
 
-if(text.length<5){
-alert("Please enter at least 3–5 keywords.");
+const raw = document.getElementById("kwInput").value.trim();
+if(!raw){
+alert("Please paste keywords");
 return;
 }
 
-let keywords=text.split("\n").map(k=>k.trim()).filter(k=>k.length>0);
-
-if(keywords.length<3){
-alert("Add more keywords for meaningful clusters.");
+const list = raw.split("\n").map(v=>v.trim()).filter(v=>v.length>1);
+if(list.length < 3){
+alert("Please enter at least 3 keywords");
 return;
 }
 
-// Simple intelligent grouping logic (temporary AI-like behavior)
-let clusters = {};
+let clusters = [];
+let used = new Set();
 
-keywords.forEach(word=>{
-let key = "";
+for(let i=0;i<list.length;i++){
+if(used.has(i)) continue;
 
-if(word.includes("ai")) key="AI Tools";
-else if(word.includes("seo")) key="SEO Tools";
-else if(word.includes("best")) key="Best/Top Searches";
-else if(word.includes("free")) key="Free Keyword Intent";
-else if(word.includes("generator")) key="Generators";
-else key="General / Uncategorized";
+let base = list[i];
+let group=[base];
+used.add(i);
 
-if(!clusters[key]) clusters[key]=[];
-clusters[key].push(word);
-});
+for(let j=i+1;j<list.length;j++){
+if(used.has(j)) continue;
 
-output.innerHTML="";
-
-Object.keys(clusters).forEach(cluster=>{
-let div=document.createElement("div");
-div.className="clusterBox";
-div.innerHTML=`<h3>${cluster}</h3>`;
-
-clusters[cluster].forEach(k=>{
-div.innerHTML+=`<span class='badge'>${k}</span>`;
-});
-
-output.appendChild(div);
-});
-
-output.innerHTML += "<br><p style='opacity:0.7'>Note: AI-powered semantic clustering is coming soon for deeper accuracy.</p>";
+if(similarity(base,list[j]) >= 2){
+group.push(list[j]);
+used.add(j);
+}
 }
 
-function clearAll(){
-document.getElementById("keywordInput").value="";
-document.getElementById("outputArea").innerHTML="Your clustered results will appear here...";
+clusters.push(group);
+}
+
+// Build UI
+document.getElementById("results").style.display="block";
+
+let html="";
+clusters.forEach(group=>{
+let parent = group[0];
+let intent = detectIntent(parent);
+
+html += `
+<div class="cluster-card">
+<div class="cluster-title">${parent}</div>
+<span class="badge blue">Cluster Size: ${group.length}</span>
+<span class="badge green">Parent Keyword</span>
+<span class="badge yellow">${intent} Intent</span>
+<hr style="border:0;border-top:1px solid #1f2937;margin:10px 0;">
+`;
+
+group.forEach(k=>{
+html+=`<span class="keyword-tag">${k}</span>`;
+});
+
+html+=`</div>`;
+});
+
+document.getElementById("clusterContainer").innerHTML = html;
+
 }
 
 </script>
