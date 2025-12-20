@@ -2,141 +2,197 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>SEO Content Optimizer – AI SEO Toolkit</title>
+<title>AI SEO Content Optimizer</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<script src="https://cdn.tailwindcss.com?plugins=typography,forms"></script>
-<script>
-if(localStorage.getItem("theme")==="dark"){
-document.documentElement.classList.add("dark");
-}
-function toggleTheme(){
-document.documentElement.classList.toggle("dark");
-localStorage.setItem("theme",
-document.documentElement.classList.contains("dark")?"dark":"light");
-}
-</script>
 
 <style>
-html.dark body{background:#020617;color:white}
-html.dark .card{background:#0f172a;color:white;border:1px solid #374151}
-html.dark textarea,html.dark input{background:#020617;color:white;border:1px solid #475569}
-.score-circle{width:120px;height:120px;border-radius:50%;display:flex;align-items:center;
-justify-content:center;font-size:32px;font-weight:800;color:white;}
-</style>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+body{
+margin:0;
+font-family: Arial, Helvetica, sans-serif;
+background:#0f172a;
+color:white;
+}
+
+.container{
+max-width:1200px;
+margin:auto;
+padding:20px;
+}
+
+.header{
+display:flex;
+justify-content:space-between;
+align-items:center;
+background:#020617;
+padding:15px 30px;
+border-bottom:1px solid #1e293b;
+}
+
+.logo{
+font-size:24px;
+font-weight:bold;
+color:#38bdf8;
+}
+
+.nav a{
+margin-right:15px;
+color:#cbd5f5;
+text-decoration:none;
+}
+
+.hero{
+text-align:center;
+padding:50px 10px;
+background:linear-gradient(135deg,#020617,#1e3a8a);
+border-radius:12px;
+}
+
+.hero h1{
+font-size:42px;
+margin-bottom:10px;
+}
+
+.main{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:25px;
+margin-top:30px;
+}
+
+.card{
+background:#020617;
+padding:20px;
+border-radius:10px;
+border:1px solid #1f2937;
+}
+
+textarea, input{
+width:100%;
+padding:10px;
+border-radius:6px;
+border:1px solid #334155;
+background:#020617;
+color:white;
+margin-top:5px;
+}
+
+button{
+width:100%;
+padding:12px;
+margin-top:10px;
+border-radius:6px;
+border:none;
+cursor:pointer;
+font-weight:bold;
+}
+
+.primary{ background:#2563eb; color:white; }
+.green{ background:#16a34a; color:white; }
+.black{ background:black; color:white; }
+
+.scoreCircle{
+width:120px;height:120px;
+border-radius:50%;
+display:flex;
+align-items:center;
+justify-content:center;
+font-size:34px;
+font-weight:900;
+margin-top:10px;
+}
+
+/* Footer */
+footer{
+margin-top:50px;
+text-align:center;
+padding:20px;
+border-top:1px solid #374151;
+}
+
+</style>
 </head>
 
-<body class="bg-slate-50 dark:bg-slate-950">
+<body>
 
-<!-- HEADER -->
-<header class="sticky top-0 bg-white/90 dark:bg-slate-900 border-b z-50">
-<div class="max-w-7xl mx-auto flex justify-between items-center py-4 px-6">
-<div class="text-2xl font-bold text-blue-500">SEO Toolkit</div>
-
-<nav class="hidden md:flex gap-6 font-medium">
-<a href="index.html" class="hover:text-blue-600">Optimizer</a>
-<a href="meta-generator.html" class="hover:text-blue-600">Meta Tools</a>
-<a href="readability.html" class="hover:text-blue-600">Readability</a>
-<a href="outline.html" class="hover:text-blue-600">Outline</a>
-</nav>
-
-<div class="flex gap-4">
-<button onclick="toggleTheme()"
-class="px-4 py-2 rounded border">
-Dark Mode
-</button>
-<button class="px-5 py-2 bg-blue-600 text-white rounded">
-Start
-</button>
+<div class="header">
+<div class="logo">SEO Toolkit</div>
+<div class="nav">
+<a href="index.html">Optimizer</a>
+<a href="meta-generator.html">Meta Tools</a>
+<a href="readability.html">Readability</a>
+<a href="outline.html">Outline</a>
 </div>
 </div>
-</header>
 
-<!-- HERO -->
-<section class="bg-gradient-to-br from-slate-900 to-blue-700 text-white py-16 text-center">
-<h1 class="text-5xl font-extrabold">AI SEO Content Optimizer</h1>
-<p class="mt-3 text-lg opacity-90 max-w-3xl mx-auto">
-Analyze SEO • Improve Readability • Boost Ranking Power • AI Rewrite • Download SEO Report
-</p>
-<a href="#tool" class="mt-6 inline-block px-6 py-3 bg-white text-black rounded">
-Start Optimizing
-</a>
-</section>
+<div class="container">
 
-<!-- TOOL -->
-<section id="tool" class="max-w-7xl mx-auto py-10 px-6 grid md:grid-cols-2 gap-8">
+<div class="hero">
+<h1>AI SEO Content Optimizer</h1>
+<p>Analyze SEO • Improve Readability • Boost Ranking • AI Rewrite • Export SEO Report</p>
+</div>
+
+<div class="main">
 
 <!-- LEFT -->
-<div class="card p-6 bg-white rounded shadow dark:bg-slate-900">
-<label class="font-bold">Paste Your Content</label>
-<textarea id="contentInput"
-class="w-full mt-2 p-3 rounded h-64"
-placeholder="Paste your article or blog content here..."></textarea>
+<div class="card">
+<label>Paste Your Content</label>
+<textarea id="contentInput" rows="10" placeholder="Paste your article here..."></textarea>
 
-<label class="font-bold mt-3 block">Target Keyword</label>
-<input id="keywordInput" class="w-full p-3 rounded" placeholder="example: AI SEO Tools">
+<label>Target Keyword</label>
+<input id="keywordInput" placeholder="example: AI SEO Tools">
 
-<button onclick="analyzeContent()"
-class="w-full mt-4 py-3 bg-blue-600 text-white rounded">
-Analyze Content
-</button>
-
-<button onclick="rewriteAI()"
-class="w-full mt-3 py-3 bg-green-600 text-white rounded">
-AI Rewrite Content
-</button>
-
-<button onclick="downloadPDF()"
-class="w-full mt-3 py-3 bg-black text-white rounded">
-Export SEO Report PDF
-</button>
+<button onclick="analyzeContent()" class="primary">Analyze Content</button>
+<button onclick="rewriteAI()" class="green">AI Rewrite Content</button>
+<button onclick="downloadPDF()" class="black">Export SEO Report PDF</button>
 </div>
 
 <!-- RIGHT -->
-<div class="grid gap-6">
-
-<div class="card p-6 bg-white dark:bg-slate-900 rounded shadow">
-<h2 class="font-bold">Overall SEO Score</h2>
-<div id="scoreCircle" class="score-circle bg-gray-400 mt-3">0%</div>
-<p id="scoreText" class="mt-3 text-gray-600 dark:text-gray-300">Run analysis.</p>
+<div>
+<div class="card">
+<h3>Overall SEO Score</h3>
+<div id="scoreCircle" class="scoreCircle" style="background:gray">0%</div>
+<p id="scoreText">Run analysis.</p>
 </div>
 
-<div class="card p-6">
-<h2 class="font-bold">Readability</h2>
-<p id="readabilityResult">Not analyzed.</p>
+<div class="card">
+<h3>Readability</h3>
+<p id="readabilityResult"></p>
 </div>
 
-<div class="card p-6">
-<h2 class="font-bold">Keyword Density</h2>
-<p id="keywordResult">Not analyzed.</p>
+<div class="card">
+<h3>Keyword Density</h3>
+<p id="keywordResult"></p>
 </div>
 
-<div class="card p-6">
-<h2 class="font-bold">AI Suggestions</h2>
-<ul id="suggestionsList" class="list-disc ml-5">
+<div class="card">
+<h3>AI Suggestions</h3>
+<ul id="suggestionsList">
 <li>Waiting...</li>
 </ul>
 </div>
 
-<div class="card p-6">
-<h2 class="font-bold">Saved Reports</h2>
-<div id="reportHistory"></div>
 </div>
 
 </div>
-</section>
 
-<!-- FOOTER -->
-<footer class="bg-slate-900 text-white text-center py-6 mt-10">
+<footer>
 SEO Toolkit © 2025 • Free Forever • Privacy Safe
 </footer>
 
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
 <script>
+
 function analyzeContent(){
 let text=document.getElementById("contentInput").value.trim();
 let keyword=document.getElementById("keywordInput").value.trim();
-if(text.length<80){alert("Enter proper content");return;}
+
+if(text.length<80){
+alert("Please enter enough content");
+return;
+}
 
 let words=text.split(/\s+/).length;
 let sentences=text.split(/[.!?]/).length;
@@ -149,59 +205,42 @@ let score=0;
 if(words>600)score+=25;
 else if(words>400)score+=15;
 else score+=5;
+
 if(density>=1&&density<=2.5)score+=25;
 else if(density>0.5&&density<4)score+=15;
+
 if(avgSentence<18)score+=15;
 else score+=5;
+
 if(headings>=4)score+=20;
 else if(headings>=2)score+=10;
+
 if(sentences>20)score+=15;
+
 score=Math.min(100,score);
 
 let circle=document.getElementById("scoreCircle");
 circle.innerHTML=score+"%";
-circle.style.background=score<40?"#ef4444":score<70?"#facc15":"#22c55e";
+circle.style.background = score<40?"#ef4444":score<70?"#fbbf24":"#22c55e";
 
 document.getElementById("scoreText").innerHTML=
 score>=80?"Excellent SEO Content":
-score>=60?"Good Content":"Needs Improvement";
+score>=60?"Good but can improve":"Needs improvement";
 
 document.getElementById("readabilityResult").innerHTML=
-`Words: ${words} • Sentences: ${sentences} • Avg Sentence: ${avgSentence}`;
+"Words: "+words+" • Sentences: "+sentences+" • Avg Sentence: "+avgSentence;
+
 document.getElementById("keywordResult").innerHTML=
-`Keyword Count: ${keywordCount} • Density: ${density}%`;
+"Keyword Count: "+keywordCount+" • Density: "+density+"%";
 
 let sug=document.getElementById("suggestionsList");
 sug.innerHTML="";
-if(words<600)sug.innerHTML+="<li>Increase length</li>";
+if(words<600)sug.innerHTML+="<li>Increase content length</li>";
 if(density<1)sug.innerHTML+="<li>Use keyword more</li>";
 if(density>3)sug.innerHTML+="<li>Reduce keyword stuffing</li>";
 if(avgSentence>18)sug.innerHTML+="<li>Shorten sentences</li>";
 if(headings<3)sug.innerHTML+="<li>Add headings</li>";
-
-saveReport(score,words,density);
 }
-
-// SAVE REPORTS
-function saveReport(score,words,density){
-let r={time:new Date().toLocaleString(),score,words,density};
-let history=JSON.parse(localStorage.getItem("reports")||"[]");
-history.unshift(r);
-localStorage.setItem("reports",JSON.stringify(history));
-renderReports();
-}
-function renderReports(){
-let h=JSON.parse(localStorage.getItem("reports")||"[]");
-let box=document.getElementById("reportHistory");
-box.innerHTML="";
-h.slice(0,5).forEach(r=>{
-box.innerHTML+=`<div class="p-2 border rounded mt-2">
-<b>${r.score}%</b> — ${r.words} words — ${r.density}%<br>
-<small>${r.time}</small>
-</div>`;
-});
-}
-renderReports();
 
 // PDF EXPORT
 async function downloadPDF(){
@@ -214,10 +253,11 @@ pdf.text(document.getElementById("keywordResult").innerText,20,80);
 pdf.save("seo-report.pdf");
 }
 
-// AI REWRITE (READY FOR API)
+// AI Rewrite (will connect later)
 async function rewriteAI(){
-alert("API will be connected later. Button is ready.");
+alert("AI Rewrite will work after we plug API. Button Ready.");
 }
+
 </script>
 
 </body>
