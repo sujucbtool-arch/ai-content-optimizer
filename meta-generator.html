@@ -1,20 +1,311 @@
-<html>
-<head><title>Meta Title & Description Generator</title>
-<script src="https://cdn.tailwindcss.com"></script>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>AI Meta Title & Description Generator – SEO Toolkit</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+
+body{
+margin:0;
+font-family:Arial, Helvetica, sans-serif;
+background:#0f172a;
+color:white;
+}
+
+.header{
+display:flex;
+justify-content:space-between;
+align-items:center;
+background:#020617;
+padding:15px 30px;
+border-bottom:1px solid #1e293b;
+}
+
+.logo{font-size:22px;font-weight:bold;color:#38bdf8;}
+
+.nav a{
+margin-right:15px;
+color:#cbd5f5;
+text-decoration:none;
+}
+.nav a:hover{color:white;}
+
+.container{
+max-width:1100px;
+margin:auto;
+padding:25px;
+}
+
+.card{
+background:#020617;
+padding:18px;
+border-radius:12px;
+border:1px solid #1f2937;
+margin-top:18px;
+}
+
+input, textarea{
+width:100%;
+background:#0b1220;
+color:white;
+border:1px solid #1f2937;
+border-radius:8px;
+padding:10px;
+}
+
+textarea{
+height:140px;
+}
+
+button{
+background:#2563eb;
+padding:12px 18px;
+border-radius:6px;
+border:none;
+color:white;
+font-weight:bold;
+cursor:pointer;
+margin-top:10px;
+}
+button:hover{background:#1d4ed8;}
+
+.grid{
+display:grid;
+grid-template-columns:repeat(auto-fit, minmax(340px,1fr));
+gap:18px;
+margin-top:20px;
+}
+
+.meta-box{
+background:#020617;
+border:1px solid #1f2937;
+padding:15px;
+border-radius:10px;
+margin-top:12px;
+}
+
+.counter{
+font-size:12px;
+color:#9ca3af;
+}
+
+/* GOOGLE SERP PREVIEW */
+.serp{
+background:#0b1220;
+border-radius:10px;
+border:1px solid #1f2937;
+padding:15px;
+margin-top:10px;
+}
+
+.serp-title{
+color:#4f9dff;
+font-size:18px;
+margin-bottom:4px;
+}
+.serp-url{
+color:#22c55e;
+font-size:13px;
+margin-bottom:3px;
+}
+.serp-desc{
+color:#cbd5f5;
+font-size:14px;
+}
+
+/* Suggestion Cards */
+.suggest-card{
+background:#0b1220;
+border:1px solid #1f2937;
+padding:10px;
+border-radius:10px;
+margin-top:8px;
+}
+.suggest-card.good{border-left:5px solid #16a34a;}
+.suggest-card.warn{border-left:5px solid #eab308;}
+.suggest-card.bad{border-left:5px solid #dc2626;}
+
+footer{
+margin-top:50px;
+text-align:center;
+padding:20px;
+border-top:1px solid #374151;
+}
+
+</style>
 </head>
-<body class="p-10">
-<h1 class="text-4xl font-bold mb-4">Meta Title Generator</h1>
-<input class="w-full p-3 border rounded" id="metaInput" placeholder="Enter topic">
-<button onclick="generate()" class="mt-3 px-5 py-2 bg-blue-600 text-white rounded">Generate</button>
-<h2 class="mt-5 font-bold">Result</h2>
-<p id="metaResult"></p>
+
+<body>
+
+<div class="header">
+  <div class="logo">SEO Toolkit</div>
+  <div class="nav">
+    <a href="home.html">Home</a>
+    <a href="index.html">Optimizer</a>
+    <a href="ai-humanizer.html">Humanizer</a>
+    <a href="meta-generator.html">Meta Suite</a>
+    <a href="readability.html">Readability</a>
+    <a href="outline.html">Brief</a>
+  </div>
+</div>
+
+
+<div class="container">
+
+<h1>🚀 AI Meta Title & Description Generator</h1>
+<p>Create SEO-friendly, high-CTR titles & descriptions with best-practice lengths and Google preview.</p>
+
+<div class="card">
+<label>Target Keyword</label>
+<input id="keyword" placeholder="Example: AI SEO Content Toolkit">
+
+<br><br>
+
+<label>Page Purpose</label>
+<textarea id="context" placeholder="Describe the page: blog post, landing page, product, tutorial, etc."></textarea>
+
+<button onclick="generateMeta()">Generate Meta Tags</button>
+</div>
+
+
+<div id="results" style="display:none;">
+
+<h2>Generated Meta Tags</h2>
+
+<div class="grid">
+
+<div class="meta-box">
+<h3>Meta Title Options</h3>
+<div id="titles"></div>
+</div>
+
+<div class="meta-box">
+<h3>Meta Description Options</h3>
+<div id="descriptions"></div>
+</div>
+
+</div>
+
+<h2>Google SERP Preview</h2>
+
+<div class="serp">
+<div class="serp-title" id="serpTitle">Your Title Will Show Here</div>
+<div class="serp-url">www.example.com</div>
+<div class="serp-desc" id="serpDesc">Meta description preview here…</div>
+</div>
+
+<h2>Optimization Suggestions</h2>
+<div id="suggestions"></div>
+
+</div>
+
+</div>
+
+
+<footer>
+SEO Toolkit © 2025 — Built for Creators • Free Forever • Privacy Focused
+</footer>
+
 
 <script>
-function generate(){
-let t=document.getElementById("metaInput").value;
-document.getElementById("metaResult").innerHTML=
-`${t} — Best Guide (Updated 2025)`;
+
+function generateMeta(){
+
+const keyword = document.getElementById("keyword").value.trim();
+const context = document.getElementById("context").value.trim();
+
+if(keyword.length < 3){
+alert("Please enter a keyword or topic");
+return;
 }
+
+document.getElementById("results").style.display="block";
+
+/* -------- META TITLES -------- */
+let titles = [
+`${keyword} – Complete Guide for 2025`,
+`${keyword}: What It Is, Benefits & How To Use`,
+`Best ${keyword} Tips to Improve Results`,
+`${keyword} Explained Simply (Beginner Friendly)`,
+`${keyword} — Everything You Need to Know`
+];
+
+let titleHTML = "";
+titles.forEach(t=>{
+titleHTML += `
+<div class="suggest-card">
+<b>${t}</b>
+<div class="counter">${t.length} characters</div>
+</div>`;
+});
+document.getElementById("titles").innerHTML = titleHTML;
+
+
+/* -------- META DESCRIPTIONS -------- */
+let descriptions = [
+`Learn everything about ${keyword}. Simple explanations, practical uses, pros, cons and expert tips to help you succeed.`,
+`Looking for ${keyword}? This guide explains what it is, why it matters, and how to use it effectively.`,
+`Discover ${keyword} with clear guidance, real examples and helpful insights to improve your results.`,
+`${keyword} explained in easy language – benefits, usage, mistakes to avoid and best practices.`,
+`Understand ${keyword} with this beginner-friendly breakdown packed with helpful insights.`
+];
+
+let descHTML = "";
+descriptions.forEach(d=>{
+descHTML += `
+<div class="suggest-card">
+${d}
+<div class="counter">${d.length} characters</div>
+</div>`;
+});
+document.getElementById("descriptions").innerHTML = descHTML;
+
+
+/* ---------- SERP Preview (first options) ---------- */
+document.getElementById("serpTitle").innerHTML = titles[0];
+document.getElementById("serpDesc").innerHTML = descriptions[0];
+
+
+/* ---------- Suggestions ---------- */
+let suggestions = "";
+
+let tLen = titles[0].length;
+let dLen = descriptions[0].length;
+
+if(tLen < 40)
+suggestions += makeSug("warn","Title Too Short","Try 45–65 characters for best CTR.");
+else if(tLen > 65)
+suggestions += makeSug("warn","Title Too Long","Google may truncate titles over ~65 characters.");
+else
+suggestions += makeSug("good","Perfect Title Length","Your title is optimized.");
+
+if(dLen < 110)
+suggestions += makeSug("warn","Description Too Short","Aim for 120–160 characters.");
+else if(dLen > 165)
+suggestions += makeSug("warn","Description Too Long","Google may truncate long descriptions.");
+else
+suggestions += makeSug("good","Great Description Length","This description is optimized.");
+
+if(!titles[0].toLowerCase().includes(keyword.toLowerCase()))
+suggestions += makeSug("bad","Keyword Missing in Title","Include main keyword in the meta title.");
+
+if(!descriptions[0].toLowerCase().includes(keyword.toLowerCase()))
+suggestions += makeSug("bad","Keyword Missing in Description","Mention your keyword naturally.");
+
+document.getElementById("suggestions").innerHTML = suggestions;
+
+}
+
+function makeSug(type,title,text){
+return `
+<div class="suggest-card ${type}">
+<b>${title}</b><br>${text}
+</div>`;
+}
+
 </script>
+
 </body>
 </html>
