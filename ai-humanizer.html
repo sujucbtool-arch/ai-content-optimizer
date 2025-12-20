@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>AI Text Humanizer – Make AI Text Sound Human</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+
+body{
+margin:0;
+font-family: Arial, Helvetica, sans-serif;
+background:#0f172a;
+color:white;
+}
+
+.container{
+max-width:1200px;
+margin:auto;
+padding:20px;
+}
+
+.header{
+display:flex;
+justify-content:space-between;
+align-items:center;
+background:#020617;
+padding:15px 30px;
+border-bottom:1px solid #1e293b;
+}
+
+.logo{
+font-size:24px;
+font-weight:bold;
+color:#38bdf8;
+}
+
+.nav a{
+margin-right:15px;
+color:#cbd5f5;
+text-decoration:none;
+}
+
+.hero{
+text-align:center;
+padding:50px 10px;
+background:linear-gradient(135deg,#020617,#1e3a8a);
+border-radius:12px;
+}
+
+.hero h1{
+font-size:40px;
+margin-bottom:10px;
+}
+
+.main{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:25px;
+margin-top:30px;
+}
+
+.card{
+background:#020617;
+padding:20px;
+border-radius:10px;
+border:1px solid #1f2937;
+}
+
+textarea{
+width:100%;
+padding:10px;
+border-radius:6px;
+border:1px solid #334155;
+background:#020617;
+color:white;
+margin-top:5px;
+}
+
+button{
+width:100%;
+padding:12px;
+margin-top:10px;
+border-radius:6px;
+border:none;
+cursor:pointer;
+font-weight:bold;
+}
+
+.primary{ background:#2563eb; color:white; }
+.green{ background:#16a34a; color:white; }
+.black{ background:black; color:white; }
+
+/* Output Box */
+.outputBox{
+background:#020617;
+border:1px solid #334155;
+padding:15px;
+border-radius:6px;
+min-height:150px;
+}
+
+footer{
+margin-top:50px;
+text-align:center;
+padding:20px;
+border-top:1px solid #374151;
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- HEADER -->
+<div class="header">
+<div class="logo">SEO Toolkit</div>
+<div class="nav">
+<a href="index.html">Optimizer</a>
+<a href="ai-humanizer.html">Humanizer</a>
+<a href="meta-generator.html">Meta Tools</a>
+<a href="readability.html">Readability</a>
+<a href="outline.html">Outline</a>
+</div>
+</div>
+
+<div class="container">
+
+<!-- HERO -->
+<div class="hero">
+<h1>AI Text Humanizer</h1>
+<p>Convert robotic AI text into natural, human-sounding writing. Improve tone, flow, and authenticity.</p>
+<p>Free Forever • No Login Required • Privacy Safe</p>
+</div>
+
+<div class="main">
+
+<!-- LEFT INPUT -->
+<div class="card">
+<h2>Paste Your AI Text</h2>
+<textarea id="inputText" rows="12" placeholder="Paste AI-generated text here..."></textarea>
+
+<button onclick="humanizeText()" class="green">Humanize Text</button>
+<button onclick="clearText()" class="black">Clear</button>
+</div>
+
+<!-- RIGHT OUTPUT -->
+<div class="card">
+<h2>Humanized Output</h2>
+<div id="outputBox" class="outputBox">Humanized text will appear here...</div>
+
+<button onclick="copyText()" class="primary">Copy Text</button>
+
+<div class="card" style="margin-top:20px;">
+<h3>Why Use This?</h3>
+<ul>
+<li>Makes AI text sound natural</li>
+<li>Reduces robotic patterns</li>
+<li>Better for blogs, essays & freelance content</li>
+<li>Improves trust & readability</li>
+</ul>
+</div>
+
+</div>
+</div>
+
+<footer>
+SEO Toolkit © 2025 • Free Forever • Privacy Safe
+</footer>
+
+<script>
+
+// TEMP HUMANIZER (Until AI API Connected)
+function humanizeText(){
+let text=document.getElementById("inputText").value.trim();
+let out=document.getElementById("outputBox");
+
+if(text.length<20){
+alert("Please paste meaningful text.");
+return;
+}
+
+// Simple heuristic humanizer for now
+let improved=text
+.replace(/However/g,"But")
+.replace(/Therefore/g,"So")
+.replace(/In conclusion/g,"To wrap it up")
+.replace(/Moreover/g,"Also")
+.replace(/Thus/g,"In short")
+.replace(/\s+/g," ")
+.replace(/\. /g,". ");
+
+out.innerHTML=improved + "\n\n(Note: AI Humanizer PRO will make this even more natural soon 👌)";
+}
+
+// COPY
+function copyText(){
+let text=document.getElementById("outputBox").innerText;
+navigator.clipboard.writeText(text);
+alert("Copied!");
+}
+
+// CLEAR
+function clearText(){
+document.getElementById("inputText").value="";
+document.getElementById("outputBox").innerHTML="Humanized text will appear here...";
+}
+
+</script>
+
+</body>
+</html>
