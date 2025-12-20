@@ -1,0 +1,20 @@
+<html>
+<head><title>Meta Title & Description Generator</title>
+<script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="p-10">
+<h1 class="text-4xl font-bold mb-4">Meta Title Generator</h1>
+<input class="w-full p-3 border rounded" id="metaInput" placeholder="Enter topic">
+<button onclick="generate()" class="mt-3 px-5 py-2 bg-blue-600 text-white rounded">Generate</button>
+<h2 class="mt-5 font-bold">Result</h2>
+<p id="metaResult"></p>
+
+<script>
+function generate(){
+let t=document.getElementById("metaInput").value;
+document.getElementById("metaResult").innerHTML=
+`${t} — Best Guide (Updated 2025)`;
+}
+</script>
+</body>
+</html>
