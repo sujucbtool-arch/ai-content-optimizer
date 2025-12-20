@@ -1,5 +1,97 @@
 <!DOCTYPE html>
 <html lang="en">
+<style>
+
+/* RESULTS WRAPPER */
+.results-grid{
+  margin-top:25px;
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
+  gap:18px;
+}
+
+/* CARDS */
+.result-card{
+  background:#020617;
+  border:1px solid #1f2937;
+  border-radius:12px;
+  padding:18px;
+}
+
+.result-title{
+  font-size:18px;
+  margin:0 0 6px 0;
+}
+
+.result-sub{
+  color:#9ca3af;
+  font-size:14px;
+  margin-bottom:10px;
+}
+
+/* BIG SCORE CIRCLE */
+.score-circle{
+  width:120px;
+  height:120px;
+  border-radius:100%;
+  margin:auto;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  font-size:30px;
+  font-weight:bold;
+  border:6px solid #2563eb;
+}
+
+.score-good{ border-color:#16a34a; color:#16a34a; }
+.score-ok{ border-color:#eab308; color:#eab308; }
+.score-bad{ border-color:#dc2626; color:#dc2626; }
+
+/* PROGRESS BAR */
+.progress-bar{
+  height:10px;
+  width:100%;
+  background:#0f172a;
+  border-radius:6px;
+  overflow:hidden;
+  margin-top:8px;
+}
+.progress-fill{
+  height:100%;
+  border-radius:6px;
+}
+
+/* KEYWORDS */
+.keyword-tag{
+  display:inline-block;
+  padding:6px 10px;
+  border-radius:8px;
+  background:#111827;
+  border:1px solid #1f2937;
+  margin:4px;
+  font-size:13px;
+}
+
+/* SUGGESTIONS */
+.suggest-card{
+  background:#0b1220;
+  border:1px solid #1f2937;
+  border-radius:10px;
+  padding:10px;
+  margin-top:8px;
+}
+
+.suggest-card.good{ border-left:5px solid #16a34a; }
+.suggest-card.warn{ border-left:5px solid #eab308; }
+.suggest-card.bad{ border-left:5px solid #dc2626; }
+
+.suggest-title{
+  font-size:15px;
+  font-weight:bold;
+}
+
+</style>
+
 <head>
 <meta charset="UTF-8">
 <title>AI SEO Content Toolkit – Optimize • Humanize • Rank Faster</title>
