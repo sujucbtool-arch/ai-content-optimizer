@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Dashboard — SEO Toolkit</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+
+body{
+margin:0;
+font-family:Arial;
+background:#0f172a;
+color:white;
+display:flex;
+}
+
+/* SIDEBAR */
+.sidebar{
+width:260px;
+background:#020617;
+height:100vh;
+border-right:1px solid #1e293b;
+padding:20px;
+position:fixed;
+}
+
+.sidebar h2{
+color:#38bdf8;
+}
+
+.sidebar button{
+width:100%;
+padding:12px;
+border-radius:6px;
+border:none;
+margin-top:8px;
+background:#111827;
+color:white;
+cursor:pointer;
+font-weight:bold;
+}
+
+.sidebar button:hover{
+background:#2563eb;
+}
+
+/* MAIN */
+.main{
+margin-left:280px;
+padding:25px;
+width:100%;
+}
+
+.card{
+background:#020617;
+padding:20px;
+border-radius:10px;
+border:1px solid #1f2937;
+margin-top:15px;
+}
+
+.grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
+gap:15px;
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- SIDEBAR -->
+<div class="sidebar">
+<h2>SEO Toolkit</h2>
+
+<button onclick="window.location.href='index.html'">SEO Optimizer</button>
+<button onclick="window.location.href='ai-humanizer.html'">AI Humanizer</button>
+<button onclick="window.location.href='keyword-cluster.html'">Keyword Clusters</button>
+<button onclick="window.location.href='meta-generator.html'">Meta Suite</button>
+<button onclick="window.location.href='readability.html'">Readability</button>
+<button onclick="window.location.href='outline.html'">Content Brief</button>
+<button onclick="window.location.href='home.html'">Back To Home</button>
+</div>
+
+<!-- MAIN -->
+<div class="main">
+
+<h1>Dashboard</h1>
+<p>Quick access to your tools and recent actions.</p>
+
+<div class="grid">
+
+<div class="card">
+<h3>⭐ Start SEO Optimization</h3>
+<p>Analyze and improve your content SEO score.</p>
+<button onclick="window.location.href='index.html'">Open Optimizer</button>
+</div>
+
+<div class="card">
+<h3>🔥 Humanize AI Text</h3>
+<p>Make AI text sound more human and natural.</p>
+<button onclick="window.location.href='ai-humanizer.html'">Humanize Now</button>
+</div>
+
+<div class="card">
+<h3>✨ Plan SEO Clusters</h3>
+<p>Create keyword clusters and topic groups.</p>
+<button onclick="window.location.href='keyword-cluster.html'">Open Cluster Tool</button>
+</div>
+
+</div>
+
+<div class="card">
+<h3>Coming Soon</h3>
+<ul>
+<li>Saved Reports</li>
+<li>Project Collections</li>
+<li>Account System</li>
+</ul>
+</div>
+
+</div>
+
+</body>
+</html>
