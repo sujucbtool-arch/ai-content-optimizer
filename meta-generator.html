@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>AI Meta Title & Description Generator – SEO Toolkit</title>
+<title>Advanced Meta Title & Description Generator – SEO Toolkit</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
@@ -46,7 +46,7 @@ border:1px solid #1f2937;
 margin-top:18px;
 }
 
-input, textarea{
+input, textarea, select{
 width:100%;
 background:#0b1220;
 color:white;
@@ -55,9 +55,7 @@ border-radius:8px;
 padding:10px;
 }
 
-textarea{
-height:140px;
-}
+textarea{height:140px;}
 
 button{
 background:#2563eb;
@@ -86,12 +84,19 @@ border-radius:10px;
 margin-top:12px;
 }
 
-.counter{
-font-size:12px;
-color:#9ca3af;
-}
+.counter{font-size:12px;color:#9ca3af;}
 
-/* GOOGLE SERP PREVIEW */
+.copyBtn{
+background:#0ea5e9;
+padding:6px 10px;
+border-radius:6px;
+border:none;
+margin-top:6px;
+cursor:pointer;
+}
+.copyBtn:hover{background:#0284c7;}
+
+/* SERP PREVIEW */
 .serp{
 background:#0b1220;
 border-radius:10px;
@@ -100,20 +105,9 @@ padding:15px;
 margin-top:10px;
 }
 
-.serp-title{
-color:#4f9dff;
-font-size:18px;
-margin-bottom:4px;
-}
-.serp-url{
-color:#22c55e;
-font-size:13px;
-margin-bottom:3px;
-}
-.serp-desc{
-color:#cbd5f5;
-font-size:14px;
-}
+.serp-title{color:#4f9dff;font-size:18px;margin-bottom:4px;}
+.serp-url{color:#22c55e;font-size:13px;margin-bottom:3px;}
+.serp-desc{color:#cbd5f5;font-size:14px;}
 
 /* Suggestion Cards */
 .suggest-card{
@@ -154,19 +148,31 @@ border-top:1px solid #374151;
 
 <div class="container">
 
-<h1>🚀 AI Meta Title & Description Generator</h1>
-<p>Create SEO-friendly, high-CTR titles & descriptions with best-practice lengths and Google preview.</p>
+<h1>🚀 Advanced Meta Title & Description Generator</h1>
+<p>Create SEO-friendly, CTR-boosting titles & descriptions with tone control and Google preview.</p>
 
 <div class="card">
+
 <label>Target Keyword</label>
 <input id="keyword" placeholder="Example: AI SEO Content Toolkit">
 
 <br><br>
 
 <label>Page Purpose</label>
-<textarea id="context" placeholder="Describe the page: blog post, landing page, product, tutorial, etc."></textarea>
+<textarea id="context" placeholder="Describe the page: blog, landing page, product, tutorial…"></textarea>
+
+<br><br>
+
+<label>Choose Tone</label>
+<select id="tone">
+<option value="professional">Professional</option>
+<option value="catchy">Catchy & Powerful</option>
+<option value="emotional">Emotional & Persuasive</option>
+<option value="informational">Informational & Clear</option>
+</select>
 
 <button onclick="generateMeta()">Generate Meta Tags</button>
+
 </div>
 
 
@@ -193,8 +199,11 @@ border-top:1px solid #374151;
 <div class="serp">
 <div class="serp-title" id="serpTitle">Your Title Will Show Here</div>
 <div class="serp-url">www.example.com</div>
-<div class="serp-desc" id="serpDesc">Meta description preview here…</div>
+<div class="serp-desc" id="serpDesc">Meta description preview…</div>
 </div>
+
+<h2>CTR Prediction</h2>
+<div id="ctrBox" style="font-size:18px;font-weight:bold;"></div>
 
 <h2>Optimization Suggestions</h2>
 <div id="suggestions"></div>
@@ -202,7 +211,6 @@ border-top:1px solid #374151;
 </div>
 
 </div>
-
 
 <footer>
 SEO Toolkit © 2025 — Built for Creators • Free Forever • Privacy Focused
@@ -215,41 +223,74 @@ function generateMeta(){
 
 const keyword = document.getElementById("keyword").value.trim();
 const context = document.getElementById("context").value.trim();
+const tone = document.getElementById("tone").value;
 
 if(keyword.length < 3){
-alert("Please enter a keyword or topic");
+alert("Please enter a keyword");
 return;
 }
 
 document.getElementById("results").style.display="block";
 
-/* -------- META TITLES -------- */
-let titles = [
-`${keyword} – Complete Guide for 2025`,
-`${keyword}: What It Is, Benefits & How To Use`,
-`Best ${keyword} Tips to Improve Results`,
-`${keyword} Explained Simply (Beginner Friendly)`,
-`${keyword} — Everything You Need to Know`
+/* ---------- TITLE GENERATOR ---------- */
+let titles = [];
+
+if(tone === "professional"){
+titles = [
+`${keyword} – Complete Guide & Best Practices`,
+`${keyword}: What It Is & How It Helps`,
+`${keyword} Explained with Real Examples`,
+`Everything You Need to Know About ${keyword}`,
+`${keyword} for Beginners – Start Smart`
 ];
+}
+else if(tone === "catchy"){
+titles = [
+`🔥 ${keyword} — You Won’t Believe These Results`,
+`${keyword} Secrets Nobody Talks About`,
+`${keyword} Tips That Actually Work`,
+`Boost Success Fast with ${keyword}`,
+`${keyword} — Game Changing Insights`
+];
+}
+else if(tone === "emotional"){
+titles = [
+`${keyword} — Finally Make It Work for You`,
+`Struggling with ${keyword}? This Helps`,
+`${keyword} Made Simple & Stress Free`,
+`Transform Your Results with ${keyword}`,
+`${keyword} — A Better Way Forward`
+];
+}
+else{
+titles = [
+`Clear Guide to ${keyword}`,
+`${keyword}: Simple Explanation`,
+`${keyword} — Understand in Minutes`,
+`Beginner Friendly ${keyword} Guide`,
+`${keyword} Basics You Must Know`
+];
+}
 
 let titleHTML = "";
 titles.forEach(t=>{
 titleHTML += `
 <div class="suggest-card">
-<b>${t}</b>
+<b onclick="setSerpTitle('${t.replace(/'/g,'&#39;')}')" style="cursor:pointer">${t}</b>
 <div class="counter">${t.length} characters</div>
+<button class="copyBtn" onclick="copyText('${t.replace(/'/g,'&#39;')}')">Copy</button>
 </div>`;
 });
 document.getElementById("titles").innerHTML = titleHTML;
 
 
-/* -------- META DESCRIPTIONS -------- */
+/* ---------- DESCRIPTION GENERATOR ---------- */
 let descriptions = [
-`Learn everything about ${keyword}. Simple explanations, practical uses, pros, cons and expert tips to help you succeed.`,
-`Looking for ${keyword}? This guide explains what it is, why it matters, and how to use it effectively.`,
-`Discover ${keyword} with clear guidance, real examples and helpful insights to improve your results.`,
-`${keyword} explained in easy language – benefits, usage, mistakes to avoid and best practices.`,
-`Understand ${keyword} with this beginner-friendly breakdown packed with helpful insights.`
+`Learn ${keyword} in simple language. Meaning, uses, benefits and how it helps you.`,
+`Everything about ${keyword} explained clearly with real examples and useful tips.`,
+`${keyword} simplified — understand what it is, why it matters and how to use it.`,
+`Beginner friendly guide to ${keyword}. Avoid mistakes and improve your results.`,
+`Understand ${keyword} fast with this clear explanation and insights.`
 ];
 
 let descHTML = "";
@@ -258,51 +299,63 @@ descHTML += `
 <div class="suggest-card">
 ${d}
 <div class="counter">${d.length} characters</div>
+<button class="copyBtn" onclick="copyText('${d.replace(/'/g,'&#39;')}')">Copy</button>
 </div>`;
 });
 document.getElementById("descriptions").innerHTML = descHTML;
 
 
-/* ---------- SERP Preview (first options) ---------- */
+/* ---------- Default SERP Preview ---------- */
 document.getElementById("serpTitle").innerHTML = titles[0];
 document.getElementById("serpDesc").innerHTML = descriptions[0];
+
+
+/* ---------- CTR Prediction ---------- */
+let tLen = titles[0].length;
+let ctrScore = 70;
+
+if(tLen < 40) ctrScore -= 10;
+if(tLen > 65) ctrScore -= 10;
+if(tone === "catchy") ctrScore += 10;
+if(tone === "emotional") ctrScore += 8;
+
+document.getElementById("ctrBox").innerHTML = ctrScore + "% Likely CTR Performance";
 
 
 /* ---------- Suggestions ---------- */
 let suggestions = "";
 
-let tLen = titles[0].length;
+if(tLen < 40)
+suggestions += makeSug("warn","Title Short","45–65 chars works best.");
+else if(tLen > 65)
+suggestions += makeSug("warn","Title Long","Google may truncate.");
+else
+suggestions += makeSug("good","Great Title Length","Perfect for SEO.");
+
 let dLen = descriptions[0].length;
 
-if(tLen < 40)
-suggestions += makeSug("warn","Title Too Short","Try 45–65 characters for best CTR.");
-else if(tLen > 65)
-suggestions += makeSug("warn","Title Too Long","Google may truncate titles over ~65 characters.");
-else
-suggestions += makeSug("good","Perfect Title Length","Your title is optimized.");
-
 if(dLen < 110)
-suggestions += makeSug("warn","Description Too Short","Aim for 120–160 characters.");
+suggestions += makeSug("warn","Description Short","Aim 120–160 characters.");
 else if(dLen > 165)
-suggestions += makeSug("warn","Description Too Long","Google may truncate long descriptions.");
+suggestions += makeSug("warn","Description Long","Might get truncated.");
 else
-suggestions += makeSug("good","Great Description Length","This description is optimized.");
-
-if(!titles[0].toLowerCase().includes(keyword.toLowerCase()))
-suggestions += makeSug("bad","Keyword Missing in Title","Include main keyword in the meta title.");
-
-if(!descriptions[0].toLowerCase().includes(keyword.toLowerCase()))
-suggestions += makeSug("bad","Keyword Missing in Description","Mention your keyword naturally.");
+suggestions += makeSug("good","Great Description Length","Perfect balance.");
 
 document.getElementById("suggestions").innerHTML = suggestions;
 
 }
 
+function setSerpTitle(txt){
+document.getElementById("serpTitle").innerHTML = txt;
+}
+
+function copyText(text){
+navigator.clipboard.writeText(text);
+alert("Copied!");
+}
+
 function makeSug(type,title,text){
-return `
-<div class="suggest-card ${type}">
-<b>${title}</b><br>${text}
-</div>`;
+return `<div class="suggest-card ${type}"><b>${title}</b><br>${text}</div>`;
 }
 
 </script>
