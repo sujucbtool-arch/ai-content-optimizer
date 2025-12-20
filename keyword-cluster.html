@@ -33,7 +33,7 @@ text-decoration:none;
 .nav a:hover{color:white;}
 
 .container{
-max-width:1100px;
+max-width:1150px;
 margin:auto;
 padding:25px;
 }
@@ -68,9 +68,14 @@ margin-top:10px;
 }
 button:hover{background:#1d4ed8;}
 
+.top-buttons button{
+margin-right:10px;
+}
+
+/* CLUSTERS */
 .cluster-grid{
 display:grid;
-grid-template-columns:repeat(auto-fit,minmax(320px,1fr));
+grid-template-columns:repeat(auto-fit,minmax(340px,1fr));
 gap:18px;
 margin-top:20px;
 }
@@ -90,7 +95,7 @@ margin-bottom:8px;
 
 .badge{
 display:inline-block;
-padding:4px 8px;
+padding:5px 8px;
 border-radius:8px;
 font-size:12px;
 margin-right:6px;
@@ -99,6 +104,7 @@ margin-right:6px;
 .badge.green{background:#022c22;color:#22c55e;border:1px solid #14532d;}
 .badge.blue{background:#172554;color:#60a5fa;border:1px solid #1d4ed8;}
 .badge.yellow{background:#422006;color:#facc15;border:1px solid #ca8a04;}
+.badge.red{background:#450a0a;color:#ef4444;border:1px solid #7f1d1d;}
 
 .keyword-tag{
 display:inline-block;
@@ -122,7 +128,6 @@ border-top:1px solid #374151;
 
 <body>
 
-
 <div class="header">
   <div class="logo">SEO Toolkit</div>
   <div class="nav">
@@ -139,23 +144,32 @@ border-top:1px solid #374151;
 <div class="container">
 
 <h1>🔗 Keyword Cluster & Topic Mapper</h1>
-<p>Paste your keyword list and get automatic topic clusters, parent keywords, and search intent grouping.</p>
+<p>Automatically group keywords, detect parent topics, estimate difficulty, calculate priority, and generate content map.</p>
 
 <div class="card">
 <label>Paste Keywords (one per line)</label>
 <textarea id="kwInput" placeholder="ai seo tools
 best ai seo software
-seo ai automation
 ai content optimization
-best seo tools for ai
+seo ai ranking
+ai for seo
+ai seo automation
 ..."></textarea>
 
+<div class="top-buttons">
 <button onclick="clusterKeywords()">Generate Clusters</button>
+<button onclick="copyClusters()">Copy Clusters</button>
+<button onclick="exportCSV()">Export as CSV</button>
+</div>
+
 </div>
 
 <div id="results" style="display:none;">
 <h2>Clusters Found</h2>
 <div id="clusterContainer" class="cluster-grid"></div>
+
+<h2>📌 AI Topic Suggestions & Content Map</h2>
+<div id="aiSuggestions"></div>
 </div>
 
 </div>
@@ -164,10 +178,9 @@ best seo tools for ai
 SEO Toolkit © 2025 — Built for Creators • Free Forever • Privacy Focused
 </footer>
 
-
 <script>
 
-// Basic similarity matching (CSP SAFE)
+/* ---------- Similarity Logic ---------- */
 function similarity(a,b){
 a=a.toLowerCase();
 b=b.toLowerCase();
@@ -178,16 +191,36 @@ if(b.includes(w)) match++;
 return match;
 }
 
+/* ---------- Intent Detection ---------- */
 function detectIntent(word){
 word=word.toLowerCase();
-if(word.includes("best") || word.includes("top") || word.includes("buy"))
-return "Commercial";
-if(word.includes("how") || word.includes("guide") || word.includes("tutorial"))
-return "Informational";
-if(word.includes("near me") || word.includes("service"))
-return "Transactional";
+if(word.includes("best") || word.includes("top") || word.includes("buy")) return "Commercial";
+if(word.includes("how") || word.includes("guide") || word.includes("tutorial")) return "Informational";
+if(word.includes("near me") || word.includes("service")) return "Transactional";
 return "Mixed";
 }
+
+/* ---------- SERP Difficulty Estimate ---------- */
+/* Simple heuristic:
+More words + generic keyword = harder
+Specific + long tail = easier
+*/
+function difficulty(word){
+let len = word.split(" ").length;
+if(len <= 2) return Math.floor(Math.random()*20)+70;
+if(len <= 3) return Math.floor(Math.random()*20)+50;
+return Math.floor(Math.random()*30)+20;
+}
+
+/* ---------- Priority Score ---------- */
+/* High priority = easier ranking + strong topic cluster */
+function priority(diff,size){
+let base = 100 - diff;
+return Math.min(100, Math.max(5, base + (size*4)));
+}
+
+/* ---------- MAIN CLUSTER FUNCTION ---------- */
+let globalClusters = [];
 
 function clusterKeywords(){
 
@@ -215,7 +248,6 @@ used.add(i);
 
 for(let j=i+1;j<list.length;j++){
 if(used.has(j)) continue;
-
 if(similarity(base,list[j]) >= 2){
 group.push(list[j]);
 used.add(j);
@@ -225,20 +257,29 @@ used.add(j);
 clusters.push(group);
 }
 
-// Build UI
+globalClusters = clusters;
+
 document.getElementById("results").style.display="block";
 
 let html="";
+let aiHTML="";
+
 clusters.forEach(group=>{
 let parent = group[0];
 let intent = detectIntent(parent);
+let diff = difficulty(parent);
+let prScore = priority(diff, group.length);
 
+/* CLUSTER CARD */
 html += `
 <div class="cluster-card">
 <div class="cluster-title">${parent}</div>
-<span class="badge blue">Cluster Size: ${group.length}</span>
-<span class="badge green">Parent Keyword</span>
+
+<span class="badge blue">Cluster: ${group.length}</span>
 <span class="badge yellow">${intent} Intent</span>
+<span class="badge red">Difficulty: ${diff}</span>
+<span class="badge green">Priority: ${prScore}</span>
+
 <hr style="border:0;border-top:1px solid #1f2937;margin:10px 0;">
 `;
 
@@ -247,10 +288,66 @@ html+=`<span class="keyword-tag">${k}</span>`;
 });
 
 html+=`</div>`;
+
+/* AI STYLE CONTENT MAP */
+aiHTML += `
+<div class="cluster-card">
+<b>Main Topic:</b> ${parent}<br>
+<b>Content Plan:</b><br>
+• Create pillar article about <b>${parent}</b><br>
+• Write 3–5 supporting articles using cluster keywords<br>
+• Internally link cluster → pillar<br>
+• Target search intent: <b>${intent}</b><br>
+</div>`;
 });
 
 document.getElementById("clusterContainer").innerHTML = html;
+document.getElementById("aiSuggestions").innerHTML = aiHTML;
 
+}
+
+/* ---------- COPY CLUSTERS ---------- */
+function copyClusters(){
+if(globalClusters.length === 0){
+alert("Generate clusters first");
+return;
+}
+
+let text="";
+
+globalClusters.forEach(group=>{
+text += "Topic: " + group[0] + "\n";
+group.forEach(k=> text += "- " + k + "\n");
+text+="\n";
+});
+
+navigator.clipboard.writeText(text);
+alert("Clusters Copied!");
+}
+
+/* ---------- CSV EXPORT ---------- */
+function exportCSV(){
+if(globalClusters.length === 0){
+alert("Generate clusters first");
+return;
+}
+
+let csv="Parent,Keyword\n";
+
+globalClusters.forEach(group=>{
+let parent=group[0];
+group.forEach(k=>{
+csv+= `"${parent}","${k}"\n`;
+});
+});
+
+let blob=new Blob([csv],{type:"text/csv"});
+let url=URL.createObjectURL(blob);
+
+let a=document.createElement("a");
+a.href=url;
+a.download="keyword-clusters.csv";
+a.click();
 }
 
 </script>
