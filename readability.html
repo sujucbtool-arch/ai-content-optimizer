@@ -1,18 +1,269 @@
-<html>
-<head><title>Readability Checker</title>
-<script src="https://cdn.tailwindcss.com"></script>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Readability & Clarity Analyzer – SEO Toolkit</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+
+body{
+margin:0;
+font-family:Arial, Helvetica, sans-serif;
+background:#0f172a;
+color:white;
+}
+
+.header{
+display:flex;
+justify-content:space-between;
+align-items:center;
+background:#020617;
+padding:15px 30px;
+border-bottom:1px solid #1e293b;
+}
+
+.logo{font-size:22px;font-weight:bold;color:#38bdf8;}
+
+.nav a{
+margin-right:15px;
+color:#cbd5f5;
+text-decoration:none;
+}
+.nav a:hover{color:white;}
+
+.container{
+max-width:1100px;
+margin:auto;
+padding:25px;
+}
+
+.card{
+background:#020617;
+padding:18px;
+border-radius:12px;
+border:1px solid #1f2937;
+margin-top:18px;
+}
+
+textarea{
+width:100%;
+height:220px;
+background:#0b1220;
+color:white;
+border:1px solid #1f2937;
+border-radius:8px;
+padding:10px;
+}
+
+button{
+background:#2563eb;
+padding:12px 18px;
+border-radius:6px;
+border:none;
+color:white;
+font-weight:bold;
+cursor:pointer;
+margin-top:8px;
+}
+button:hover{background:#1d4ed8;}
+
+.results-grid{
+display:grid;
+grid-template-columns:repeat(auto-fit, minmax(280px,1fr));
+gap:18px;
+margin-top:20px;
+}
+
+.result-card{
+background:#020617;
+border:1px solid #1f2937;
+padding:15px;
+border-radius:10px;
+}
+
+.score{
+font-size:35px;
+font-weight:bold;
+}
+
+.good{color:#16a34a;}
+.warn{color:#eab308;}
+.bad{color:#dc2626;}
+
+.suggest-card{
+background:#0b1220;
+border:1px solid #1f2937;
+padding:10px;
+border-radius:10px;
+margin-top:8px;
+}
+.suggest-card.good{border-left:5px solid #16a34a;}
+.suggest-card.warn{border-left:5px solid #eab308;}
+.suggest-card.bad{border-left:5px solid #dc2626;}
+
+footer{
+margin-top:50px;
+text-align:center;
+padding:20px;
+border-top:1px solid #374151;
+}
+
+</style>
 </head>
-<body class="p-10">
-<h1 class="text-4xl font-bold mb-4">Readability Checker</h1>
-<textarea id="rtext" class="w-full p-4 border rounded h-60"></textarea>
-<button onclick="check()" class="mt-3 px-5 py-2 bg-blue-600 text-white rounded">Analyze</button>
-<p id="out" class="mt-4"></p>
+
+<body>
+
+<div class="header">
+  <div class="logo">SEO Toolkit</div>
+  <div class="nav">
+    <a href="home.html">Home</a>
+    <a href="index.html">Optimizer</a>
+    <a href="ai-humanizer.html">Humanizer</a>
+    <a href="meta-generator.html">Meta Suite</a>
+    <a href="readability.html">Readability</a>
+    <a href="outline.html">Brief</a>
+  </div>
+</div>
+
+<div class="container">
+
+<h1>✨ Readability & Clarity Analyzer</h1>
+<p>Check readability score, grade level, complexity, passive voice usage, long sentences, and improvement tips.</p>
+
+<div class="card">
+<textarea id="textInput" placeholder="Paste your article or blog content here..."></textarea>
+<br>
+<button onclick="analyzeReadability()">Analyze Readability</button>
+</div>
+
+<div id="results" style="display:none;">
+
+<h2>Results</h2>
+
+<div class="results-grid">
+
+<div class="result-card">
+<h3>Overall Readability</h3>
+<div id="readScore" class="score">0</div>
+<small>Higher is easier to read (100 = extremely easy)</small>
+</div>
+
+<div class="result-card">
+<h3>Estimated Grade Level</h3>
+<div id="gradeLevel" class="score">0</div>
+<small>Best for blogs: Grade 6–9</small>
+</div>
+
+<div class="result-card">
+<h3>Average Sentence Length</h3>
+<div id="sentenceLen" class="score">0</div>
+<small>Under 20 words is ideal</small>
+</div>
+
+<div class="result-card">
+<h3>Passive Voice</h3>
+<div id="passivePercent" class="score">0%</div>
+<small>Lower is better for clarity</small>
+</div>
+
+</div>
+
+<h2>Suggestions</h2>
+<div id="suggestions"></div>
+
+</div>
+
+</div>
+
+<footer>
+SEO Toolkit © 2025 — Built for Creators • Free Forever • Privacy Focused
+</footer>
 
 <script>
-function check(){
-let t=document.getElementById("rtext").value.split(" ").length;
-document.getElementById("out").innerHTML="Word Count: "+t;
+
+function analyzeReadability(){
+
+const text = document.getId("textInput").value.trim();
+if(text.length < 50){
+alert("Please paste at least 50+ words");
+return;
 }
+
+document.getElementById("results").style.display="block";
+
+const words = text.split(/\s+/).length;
+const sentences = text.split(/[.!?]/).filter(s=>s.trim().length>0).length || 1;
+const avgWords = words / sentences;
+
+// Flesch Reading Ease
+let readability = 100 - (avgWords * 1.5);
+if(readability < 0) readability = 0;
+if(readability > 100) readability = 100;
+
+// Grade Level (simple approximation)
+let grade = Math.round(12 - (readability / 9));
+if(grade < 1) grade = 1;
+
+// Passive Voice Detection
+let passiveMatches = text.match(/\b(is|was|were|be|been|being|are)\s+\w+ed\b/gi) || [];
+let passivePercent = Math.round((passiveMatches.length / sentences) * 100);
+
+// OUTPUT
+setScore("readScore", readability);
+setScore("gradeLevel", grade);
+setScore("sentenceLen", Math.round(avgWords));
+setScore("passivePercent", passivePercent + "%");
+
+// Suggestions
+let sugHTML = "";
+
+if(readability < 50){
+sugHTML += makeSuggest("bad","Hard to Read","Shorten sentences & simplify wording.");
+} else if(readability < 70){
+sugHTML += makeSuggest("warn","Could Be Clearer","Shorten sentences and avoid complex phrases.");
+} else {
+sugHTML += makeSuggest("good","Great Readability","Your content is easy to understand.");
+}
+
+if(avgWords > 25)
+sugHTML += makeSuggest("warn","Very Long Sentences","Break long sentences into smaller ones.");
+if(passivePercent > 25)
+sugHTML += makeSuggest("warn","Too Much Passive Voice","Use more direct active sentences.");
+if(grade > 10)
+sugHTML += makeSuggest("warn","High Reading Grade","General readers prefer Grade 6–9.");
+
+document.getElementById("suggestions").innerHTML = sugHTML;
+
+}
+
+function setScore(id,value){
+const el = document.getElementById(id);
+el.innerHTML = value;
+
+el.classList.remove("good","warn","bad");
+if(typeof value === "string" && value.includes("%")){
+let num = parseInt(value);
+if(num < 20) el.classList.add("good");
+else if(num < 40) el.classList.add("warn");
+else el.classList.add("bad");
+return;
+}
+
+if(value >= 70) el.classList.add("good");
+else if(value >= 50) el.classList.add("warn");
+else el.classList.add("bad");
+}
+
+function makeSuggest(type,title,text){
+return `
+<div class="suggest-card ${type}">
+<b>${title}</b><br>${text}
+</div>
+`;
+}
+
 </script>
+
 </body>
 </html>
