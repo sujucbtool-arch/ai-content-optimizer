@@ -287,6 +287,29 @@ border-top:1px solid #374151;
 <p style="margin-top:15px;">Free Forever • No Login Required • Privacy Safe</p>
 </div>
 
+<!-- OPTIMIZER INPUT -->
+<h2 class="sectionTitle">Start Optimizing</h2>
+
+<div class="card">
+  <h3>Paste Your Content</h3>
+
+  <textarea id="contentInput"
+  style="width:100%;height:180px;background:#020617;color:white;border:1px solid #1f2937;border-radius:8px;padding:12px;"
+  placeholder="Paste your article or blog content here..."></textarea>
+
+  <br><br>
+
+  <label>Target Keyword:</label>
+  <input id="keywordInput"
+  style="width:300px;padding:8px;border-radius:6px;border:1px solid #1f2937;background:#020617;color:white;"
+  placeholder="example: AI SEO Tools">
+
+  <br><br>
+
+  <button onclick="analyzeContent()" class="btnPrimary">
+    Analyze Content
+  </button>
+</div>
 
 <!-- FLAGSHIP TOOL -->
 <h2 class="sectionTitle">Flagship Tool</h2>
@@ -449,6 +472,101 @@ Yes, secure AI rewriting + advanced SEO tools are being added soon.</p>
 SEO Toolkit © 2025 — Built for Creators • Free Forever • Privacy Focused
 </footer>
 <script>
+<script>
+
+function analyzeContent(){
+
+  const content = document.getElementById("contentInput").value.trim();
+  const keyword = document.getElementById("keywordInput").value.trim().toLowerCase();
+
+  if(content.length < 50){
+    alert("Please paste at least 50+ words of content.");
+    return;
+  }
+
+  // --- SEO SCORE LOGIC ---
+  let seoScore = 60;
+
+  // keyword usage
+  let keywordCount = 0;
+  if(keyword){
+    content.toLowerCase().split(/\W+/).forEach(word=>{
+      if(word === keyword) keywordCount++;
+    });
+    if(keywordCount >= 3) seoScore += 10;
+    else if(keywordCount === 0) seoScore -= 10;
+  }
+
+  // heading benefit
+  if(content.includes("##") || content.includes("<h2")) seoScore += 10;
+
+  if(seoScore > 100) seoScore = 100;
+  if(seoScore < 0) seoScore = 0;
+
+
+  // --- READABILITY SCORE ---
+  const words = content.split(/\s+/).length;
+  const sentences = content.split(/[.!?]/).length;
+  let avgWords = words / sentences;
+  let readability = 100;
+
+  if(avgWords > 20) readability -= 20;
+  if(avgWords > 30) readability -= 20;
+
+  if(readability < 0) readability = 0;
+
+
+  // --- KEYWORD LIST ---
+  const counts = {};
+  content.toLowerCase().split(/\W+/).forEach(w=>{
+    if(!w || w.length < 4) return;
+    counts[w] = (counts[w] || 0) + 1;
+  });
+
+  let keywordArray = Object.keys(counts)
+    .map(k=>({word:k,count:counts[k]}))
+    .sort((a,b)=>b.count-a.count)
+    .slice(0,10);
+
+
+  // --- SUGGESTIONS ---
+  let suggestions = [];
+
+  if(keywordCount === 0 && keyword){
+    suggestions.push({
+      type:"bad",
+      title:"Keyword Missing",
+      text:"Your main keyword is not used. Add it naturally in the article."
+    });
+  }
+
+  if(avgWords > 25){
+    suggestions.push({
+      type:"warn",
+      title:"Long Sentences",
+      text:"Break long sentences into shorter readable chunks."
+    });
+  }
+
+  if(seoScore > 75){
+    suggestions.push({
+      type:"good",
+      title:"Strong SEO Foundation",
+      text:"Your content is well structured. Keep it up!"
+    });
+  }
+
+  // SHOW RESULTS
+  updateResultsUI(
+    Math.round(seoScore),
+    Math.round(readability),
+    keywordArray,
+    suggestions
+  );
+
+}
+
+</script>
 
 function updateResultsUI(seoScore, readability, keywords = [], suggestions = []){
 
