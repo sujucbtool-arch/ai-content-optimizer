@@ -1,0 +1,18 @@
+<html>
+<head><title>Readability Checker</title>
+<script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="p-10">
+<h1 class="text-4xl font-bold mb-4">Readability Checker</h1>
+<textarea id="rtext" class="w-full p-4 border rounded h-60"></textarea>
+<button onclick="check()" class="mt-3 px-5 py-2 bg-blue-600 text-white rounded">Analyze</button>
+<p id="out" class="mt-4"></p>
+
+<script>
+function check(){
+let t=document.getElementById("rtext").value.split(" ").length;
+document.getElementById("out").innerHTML="Word Count: "+t;
+}
+</script>
+</body>
+</html>
