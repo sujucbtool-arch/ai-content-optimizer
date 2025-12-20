@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Keyword Cluster & Topic Mapper – SEO Toolkit</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+
+body{
+margin:0;
+font-family: Arial, Helvetica, sans-serif;
+background:#0f172a;
+color:white;
+}
+
+.container{
+max-width:1200px;
+margin:auto;
+padding:20px;
+}
+
+.header{
+display:flex;
+justify-content:space-between;
+align-items:center;
+background:#020617;
+padding:15px 30px;
+border-bottom:1px solid #1e293b;
+}
+
+.logo{
+font-size:24px;
+font-weight:bold;
+color:#38bdf8;
+}
+
+.nav a{
+margin-right:15px;
+color:#cbd5f5;
+text-decoration:none;
+}
+
+.hero{
+text-align:center;
+padding:50px 10px;
+background:linear-gradient(135deg,#020617,#1e3a8a);
+border-radius:12px;
+}
+
+.hero h1{
+font-size:40px;
+margin-bottom:10px;
+}
+
+.main{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:25px;
+margin-top:30px;
+}
+
+.card{
+background:#020617;
+padding:20px;
+border-radius:10px;
+border:1px solid #1f2937;
+}
+
+textarea{
+width:100%;
+padding:10px;
+border-radius:6px;
+border:1px solid #334155;
+background:#020617;
+color:white;
+margin-top:5px;
+}
+
+button{
+width:100%;
+padding:12px;
+margin-top:10px;
+border-radius:6px;
+border:none;
+cursor:pointer;
+font-weight:bold;
+}
+
+.primary{ background:#2563eb; color:white; }
+.black{ background:black; color:white; }
+
+.clusterBox{
+background:#020617;
+border:1px solid #334155;
+padding:15px;
+border-radius:6px;
+margin-top:10px;
+}
+
+footer{
+margin-top:50px;
+text-align:center;
+padding:20px;
+border-top:1px solid #374151;
+}
+
+.badge{
+display:inline-block;
+padding:3px 8px;
+border-radius:5px;
+background:#1e293b;
+margin-right:6px;
+margin-top:4px;
+font-size:12px;
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- HEADER -->
+<div class="header">
+<div class="logo">SEO Toolkit</div>
+<div class="nav">
+<a href="home.html">Home</a>
+<a href="index.html">Optimizer</a>
+<a href="ai-humanizer.html">Humanizer</a>
+<a href="keyword-cluster.html">Clusters</a>
+<a href="meta-generator.html">Meta</a>
+<a href="readability.html">Readability</a>
+<a href="outline.html">Brief</a>
+</div>
+</div>
+
+<div class="container">
+
+<!-- HERO -->
+<div class="hero">
+<h1>Keyword Cluster & Topic Mapper</h1>
+<p>Turn long keyword lists into powerful topic clusters to improve SEO strategy, internal linking, and ranking potential.</p>
+<p>Free Forever • No Login Required • Privacy Safe</p>
+</div>
+
+<div class="main">
+
+<!-- LEFT -->
+<div class="card">
+<h2>Paste Your Keywords</h2>
+<p>Enter keywords (one per line)</p>
+
+<textarea id="keywordInput" rows="12" placeholder="ai tools
+ai tools for students
+best ai software
+seo content tools
+keyword clustering
+keyword grouping
+..."></textarea>
+
+<button onclick="clusterKeywords()" class="primary">Generate Clusters</button>
+<button onclick="clearAll()" class="black">Clear</button>
+</div>
+
+<!-- RIGHT -->
+<div class="card">
+<h2>Keyword Clusters</h2>
+<div id="outputArea">Your clustered results will appear here...</div>
+
+<div class="card" style="margin-top:20px;">
+<h3>Why Use Keyword Clusters?</h3>
+<ul>
+<li>Improve Topical Authority</li>
+<li>Rank for multiple related keywords</li>
+<li>Smarter internal linking</li>
+<li>Better content structure</li>
+<li>Helps you plan full content silos</li>
+</ul>
+</div>
+
+</div>
+
+</div>
+
+<footer>
+SEO Toolkit © 2025 • Free Forever • Privacy Safe
+</footer>
+
+<script>
+
+function clusterKeywords(){
+let text=document.getElementById("keywordInput").value.trim();
+let output=document.getElementById("outputArea");
+
+if(text.length<5){
+alert("Please enter at least 3–5 keywords.");
+return;
+}
+
+let keywords=text.split("\n").map(k=>k.trim()).filter(k=>k.length>0);
+
+if(keywords.length<3){
+alert("Add more keywords for meaningful clusters.");
+return;
+}
+
+// Simple intelligent grouping logic (temporary AI-like behavior)
+let clusters = {};
+
+keywords.forEach(word=>{
+let key = "";
+
+if(word.includes("ai")) key="AI Tools";
+else if(word.includes("seo")) key="SEO Tools";
+else if(word.includes("best")) key="Best/Top Searches";
+else if(word.includes("free")) key="Free Keyword Intent";
+else if(word.includes("generator")) key="Generators";
+else key="General / Uncategorized";
+
+if(!clusters[key]) clusters[key]=[];
+clusters[key].push(word);
+});
+
+output.innerHTML="";
+
+Object.keys(clusters).forEach(cluster=>{
+let div=document.createElement("div");
+div.className="clusterBox";
+div.innerHTML=`<h3>${cluster}</h3>`;
+
+clusters[cluster].forEach(k=>{
+div.innerHTML+=`<span class='badge'>${k}</span>`;
+});
+
+output.appendChild(div);
+});
+
+output.innerHTML += "<br><p style='opacity:0.7'>Note: AI-powered semantic clustering is coming soon for deeper accuracy.</p>";
+}
+
+function clearAll(){
+document.getElementById("keywordInput").value="";
+document.getElementById("outputArea").innerHTML="Your clustered results will appear here...";
+}
+
+</script>
+
+</body>
+</html>
