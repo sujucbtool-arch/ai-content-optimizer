@@ -294,6 +294,54 @@ border-top:1px solid #374151;
 <div class="card">
 <h3>⭐ AI SEO Content Optimizer</h3>
 <p>Turn any content into SEO-optimized, readable, ranking-ready content with smart scoring, insights, keyword density, AI rewrite support, and PDF export.</p>
+<div id="resultsSection" style="margin-top:30px; display:none;">
+
+<h2>SEO Analysis Results</h2>
+
+<div class="results-grid">
+
+  <!-- SEO SCORE -->
+  <div class="result-card">
+    <h3 class="result-title">Overall SEO Score</h3>
+    <p class="result-sub">Based on structure, keywords & optimization</p>
+    <div id="seoScoreCircle" class="score-circle">0</div>
+
+    <div class="progress-bar">
+      <div id="seoBar" class="progress-fill" style="background:#2563eb;width:0%;"></div>
+    </div>
+  </div>
+
+  <!-- READABILITY -->
+  <div class="result-card">
+    <h3 class="result-title">Readability</h3>
+    <p class="result-sub">Clear, understandable & user friendly?</p>
+
+    <div id="readScoreCircle" class="score-circle">0</div>
+
+    <div class="progress-bar">
+      <div id="readBar" class="progress-fill" style="background:#38bdf8;width:0%;"></div>
+    </div>
+  </div>
+
+  <!-- KEYWORDS -->
+  <div class="result-card">
+    <h3 class="result-title">Keyword Density</h3>
+    <p class="result-sub">Most frequent keywords detected</p>
+
+    <div id="keywordList"></div>
+  </div>
+
+  <!-- SUGGESTIONS -->
+  <div class="result-card">
+    <h3 class="result-title">Actionable Suggestions</h3>
+    <p class="result-sub">Improve your content using these tips</p>
+    <div id="suggestionsBox"></div>
+  </div>
+
+</div>
+
+</div>
+
 <button onclick="window.location.href='index.html'">Use SEO Optimizer</button>
 </div>
 
