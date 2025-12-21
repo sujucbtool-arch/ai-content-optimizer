@@ -4,6 +4,38 @@
 <meta charset="UTF-8">
 <title>Keyword Cluster & Topic Mapper – SEO Toolkit</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+@media print{
+
+body{
+  background:white;
+  color:black;
+}
+
+.header, footer, .card, .top-buttons{
+  display:none !important;
+}
+
+#reportArea{
+  color:black;
+}
+
+.cluster-card{
+  border:1px solid #000 !important;
+  background:#fff !important;
+  color:black !important;
+}
+
+.keyword-tag{
+  background:#f3f4f6 !important;
+  color:black;
+}
+
+.badge{
+  color:black !important;
+  border:1px solid #000;
+  background:#e5e7eb !important;
+}
+}
 
 <style>
 
@@ -165,12 +197,31 @@ ai seo automation
 </div>
 
 <div id="results" style="display:none;">
-<h2>Clusters Found</h2>
-<div id="clusterContainer" class="cluster-grid"></div>
 
-<h2>📌 AI Topic Suggestions & Content Map</h2>
-<div id="aiSuggestions"></div>
+<div style="display:flex;justify-content:space-between;align-items:center;">
+  <h2>Clusters Found</h2>
+
+  <div>
+    <button onclick="printReport()">Print Report</button>
+    <button onclick="downloadPDF()">Export PDF</button>
+  </div>
 </div>
+
+<div id="reportArea">
+  
+  <h2 style="margin-top:10px;">Keyword Cluster Report</h2>
+  <p id="reportDate"></p>
+
+  <h3>📌 Cluster Breakdown</h3>
+  <div id="clusterContainer" class="cluster-grid"></div>
+
+  <h3>🧠 AI Strategy Suggestions</h3>
+  <div id="aiSuggestions"></div>
+
+</div>
+
+</div>
+
 
 </div>
 
@@ -260,6 +311,8 @@ clusters.push(group);
 globalClusters = clusters;
 
 document.getElementById("results").style.display="block";
+document.getElementById("reportDate").innerHTML =
+"Generated on: " + new Date().toLocaleString();
 
 let html="";
 let aiHTML="";
@@ -348,6 +401,14 @@ let a=document.createElement("a");
 a.href=url;
 a.download="keyword-clusters.csv";
 a.click();
+}
+function printReport(){
+window.print();
+}
+
+// true PDF export using browser PDF engine
+function downloadPDF(){
+window.print();
 }
 
 </script>
