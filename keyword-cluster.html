@@ -4,8 +4,10 @@
 <meta charset="UTF-8">
 <title>Keyword Cluster & Topic Mapper – SEO Toolkit</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <style>
 
+/* PRINT STYLES */
 @media print{
   body{
     background:white;
@@ -38,9 +40,7 @@
   }
 }
 
-/* your normal CSS BELOW continues here */
-
-<style>
+/* MAIN UI */
 
 body{
 margin:0;
@@ -254,11 +254,7 @@ if(word.includes("near me") || word.includes("service")) return "Transactional";
 return "Mixed";
 }
 
-/* ---------- SERP Difficulty Estimate ---------- */
-/* Simple heuristic:
-More words + generic keyword = harder
-Specific + long tail = easier
-*/
+/* ---------- Difficulty ---------- */
 function difficulty(word){
 let len = word.split(" ").length;
 if(len <= 2) return Math.floor(Math.random()*20)+70;
@@ -266,14 +262,14 @@ if(len <= 3) return Math.floor(Math.random()*20)+50;
 return Math.floor(Math.random()*30)+20;
 }
 
-/* ---------- Priority Score ---------- */
-/* High priority = easier ranking + strong topic cluster */
+/* ---------- Priority ---------- */
 function priority(diff,size){
 let base = 100 - diff;
 return Math.min(100, Math.max(5, base + (size*4)));
 }
 
-/* ---------- MAIN CLUSTER FUNCTION ---------- */
+/* ---------- MAIN ---------- */
+
 let globalClusters = [];
 
 function clusterKeywords(){
@@ -326,7 +322,6 @@ let intent = detectIntent(parent);
 let diff = difficulty(parent);
 let prScore = priority(diff, group.length);
 
-/* CLUSTER CARD */
 html += `
 <div class="cluster-card">
 <div class="cluster-title">${parent}</div>
@@ -345,7 +340,6 @@ html+=`<span class="keyword-tag">${k}</span>`;
 
 html+=`</div>`;
 
-/* AI STYLE CONTENT MAP */
 aiHTML += `
 <div class="cluster-card">
 <b>Main Topic:</b> ${parent}<br>
@@ -362,7 +356,7 @@ document.getElementById("aiSuggestions").innerHTML = aiHTML;
 
 }
 
-/* ---------- COPY CLUSTERS ---------- */
+/* ---------- COPY ---------- */
 function copyClusters(){
 if(globalClusters.length === 0){
 alert("Generate clusters first");
@@ -381,7 +375,7 @@ navigator.clipboard.writeText(text);
 alert("Clusters Copied!");
 }
 
-/* ---------- CSV EXPORT ---------- */
+/* ---------- CSV ---------- */
 function exportCSV(){
 if(globalClusters.length === 0){
 alert("Generate clusters first");
@@ -405,11 +399,12 @@ a.href=url;
 a.download="keyword-clusters.csv";
 a.click();
 }
+
+/* ---------- PRINT + PDF ---------- */
 function printReport(){
 window.print();
 }
 
-// true PDF export using browser PDF engine
 function downloadPDF(){
 window.print();
 }
