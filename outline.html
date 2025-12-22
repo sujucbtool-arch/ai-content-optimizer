@@ -1,23 +1,252 @@
-<html>
-<head><title>Blog Outline Generator</title>
-<script src="https://cdn.tailwindcss.com"></script>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>SEO Content Brief Generator – SEO Toolkit</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+
+@media print{
+ .no-print,.header,footer{display:none!important;}
+ body{background:white;color:black;}
+ .card{border:1px solid #000!important;background:white!important;color:black!important;}
+}
+
+body{
+margin:0;
+font-family:Arial, Helvetica, sans-serif;
+background:#0f172a;
+color:white;
+}
+
+.header{
+display:flex;
+justify-content:space-between;
+align-items:center;
+background:#020617;
+padding:15px 30px;
+border-bottom:1px solid #1e293b;
+}
+
+.logo{font-size:22px;font-weight:bold;color:#38bdf8;}
+.nav a{margin-right:15px;color:#cbd5f5;text-decoration:none;}
+.nav a:hover{color:white;}
+
+.container{
+max-width:1100px;
+margin:auto;
+padding:25px;
+}
+
+.card{
+background:#020617;
+padding:18px;
+border-radius:12px;
+border:1px solid #1f2937;
+margin-top:18px;
+}
+
+textarea,input{
+width:100%;
+background:#0b1220;
+border:1px solid #1f2937;
+border-radius:8px;
+padding:10px;
+color:white;
+}
+
+button{
+background:#2563eb;
+padding:10px 16px;
+border-radius:6px;
+border:none;
+color:white;
+font-weight:bold;
+cursor:pointer;
+margin:5px;
+}
+button:hover{background:#1d4ed8;}
+
+.section-box{
+background:#0b1220;
+border:1px solid #1f2937;
+padding:12px;
+border-radius:10px;
+margin-top:10px;
+}
+
+.copy-btn{
+background:#0ea5e9;
+padding:6px 10px;
+border-radius:6px;
+border:none;
+cursor:pointer;
+}
+.copy-btn:hover{background:#0284c7;}
+
+h2 span{
+color:#38bdf8;
+}
+
+footer{
+margin-top:50px;
+text-align:center;
+padding:20px;
+border-top:1px solid #374151;
+}
+
+</style>
 </head>
-<body class="p-10">
-<h1 class="text-4xl font-bold mb-4">Blog Outline Generator</h1>
-<input id="topic" class="w-full p-3 border rounded" placeholder="Enter Topic">
-<button onclick="gen()" class="mt-3 px-5 py-2 bg-blue-600 text-white rounded">Generate</button>
-<ul id="list" class="mt-4 list-disc ml-6"></ul>
+
+<body>
+
+<div class="header no-print">
+ <div class="logo">SEO Toolkit</div>
+ <div class="nav">
+  <a href="home.html">Home</a>
+  <a href="index.html">Optimizer</a>
+  <a href="ai-humanizer.html">Humanizer</a>
+  <a href="meta-generator.html">Meta Suite</a>
+  <a href="keyword-cluster.html">Cluster</a>
+  <a href="outline.html">Brief</a>
+ </div>
+</div>
+
+<div class="container">
+
+<h1>📄 SEO Content Brief Generator</h1>
+<p>Create a professional content brief ready for writers, editors, and SEO teams.</p>
+
+<div class="card">
+<label>Enter Topic / Main Keyword</label>
+<input id="topic" placeholder="Example: AI SEO Tools for Bloggers">
+
+<label style="margin-top:10px;">Target Audience</label>
+<input id="audience" placeholder="Bloggers, marketers, beginners, experts…">
+
+<label style="margin-top:10px;">Purpose</label>
+<select id="purpose">
+<option>Rank on Google</option>
+<option>Affiliate Monetization</option>
+<option>Lead Generation</option>
+<option>Educational</option>
+<option>Product Promotion</option>
+</select>
+
+<button onclick="generateBrief()">Generate Brief</button>
+<button onclick="window.print()">Export PDF</button>
+</div>
+
+<div id="briefSection" style="display:none">
+
+<h2><span>Final SEO Brief</span></h2>
+
+<div class="section-box">
+<b>Title Suggestion</b>
+<div id="titleBox"></div>
+<button class="copy-btn" onclick="copyText('titleBox')">Copy</button>
+</div>
+
+<div class="section-box">
+<b>H1 Headline</b>
+<div id="h1Box"></div>
+<button class="copy-btn" onclick="copyText('h1Box')">Copy</button>
+</div>
+
+<div class="section-box">
+<b>H2 Sections</b>
+<div id="h2Box"></div>
+<button class="copy-btn" onclick="copyText('h2Box')">Copy All</button>
+</div>
+
+<div class="section-box">
+<b>H3 Supporting Subtopics</b>
+<div id="h3Box"></div>
+<button class="copy-btn" onclick="copyText('h3Box')">Copy All</button>
+</div>
+
+<div class="section-box">
+<b>FAQs for SEO</b>
+<div id="faqBox"></div>
+<button class="copy-btn" onclick="copyText('faqBox')">Copy FAQs</button>
+</div>
+
+<div class="section-box">
+<b>Writer Notes</b>
+<div id="notesBox"></div>
+<button class="copy-btn" onclick="copyText('notesBox')">Copy Notes</button>
+</div>
+
+</div>
+
+</div>
+
+<footer>
+SEO Toolkit © 2025 — Built for Creators
+</footer>
 
 <script>
-function gen(){
-let t=document.getElementById("topic").value;
-document.getElementById("list").innerHTML=
-`<li>Introduction to ${t}</li>
-<li>Why ${t} matters</li>
-<li>Benefits of ${t}</li>
-<li>How to use ${t}</li>
-<li>Conclusion</li>`;
+
+function generateBrief(){
+
+let topic=document.getElementById("topic").value.trim();
+let audience=document.getElementById("audience").value.trim() || "general readers";
+let purpose=document.getElementById("purpose").value;
+
+if(topic.length<3){
+alert("Enter a valid topic");
+return;
 }
+
+document.getElementById("briefSection").style.display="block";
+
+document.getElementById("titleBox").innerHTML=
+`Top ${topic} — Complete Guide (${new Date().getFullYear()})`;
+
+document.getElementById("h1Box").innerHTML=
+`${topic}: Ultimate Guide for ${audience}`;
+
+document.getElementById("h2Box").innerHTML=
+`• What is ${topic}?
+• Why ${topic} is Important
+• Benefits of Using ${topic}
+• Step-by-Step Usage
+• Best Practices
+• Mistakes to Avoid
+• Final Conclusion`;
+
+document.getElementById("h3Box").innerHTML=
+`• Introduction to topic
+• Who should use it
+• Key features explained
+• Examples & use cases
+• Tips for better results
+• FAQs summary`;
+
+document.getElementById("faqBox").innerHTML=
+`• What is ${topic}?
+• Is ${topic} beginner friendly?
+• How does ${topic} help SEO?
+• Is ${topic} worth using?
+• Best alternatives to ${topic}?`;
+
+document.getElementById("notesBox").innerHTML=
+`• Write in simple language
+• Maintain clarity & value
+• Add real examples
+• Include call-to-action
+• Optimize for conversions
+• Purpose: ${purpose}`;
+}
+
+function copyText(id){
+let t=document.getElementById(id).innerText;
+navigator.clipboard.writeText(t);
+alert("Copied!");
+}
+
 </script>
+
 </body>
 </html>
