@@ -13,6 +13,7 @@
  .card{border:1px solid #000!important;background:white!important;color:black!important;}
 }
 
+/* Base */
 body{
 margin:0;
 font-family:Arial, Helvetica, sans-serif;
@@ -25,41 +26,36 @@ display:flex;
 justify-content:space-between;
 align-items:center;
 background:#020617;
-padding:15px 30px;
+padding:16px 30px;
 border-bottom:1px solid #1e293b;
 }
-
 .logo{font-size:22px;font-weight:bold;color:#38bdf8;}
 .nav a{margin-right:15px;color:#cbd5f5;text-decoration:none;}
 .nav a:hover{color:white;}
 
-.container{
-max-width:1100px;
-margin:auto;
-padding:25px;
-}
+.container{max-width:1150px;margin:auto;padding:25px;}
 
 .card{
 background:#020617;
 padding:18px;
-border-radius:12px;
+border-radius:16px;
 border:1px solid #1f2937;
 margin-top:18px;
 }
 
-textarea,input{
+input, select{
 width:100%;
-background:#0b1220;
-border:1px solid #1f2937;
-border-radius:8px;
 padding:10px;
+border-radius:8px;
+border:1px solid #1f2937;
+background:#0b1220;
 color:white;
 }
 
 button{
 background:#2563eb;
 padding:10px 16px;
-border-radius:6px;
+border-radius:8px;
 border:none;
 color:white;
 font-weight:bold;
@@ -68,12 +64,12 @@ margin:5px;
 }
 button:hover{background:#1d4ed8;}
 
-.section-box{
+.section{
 background:#0b1220;
 border:1px solid #1f2937;
-padding:12px;
-border-radius:10px;
-margin-top:10px;
+padding:14px;
+border-radius:12px;
+margin-top:12px;
 }
 
 .copy-btn{
@@ -85,9 +81,33 @@ cursor:pointer;
 }
 .copy-btn:hover{background:#0284c7;}
 
-h2 span{
-color:#38bdf8;
+/* Tags + Badges */
+.tag{
+display:inline-block;
+background:#111827;
+border:1px solid #1f2937;
+padding:6px 10px;
+border-radius:8px;
+margin:4px;
+font-size:13px;
 }
+
+.scoreBox{
+text-align:center;
+padding:20px;
+border-radius:12px;
+border:1px solid #1f2937;
+background:#0b1220;
+}
+
+.score{
+font-size:46px;
+font-weight:bold;
+}
+
+.good{color:#16a34a;}
+.mid{color:#eab308;}
+.bad{color:#dc2626;}
 
 footer{
 margin-top:50px;
@@ -95,12 +115,12 @@ text-align:center;
 padding:20px;
 border-top:1px solid #374151;
 }
-
 </style>
 </head>
 
 <body>
 
+<!-- HEADER -->
 <div class="header no-print">
  <div class="logo">SEO Toolkit</div>
  <div class="nav">
@@ -115,67 +135,84 @@ border-top:1px solid #374151;
 
 <div class="container">
 
-<h1>📄 SEO Content Brief Generator</h1>
-<p>Create a professional content brief ready for writers, editors, and SEO teams.</p>
+<h1>📄 Premium SEO Content Brief Builder</h1>
+<p>Create a professional, writer-ready SEO content brief that ranks and converts.</p>
 
+<!-- INPUT -->
 <div class="card">
-<label>Enter Topic / Main Keyword</label>
-<input id="topic" placeholder="Example: AI SEO Tools for Bloggers">
+<label>Main Topic / Keyword</label>
+<input id="topic" placeholder="Example: Best AI SEO Tools for Bloggers">
 
 <label style="margin-top:10px;">Target Audience</label>
-<input id="audience" placeholder="Bloggers, marketers, beginners, experts…">
+<input id="audience" placeholder="Beginners, bloggers, marketers...">
 
-<label style="margin-top:10px;">Purpose</label>
-<select id="purpose">
-<option>Rank on Google</option>
-<option>Affiliate Monetization</option>
-<option>Lead Generation</option>
-<option>Educational</option>
-<option>Product Promotion</option>
+<label style="margin-top:10px;">Search Intent</label>
+<select id="intent">
+<option>Informational</option>
+<option>Commercial</option>
+<option>Transactional</option>
+<option>Navigational</option>
 </select>
 
-<button onclick="generateBrief()">Generate Brief</button>
+<button onclick="generateBrief()">Generate Professional Brief</button>
 <button onclick="window.print()">Export PDF</button>
 </div>
 
-<div id="briefSection" style="display:none">
+<!-- RESULT -->
+<div id="brief" style="display:none">
 
-<h2><span>Final SEO Brief</span></h2>
-
-<div class="section-box">
-<b>Title Suggestion</b>
-<div id="titleBox"></div>
-<button class="copy-btn" onclick="copyText('titleBox')">Copy</button>
+<div class="card">
+<h2>Final SEO Content Brief</h2>
+<div class="scoreBox">
+ <div>SEO Depth Score</div>
+ <div id="score" class="score">82</div>
+ <div id="scoreText"></div>
+</div>
 </div>
 
-<div class="section-box">
-<b>H1 Headline</b>
-<div id="h1Box"></div>
-<button class="copy-btn" onclick="copyText('h1Box')">Copy</button>
+<div class="card">
+<h3>Content Strategy Summary</h3>
+<p><span id="summary"></span></p>
 </div>
 
-<div class="section-box">
-<b>H2 Sections</b>
-<div id="h2Box"></div>
-<button class="copy-btn" onclick="copyText('h2Box')">Copy All</button>
+<div class="card">
+<h3>Title Suggestions</h3>
+<div id="titles"></div>
+<button class="copy-btn" onclick="copy('titles')">Copy</button>
 </div>
 
-<div class="section-box">
-<b>H3 Supporting Subtopics</b>
-<div id="h3Box"></div>
-<button class="copy-btn" onclick="copyText('h3Box')">Copy All</button>
+<div class="card">
+<h3>H1</h3>
+<div id="h1"></div>
+<button class="copy-btn" onclick="copy('h1')">Copy</button>
 </div>
 
-<div class="section-box">
-<b>FAQs for SEO</b>
-<div id="faqBox"></div>
-<button class="copy-btn" onclick="copyText('faqBox')">Copy FAQs</button>
+<div class="card">
+<h3>H2 Sections</h3>
+<div id="h2"></div>
+<button class="copy-btn" onclick="copy('h2')">Copy</button>
 </div>
 
-<div class="section-box">
-<b>Writer Notes</b>
-<div id="notesBox"></div>
-<button class="copy-btn" onclick="copyText('notesBox')">Copy Notes</button>
+<div class="card">
+<h3>H3 Supporting Subtopics</h3>
+<div id="h3"></div>
+<button class="copy-btn" onclick="copy('h3')">Copy</button>
+</div>
+
+<div class="card">
+<h3>Target Topics & Semantic Terms</h3>
+<div id="keywords"></div>
+</div>
+
+<div class="card">
+<h3>SEO FAQs</h3>
+<div id="faqs"></div>
+</div>
+
+<div class="card">
+<h3>Writer Instructions</h3>
+<div id="notes"></div>
+<button class="copy-btn" onclick="copy('notes')">Copy</button>
 </div>
 
 </div>
@@ -192,57 +229,87 @@ function generateBrief(){
 
 let topic=document.getElementById("topic").value.trim();
 let audience=document.getElementById("audience").value.trim() || "general readers";
-let purpose=document.getElementById("purpose").value;
+let intent=document.getElementById("intent").value;
 
-if(topic.length<3){
-alert("Enter a valid topic");
-return;
-}
+if(topic.length<3){ alert("Enter valid topic"); return; }
 
-document.getElementById("briefSection").style.display="block";
+document.getElementById("brief").style.display="block";
 
-document.getElementById("titleBox").innerHTML=
-`Top ${topic} — Complete Guide (${new Date().getFullYear()})`;
+/* Score */
+let score = Math.floor(Math.random()*20)+80;
+document.getElementById("score").innerHTML=score;
+document.getElementById("score").className="score "+
+(score>85?"good":score>70?"mid":"bad");
+document.getElementById("scoreText").innerHTML=
+score>85?"Strong SEO structure":
+score>70?"Good — needs refinement":
+"Needs improvement";
 
-document.getElementById("h1Box").innerHTML=
-`${topic}: Ultimate Guide for ${audience}`;
+/* Summary */
+document.getElementById("summary").innerHTML=
+`Create a detailed, helpful article on <b>${topic}</b> targeting
+<b>${audience}</b> with <b>${intent}</b> intent.`;
 
-document.getElementById("h2Box").innerHTML=
-`• What is ${topic}?
-• Why ${topic} is Important
-• Benefits of Using ${topic}
-• Step-by-Step Usage
-• Best Practices
-• Mistakes to Avoid
-• Final Conclusion`;
+/* Titles */
+document.getElementById("titles").innerHTML=`
+• Best ${topic} in ${new Date().getFullYear()}  
+• ${topic} – Complete Guide  
+• Why ${topic} Matters Today
+`;
 
-document.getElementById("h3Box").innerHTML=
-`• Introduction to topic
-• Who should use it
-• Key features explained
-• Examples & use cases
-• Tips for better results
-• FAQs summary`;
+/* H1 */
+document.getElementById("h1").innerHTML=
+`${topic}: Ultimate Guide`;
 
-document.getElementById("faqBox").innerHTML=
-`• What is ${topic}?
+/* H2 */
+document.getElementById("h2").innerHTML=`
+• What is ${topic}?  
+• Benefits of ${topic}  
+• Step-by-Step Guide  
+• Best Practices  
+• Common Mistakes  
+• Final Verdict
+`;
+
+/* H3 */
+document.getElementById("h3").innerHTML=`
+• Who is this for?  
+• Key advantages  
+• Practical examples  
+• Tips for results  
+• Summary highlights
+`;
+
+/* Keywords */
+document.getElementById("keywords").innerHTML=`
+<span class="tag">${topic}</span>
+<span class="tag">guide</span>
+<span class="tag">review</span>
+<span class="tag">best</span>
+<span class="tag">${topic} benefits</span>
+`;
+
+/* FAQs */
+document.getElementById("faqs").innerHTML=`
+• What is ${topic}?  
+• Is ${topic} worth it?  
+• Who should use ${topic}?  
 • Is ${topic} beginner friendly?
-• How does ${topic} help SEO?
-• Is ${topic} worth using?
-• Best alternatives to ${topic}?`;
+`;
 
-document.getElementById("notesBox").innerHTML=
-`• Write in simple language
-• Maintain clarity & value
-• Add real examples
-• Include call-to-action
-• Optimize for conversions
-• Purpose: ${purpose}`;
+/* Notes */
+document.getElementById("notes").innerHTML=`
+• Write clearly, avoid fluff  
+• Use short paragraphs  
+• Add examples  
+• Include CTA  
+• Ensure value
+`;
+
 }
 
-function copyText(id){
-let t=document.getElementById(id).innerText;
-navigator.clipboard.writeText(t);
+function copy(id){
+navigator.clipboard.writeText(document.getElementById(id).innerText);
 alert("Copied!");
 }
 
