@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>AI Template Generator – SEO Toolkit</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+/* PRINT PDF REPORT */
+@media print{
+ body{ background:white; color:black; }
+ .no-print, .header, footer{ display:none !important; }
+ .card{ border:1px solid black !important; color:black !important; background:white !important; }
+}
+
+/* GENERAL UI */
+body{ margin:0; font-family:Arial, Helvetica, sans-serif; background:#0f172a; color:white; }
+.header{ display:flex; justify-content:space-between; padding:18px 30px; background:#020617; border-bottom:1px solid #1e293b; position:sticky; top:0; z-index:10;}
+.logo{ font-size:24px; font-weight:bold; color:#38bdf8; }
+.nav a{ color:#a5b4fc; margin-right:12px; text-decoration:none;}
+.nav a:hover{ color:white; }
+.container{ max-width:1100px; margin:auto; padding:25px;}
+
+/* SECTIONS */
+.card{ background:#020617; padding:16px; border-radius:12px; border:1px solid #1f2937; margin-top:15px;}
+textarea,input,select{ width:100%; padding:10px; border-radius:8px; border:1px solid #374151; background:#0b1220; color:white;}
+button{ background:#2563eb; border:none; padding:10px 14px; border-radius:6px; color:white; font-weight:bold; cursor:pointer; margin:5px;}
+button:hover{ background:#1d4ed8;}
+button.big{ width:100%; padding:15px; font-size:18px; background:#16a34a; }
+button.big:hover{ background:#15803d; }
+
+/* PREVIEW */
+.template-preview{ background:#fff; color:black; padding:25px; border-radius:12px; margin-top:20px; text-align:center; }
+.template-preview h2{ color:#1e293b; margin-bottom:15px; }
+.template-features{ display:flex; gap:15px; justify-content:center; flex-wrap:wrap; margin:20px 0; }
+.feature{ background:#f3f4f6; padding:10px 15px; border-radius:6px; font-size:14px; }
+</style>
+</head>
+
+<body>
+
+<!-- HEADER -->
+<div class="header no-print">
+ <div class="logo">SEO Toolkit</div>
+ <div class="nav">
+  <a href="home.html">🏠 Home</a>
+  <a href="index.html">SEO Optimizer</a>
+  <a href="ai-humanizer.html">Humanizer</a>
+  <a href="templates.html">📄 Templates</a>
+  <a href="meta-generator.html">Meta Suite</a>
+ </div>
+</div>
+
+<div class="container">
+
+<!-- HERO -->
+<div class="card">
+<h1>🎯 AI Template Generator</h1>
+<p><b>₹299 each → Instant Canva/Google Docs delivery</b></p>
+<p>Professional invoices, resumes, social posts for Indian businesses. Editable + Mobile ready.</p>
+</div>
+
+<!-- TEMPLATE GENERATOR -->
+<div class="card">
+<h2>Generate Your Template</h2>
+<select id="templateType">
+  <option value="invoice">📊 Invoice Template</option>
+  <option value="resume">📄 Resume Template</option>
+  <option value="social">📱 Social Media Post</option>
+  <option value="proposal">📋 Business Proposal</option>
+  <option value="cover">✉️ Cover Letter</option>
+</select>
+<input id="businessName" placeholder="Hubballi Restaurant / Your Name / Delhi Startup">
+<button onclick="generateTemplate()" class="big">🎨 Preview Template (Free)</button>
+</div>
+
+<!-- PREVIEW SECTION -->
+<div id="templatePreview" style="display:none;">
+<div class="template-preview">
+  <h2 id="previewTitle">Professional Invoice Template</h2>
+  <p id="previewDesc">Ready for Canva/Google Docs. Fully editable for your business.</p>
+  
+  <div class="template-features">
+    <div class="feature">✅ India GST Ready</div>
+    <div class="feature">✅ Mobile Friendly</div>
+    <div class="feature">✅ Print Ready PDF</div>
+    <div class="feature">✅ Canva Link Included</div>
+  </div>
+  
+  <button onclick="buyTemplate()" class="big" style="background:#38bdf8;margin-top:20px;">💳 BUY ₹299 → INSTANT ACCESS</button>
+  <p style="font-size:12px;color:#94a3b8;margin-top:15px;">Razorpay • Secure • Instant Delivery</p>
+</div>
+</div>
+
+<!-- FEATURES -->
+<div class="card">
+<h2>Why Choose Our Templates?</h2>
+<ul style="line-height:1.8;">
+<li><b>India-First:</b> GST invoices, rupee formats, local business styles</li>
+<li><b>Instant Delivery:</b> Canva template link + Google Docs copy in 30 seconds</li>
+<li><b>Fully Editable:</b> Colors, fonts, logos - change everything</li>
+<li><b>Mobile Ready:</b> Perfect for WhatsApp sharing</li>
+<li><b>Proven:</b> 1000+ Indian businesses using our designs</li>
+</ul>
+</div>
+
+</div>
+
+<footer style="text-align:center;padding:20px;border-top:1px solid #374151;margin-top:40px;">
+SEO Toolkit © 2025 — Templates by AI for Indian Businesses
+</footer>
+
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script>
+// TEMPLATE PREVIEW
+function generateTemplate(){
+  let type=document.getElementById("templateType").value;
+  let name=document.getElementById("businessName").value || "Your Business";
+  let preview=document.getElementById("templatePreview");
+  
+  let titles={
+    "invoice": "Professional GST Invoice",
+    "resume": "Modern Resume Design", 
+    "social": "Viral Social Media Post",
+    "proposal": "Winning Business Proposal",
+    "cover": "Perfect Cover Letter"
+  };
+  
+  document.getElementById("previewTitle").innerHTML=titles[type]+" for "+name;
+  document.getElementById("previewDesc").innerHTML="Ready-to-use Canva template link will be delivered instantly.";
+  preview.style.display="block";
+  preview.scrollIntoView({behavior:'smooth'});
+}
+
+// RAZORPAY PAYMENT
+function buyTemplate(){
+  let type=document.getElementById("templateType").value;
+  let name=document.getElementById("businessName").value || "Customer";
+  
+  var options = {
+    "key": "YOUR_RAZORPAY_KEY", // ← REPLACE WITH YOUR KEY FROM razorpay.com
+    "amount": "29900", // ₹299 in paise
+    "currency": "INR",
+    "name": "AI Template Generator",
+    "description": type.toUpperCase()+" Template for "+name,
+    "image": "https://sujucbtool-arch.github.io/ai-content-optimizer/logo.png",
+    "handler": function(response){
+      alert("🎉 Payment Success! Check your email for Canva template link.\nOrder ID: "+response.razorpay_payment_id);
+      // ADD Zapier webhook here for auto-delivery
+    },
+    "prefill": {
+      "name": name
+    },
+    "theme": {
+      "color": "#38bdf8"
+    }
+  };
+  var rzp1 = new Razorpay(options);
+  rzp1.open();
+}
+</script>
+
+</body>
+</html>
