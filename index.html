@@ -75,6 +75,19 @@ button:hover{ background:#1d4ed8;}
 <button onclick="rewriteAI()">AI Rewrite</button>
 <button onclick="window.print()">Export PDF</button>
 </div>
+<!-- TEMPLATE GENERATOR -->
+<div class="card">
+<h2>AI Template Generator <span style="color:#38bdf8">(₹299)</span></h2>
+<select id="templateType" style="width:200px;padding:10px;">
+  <option>Invoice Template</option>
+  <option>Resume Template</option>
+  <option>Social Media Post</option>
+  <option>Proposal Template</option>
+</select>
+<input id="businessName" placeholder="Your business name (e.g. Hubballi Restaurant)" style="width:300px;">
+<button onclick="generateTemplate()">Generate & Buy ₹299</button>
+<div id="templatePreview" style="display:none;margin-top:15px;"></div>
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 
 <!-- RESULTS -->
 <div id="resultsSection" style="display:none">
@@ -262,6 +275,35 @@ function competitorAnalyze(){
    <b>Opportunity:</b> Create pillar article + strong intro + readable flow
    </div>`;
  },700);
+}
+function generateTemplate(){
+  let type=document.getElementById("templateType").value;
+  let name=document.getElementById("businessName").value || "Your Business";
+  let preview=document.getElementById("templatePreview");
+  
+  preview.innerHTML=`<div style="background:#fff;color:black;padding:20px;border-radius:10px;">
+    <h2>${type} Preview for ${name}</h2>
+    <p><b>Professional ${type.toLowerCase()} ready in Canva/Google Docs format.</b></p>
+    <p>✅ Editable design<br>✅ India business ready<br>✅ Mobile friendly</p>
+    <button onclick="buyTemplate('${type}','${name}')" style="background:#38bdf8;color:white;padding:12px 24px;border:none;border-radius:6px;font-weight:bold;">BUY ₹299 → INSTANT ACCESS</button>
+  </div>`;
+  preview.style.display="block";
+}
+
+function buyTemplate(type,name){
+  var options = {
+    "key": "YOUR_RAZORPAY_KEY", // Get free from razorpay.com
+    "amount": "29900", // ₹299 = 29900 paise
+    "currency": "INR",
+    "name": "AI Template Generator",
+    "description": type+" for "+name,
+    "handler": function(response){
+      alert("Payment Success! Emailing template to you...");
+      // Zapier will auto-send template
+    }
+  };
+  var rzp1 = new Razorpay(options);
+  rzp1.open();
 }
 
 </script>
